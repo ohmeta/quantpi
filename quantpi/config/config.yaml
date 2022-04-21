@@ -249,13 +249,11 @@ output:
 
 
 envs:
+  general: "envs/general.yaml"
   simulate: "envs/simulate.yaml"
-  qc: "envs/qc.yaml"
+  soap: "envs/soap.yaml"
+  kraken2: "envs/kraken2.yaml"
   metaphlan2: "envs/biobakery2.yaml"
   metaphlan3: "envs/biobakery3.yaml"
   humann2: "envs/biobakery2.yaml"
   humann3: "envs/biobakery3.yaml"
-  kraken2: "envs/kraken2.yaml"
-  bracken2: "envs/kraken2.yaml"
-  jgi: "envs/jgi.yaml"
-  soap: "envs/soap.yaml"

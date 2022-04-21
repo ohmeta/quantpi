@@ -1,0 +1,15 @@
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+
+dependencies:
+  - metabat2 =2.15
+  - bowtie2
+  - bwa =0.7.17
+  - samtools >=1.10
+  - minimap2 =2.24
+  - fastqc =0.11.9
+  - multiqc =1.12
+  - seqkit =2.2.0
+  - kneaddata =0.10.0

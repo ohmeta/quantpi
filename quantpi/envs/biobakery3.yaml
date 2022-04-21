@@ -1,0 +1,7 @@
+channels:
+  - conda-forge
+  - bioconda
+  - defaults
+dependencies:
+  - metaphlan=3.0.14
+  - humann=3.0.1
