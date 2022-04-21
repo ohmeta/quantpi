@@ -37,7 +37,7 @@ if config["params"]["simulate"]["do"]:
                 os.path.join(config["output"]["simulate"],
                              "abundance/{sample}.simulate.abundance.txt")],
                    read=["1", "2"],
-                   sample=SAMPLES.index.unique())
+                   sample=SAMPLES_ID_LIST)
 
 else:
     rule simulate_all:

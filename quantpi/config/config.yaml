@@ -107,7 +107,7 @@ params:
     seqkit:
       threads: 4
 
-  classify:
+  profiling:
     threads: 8
     kraken2:
       do: True
@@ -124,8 +124,6 @@ params:
       classified_out: False
       save_table: False
 
-  profiling:
-    threads: 8
     index_taxonomy: "/path/to/mag_taxonomy"
     bgi_soap: # for learning
       do: False
@@ -226,8 +224,7 @@ output:
   trimming: "results/01.trimming"
   rmhost: "results/02.rmhost"
   qcreport: "results/03.qcreport"
-  classify: "results/04.classify"
-  profile: "results/05.profile"
+  profiling: "results/04.profiling"
 
 envs:
   simulate: "envs/simulate.yaml"

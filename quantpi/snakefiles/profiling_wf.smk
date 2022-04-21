@@ -56,7 +56,7 @@ else:
                                    config["params"]["reads_layout"],
                                    config["params"]["begin"])
 
-    SAMPLES_ID_LIST = SAMPLES.index.unique()
+SAMPLES_ID_LIST = SAMPLES.index.unique()
 
 READS_FORMAT = "sra" \
     if "sra" in SAMPLES.columns \
@@ -68,6 +68,7 @@ include: "../rules/raw.smk"
 include: "../rules/trimming.smk"
 include: "../rules/rmhost.smk"
 include: "../rules/qcreport.smk"
+include: "../rules/profiling_dna.smk"
 
 
 rule all:
@@ -76,4 +77,5 @@ rule all:
         rules.raw_all.input,
         rules.trimming_all.input,
         rules.rmhost_all.input,
-        rules.qcreport_all.input
+        rules.qcreport_all.input,
+        rules.profiling_all.input
