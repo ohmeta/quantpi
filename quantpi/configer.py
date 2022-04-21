@@ -87,11 +87,11 @@ class metaconfig:
 
     def __init__(self, work_dir):
         self.work_dir = os.path.realpath(work_dir)
-        self.metapi_dir = os.path.dirname(os.path.abspath(__file__))
+        self.quantpi_dir = os.path.dirname(os.path.abspath(__file__))
 
-        self.config_file = os.path.join(self.metapi_dir, "config", "config.yaml")
-        self.envs_dir = os.path.join(self.metapi_dir, "envs")
-        self.profiles_dir = os.path.join(self.metapi_dir, "profiles")
+        self.config_file = os.path.join(self.quantpi_dir, "config", "config.yaml")
+        self.envs_dir = os.path.join(self.quantpi_dir, "envs")
+        self.profiles_dir = os.path.join(self.quantpi_dir, "profiles")
         self.new_config_file = os.path.join(self.work_dir, "config.yaml")
 
     def __str__(self):

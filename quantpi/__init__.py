@@ -5,6 +5,9 @@ from quantpi.configer import parse_yaml
 from quantpi.configer import update_config
 from quantpi.configer import custom_help_formatter
 
+from quantpi.sampler import parse_samples
+from quantpi.sampler import get_reads
+
 from quantpi.profiler import profiler_init
 from quantpi.profiler import get_all_abun_df
 from quantpi.profiler import get_abun_df_bgi_soap

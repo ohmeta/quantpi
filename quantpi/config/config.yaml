@@ -53,14 +53,14 @@ params:
       n_base_limit: 5
 
   rmhost:
-    host_fasta: "/home/zhujie/databases/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
+    host_fasta: "/home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
     threads: 8
     save_reads: True
     save_bam: False
     compression: 6
     soap:
       do: False
-      index_prefix: "/home/zhujie/databases/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
+      index_prefix: "/home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
       match_model: 4
       align_seed: 30
       report_repeat_hits: 1
@@ -69,22 +69,22 @@ params:
     bwa:
       do: False
       algorithms: "mem" # "mem2"
-      index_prefix: "/home/zhujie/databases/genomics/human/CHM13/chm13v2.0_plusY/bwa_index/chm13v2.0.fa"
+      index_prefix: "/home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/bwa_index/chm13v2.0.fa"
       # /ldfssz1/ST_META/share/User/zhujie/database/galaxy_indexes/hg38/hg38full/bwa_mem2_index/hg38full.fa
       # /ldfssz1/ST_META/share/User/zhujie/database/mouse/GRCm39/bwa_mem2_index/GRCm39.fna
       minimum_seed_length: 23
     bowtie2: # recommand
       do: True
-      index_prefix: "/home/zhujie/databases/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
+      index_prefix: "/home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
       presets: "--very-sensitive"
     minimap2:
       do: False
       split_size: "4G"
       preset: "sr"
-      index: "/home/zhujie/databases/genomics/human/CHM13/chm13v2.0_plusY/minimap_index/chm13v2.0.fa"
+      index: "/home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/minimap_index/chm13v2.0.fa"
     kraken2:
       do: False
-      database: "/home/zhujie/databases/kraken/minikraken2_v2_8GB_201904_UPDATE"
+      database: "/home/jiezhu/databases/kraken/minikraken2_v2_8GB_201904_UPDATE"
       host_taxid: 9606
       # must include human reference genome
       confidence: 0
@@ -100,7 +100,7 @@ params:
       do_bowtie2: True
       decontaminate_pairs: "strict" # ["strict", "lenient", "unpaired"]
       bowtie2_options: "--very-sensitive --dovetail"
-      bowtie2_database: "/home/zhujie/databases/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
+      bowtie2_database: "/home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
  
   qcreport:
     do: True
@@ -111,7 +111,7 @@ params:
     threads: 8
     kraken2:
       do: True
-      database: "/home/zhujie/databases/ecogenomics/Struo2/GTDB_release202/kraken2"
+      database: "/home/jiezhu/databases/ecogenomics/Struo2/GTDB_release202/kraken2"
       quick: False
       memory_mapping: False
       use_names: True
