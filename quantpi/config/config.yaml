@@ -1,0 +1,242 @@
+params:
+  reads_layout: "pe"
+  interleaved: False
+  have_long: False
+  fq_encoding: "sanger"
+  begin: "trimming"
+  samples: "samples.tsv"
+
+  simulate:
+    do: False
+    threads: 8
+
+  raw:
+    do: True
+    threads: 8
+    save_reads: True
+    fastqc:
+      do: False
+
+  trimming:
+    save_reads: False
+    oas1:
+      do: False
+      quality_system: 33
+      min_length: 30
+      seed_oa: 0.9
+      fragment_oa: 0.8
+    sickle:
+      do: False
+      quality_type: "sanger"
+      sickle_pe: ""
+      length_cutoff: 51
+      quality_cutoff: 20
+    fastp: # recommand
+      do: True
+      threads: 4
+      use_slide_window: False # strict when using slide window
+      disable_adapter_trimming: False
+      detect_adapter_for_se: True # If activated, adapter_sequence will not used
+      detect_adapter_for_pe: True # If activated, adapter_sequence and adapter_sequence_r2 will not used
+      adapter_sequence: "AAGTCGGAGGCCAAGCGGTCTTAGGAAGACAA" # MGI adapter 3
+      adapter_sequence_r2: "AAGTCGGATCGTAGCCATGTCGTTCTGTGAGCCAAGGAGTTG" # MGI adapter 5
+      # "AGATCGGAAGAGCACACGTCTGAACTCCAGTCA"         # eg: Illumina TruSeq adapter 3
+      # "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT"         # eg: Illumina TruSeq adapter 5
+      compression: 6
+      cut_front_window_size: 4
+      cut_front_mean_quality: 20
+      cut_tail_window_size: 4
+      cut_tail_mean_quality: 20
+      cut_right_window_size: 4
+      cut_right_mean_quality: 20
+      length_required: 51
+      n_base_limit: 5
+
+  rmhost:
+    host_fasta: "/home/zhujie/databases/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
+    threads: 8
+    save_reads: True
+    save_bam: False
+    compression: 6
+    soap:
+      do: False
+      index_prefix: "/home/zhujie/databases/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
+      match_model: 4
+      align_seed: 30
+      report_repeat_hits: 1
+      max_mismatch_num: 7
+      identity: 0.9
+    bwa:
+      do: False
+      algorithms: "mem" # "mem2"
+      index_prefix: "/home/zhujie/databases/genomics/human/CHM13/chm13v2.0_plusY/bwa_index/chm13v2.0.fa"
+      # /ldfssz1/ST_META/share/User/zhujie/database/galaxy_indexes/hg38/hg38full/bwa_mem2_index/hg38full.fa
+      # /ldfssz1/ST_META/share/User/zhujie/database/mouse/GRCm39/bwa_mem2_index/GRCm39.fna
+      minimum_seed_length: 23
+    bowtie2: # recommand
+      do: True
+      index_prefix: "/home/zhujie/databases/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
+      presets: "--very-sensitive"
+    minimap2:
+      do: False
+      split_size: "4G"
+      preset: "sr"
+      index: "/home/zhujie/databases/genomics/human/CHM13/chm13v2.0_plusY/minimap_index/chm13v2.0.fa"
+    kraken2:
+      do: False
+      database: "/home/zhujie/databases/kraken/minikraken2_v2_8GB_201904_UPDATE"
+      host_taxid: 9606
+      # must include human reference genome
+      confidence: 0
+      min_base_quality: 0
+      min_hit_groups: 2
+    kneaddata:
+      do: False
+      do_trf: False
+      do_trimmomatic: False
+      trimmomatic_options: 'MINLEN:50 ILLUMINACLIP:/-PE.fa:2:40:15 SLIDINGWINDOW:4:20'
+      sequencer_source: "TruSeq3" # ["NexteraPE", "TruSeq2", "TruSeq3", "none"]
+      do_bmtagger: False
+      do_bowtie2: True
+      decontaminate_pairs: "strict" # ["strict", "lenient", "unpaired"]
+      bowtie2_options: "--very-sensitive --dovetail"
+      bowtie2_database: "/home/zhujie/databases/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
+ 
+  qcreport:
+    do: True
+    seqkit:
+      threads: 4
+
+  classify:
+    threads: 8
+    kraken2:
+      do: True
+      database: "/home/zhujie/databases/ecogenomics/Struo2/GTDB_release202/kraken2"
+      quick: False
+      memory_mapping: False
+      use_names: True
+      use_mpa_style: False
+      report_zero_counts: False
+      confidence: 0
+      min_base_quality: 0
+      min_hit_groups: 2
+      unclassified_out: False
+      classified_out: False
+      save_table: False
+
+  profiling:
+    threads: 8
+    index_taxonomy: "/path/to/mag_taxonomy"
+    bgi_soap: # for learning
+      do: False
+      index_prefix: "/path/to/mag_soap_index"
+      minimal_insert_size: 0
+      maximal_insert_size: 1000
+      report_repeat_hits: 1
+      match_model: 4
+      align_seed: 30
+      max_mismatch_num: 5
+      identity: 0.95
+    bowtie2: # for learning
+      do: False
+      index_prefix: "/path/to/mag_bowtie2_index"
+    metaphlan:
+      do_v2: False
+      do_v3: True
+      do_v3_one_way: False
+      bowtie2db: "~/databases/metaphlan"
+      index_v2: "v20_m200"
+      index_v3: "mpa_v30_CHOCOPhlAn_201901"
+      bowtie2_presets: "very-sensitive"
+      taxonomic_level: "a"
+      min_cu_len: 2000
+      ignore_markers: "/path/to/ignore_markers.txt"
+      avoid_disqm: True
+      analysis_type: "rel_ab_w_read_stats"
+      #  [
+      #    "rel_ab",
+      #    "rel_ab_w_read_stats",
+      #    "reads_map",
+      #    "clade_profiles",
+      #    "marker_ab_table",
+      #    "marker_counts",
+      #    "marker_pres_table",
+      #  ]
+      stat_q_v2: "0.1"
+      stat_q_v3: "0.2"
+      stat: "tavg_g"
+      unknown_estimation: True
+      add_viruses: True
+      read_min_len: 70
+      legacy_output: False
+      cami_format_output: False
+      no_map: True
+      biom: False
+    jgi: # for learning
+      oneway: False
+      do: false
+      fragment: 1200
+      memory_limit: "8G"
+      compression_level: 6
+      index_metadata: "/path/to/mag_metadata"
+      taxonomy: "/path/to/mag_taxonomy"
+      index_prefix: "/path/to/mag_bowtie2_index"
+    bracken:
+      do: True
+      reads_len: 100
+      level: ["G", "S"]
+    humann:
+      do_v2: False
+      do_v3: True
+      evalue: 1.0
+      prescreen_threshold: 0.01
+      identity_threshold: 50.0
+      nucleotide_identity_threshold: 0.0 # nucleotide: 0
+      translated_identity_threshold: 80.0 # uniref90: 80.0; uniref50: 50.0
+      nucleotide_subject_coverage_threshold: 50.0
+      translated_subject_coverage_threshold: 50.0
+      nucleotide_query_coverage_threshold: 90.0
+      translated_query_coverage_threshold: 90.0
+      translated-alignment: "diamond" # ["diamond", "usearch", "rapsearch"]
+      xipe: False
+      minpath: True
+      pick_frames: False
+      gap_fill: True
+      pathways: "metacyc" # ["metacyc", "unipathway"]
+      remove_temp_output: True
+      memory_use: "minimum"
+      normalize_method: "relab"
+      regroup_method: "sum"
+      map_database:
+        ["uniref90_go", "uniref90_ko", "uniref90_eggnog", "uniref90_pfam"]
+      #  "uniref90_level4ec",
+      #  "uniref90_infogo1000",
+      #  "uniref90_rxn",
+      update_config: False # humann save config to humann install dir
+      database_utility_mapping: "/path/to/humann/utility_mapping"
+      database_utility_mapping_v3: "~/databases/humann/utility_mapping"
+      database_protein: "/path/to/humann/uniref"
+      database_protein_v3: "~/databases/humann/uniref"
+      database_nucleotide: "/path/to/humann/chocophlan"
+      database_nucleotide_v3: "~/databases/humann/chocophlan"
+
+output:
+  simulate: "results/00.simulate"
+  raw: "results/00.raw"
+  trimming: "results/01.trimming"
+  rmhost: "results/02.rmhost"
+  qcreport: "results/03.qcreport"
+  classify: "results/04.classify"
+  profile: "results/05.profile"
+
+envs:
+  simulate: "envs/simulate.yaml"
+  qc: "envs/qc.yaml"
+  metaphlan2: "envs/biobakery2.yaml"
+  metaphlan3: "envs/biobakery3.yaml"
+  humann2: "envs/biobakery2.yaml"
+  humann3: "envs/biobakery3.yaml"
+  kraken2: "envs/kraken2.yaml"
+  bracken2: "envs/kraken2.yaml"
+  jgi: "envs/jgi.yaml"
+  soap: "envs/soap.yaml"
