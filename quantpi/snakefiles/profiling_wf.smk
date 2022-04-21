@@ -70,6 +70,7 @@ include: "../rules/rmhost.smk"
 include: "../rules/qcreport.smk"
 include: "../rules/profiling_dna.smk"
 include: "../rules/profiling_marker.smk"
+include: "../rules/profiling_custom.smk"
 
 
 rule all:

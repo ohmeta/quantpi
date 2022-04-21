@@ -65,7 +65,6 @@ class metaconfig:
         "logs/03.profiling_metaphlan2",
         "logs/03.profiling_metaphlan2_merge",
         "logs/03.profiling_metaphlan3",
-        "logs/03.profiling_metaphlan3_oneway_qc",
         "logs/03.profiling_metaphlan3_merge",
         "logs/03.profiling_jgi",
         "logs/03.profiling_jgi_merge",
