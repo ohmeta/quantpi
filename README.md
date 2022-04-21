@@ -1,4 +1,4 @@
-# Microbiome profiling pipeline based on the snakemake workflow system (WIP)
+# Microbiome profiling pipeline (WIP)
 
 
 ```
