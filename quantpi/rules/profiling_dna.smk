@@ -204,6 +204,12 @@ if config["params"]["profiling"]["kraken2"]["do"]:
             #rules.rmhost_all.input,
             rules.qcreport_all.input
 
+
+    localrules:
+        profiling_kraken2_krona_report,
+        profiling_kraken2_combine_kreport,
+        profiling_kraken2_combine_kreport_mpa
+
 else:
     rule profiling_short_reads_kraken2_all:
         input:

@@ -34,6 +34,9 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"] and \
                 echo "hello"
                 '''
 
+    localrules:
+        profiling_humann2_config
+
 
     rule profiling_humann2_build_chocophlan_pangenome_db:
         input:
@@ -419,6 +422,9 @@ if config["params"]["profiling"]["metaphlan"]["do_v3"] and \
                 '''
                 echo "hello"
                 '''
+
+    localrules:
+        profiling_humann3_config
 
 
     #rule profiling_humann3_build_chocophlan_pangenome_db:
