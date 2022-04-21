@@ -291,15 +291,3 @@ if config["params"]["profiling"]["kraken2"]["do"] and \
 else:
     rule profiling_bracken_all:
         input:
-
-
-rule profiling_all:
-    input:
-        rules.profiling_kraken2_all.input,
-        rules.profiling_bracken_all.input
-
-
-localrules:
-    profiling_kraken2_all,
-    profiling_bracken_all,
-    profiling_all

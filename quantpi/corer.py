@@ -35,6 +35,8 @@ WORKFLOWS_PROFILING = [
     "qcreport_all",
     "profiling_kraken2_all",
     "profiling_bracken_all",
+    "profiling_metaphlan2_all",
+    "profiling_metaphlan3_all",
     "profiling_all",
     "all",
 ]

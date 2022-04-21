@@ -69,6 +69,7 @@ include: "../rules/trimming.smk"
 include: "../rules/rmhost.smk"
 include: "../rules/qcreport.smk"
 include: "../rules/profiling_dna.smk"
+include: "../rules/profiling_marker.smk"
 
 
 rule all:
