@@ -40,6 +40,8 @@ WORKFLOWS_PROFILING = [
     "profiling_bgi_soap_all",
     "profiling_bowtie2_all",
     "profiling_jgi_all",
+    "profiling_humann2_all",
+    "profiling_humann3_all",
     "profiling_all",
     "all",
 ]
