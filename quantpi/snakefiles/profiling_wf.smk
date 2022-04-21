@@ -71,6 +71,7 @@ include: "../rules/qcreport.smk"
 include: "../rules/profiling_dna.smk"
 include: "../rules/profiling_marker.smk"
 include: "../rules/profiling_custom.smk"
+include: "../rules/profiling_function.smk"
 
 
 rule all:

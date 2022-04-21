@@ -14,23 +14,27 @@ params:
     do: True
     threads: 8
     save_reads: True
+
     fastqc:
       do: False
 
   trimming:
     save_reads: False
+
     oas1:
       do: False
       quality_system: 33
       min_length: 30
       seed_oa: 0.9
       fragment_oa: 0.8
+
     sickle:
       do: False
       quality_type: "sanger"
       sickle_pe: ""
       length_cutoff: 51
       quality_cutoff: 20
+
     fastp: # recommand
       do: True
       threads: 4
@@ -58,6 +62,7 @@ params:
     save_reads: True
     save_bam: False
     compression: 6
+
     soap:
       do: False
       index_prefix: "/home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
@@ -66,22 +71,24 @@ params:
       report_repeat_hits: 1
       max_mismatch_num: 7
       identity: 0.9
+
     bwa:
       do: False
       algorithms: "mem" # "mem2"
       index_prefix: "/home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/bwa_index/chm13v2.0.fa"
-      # /ldfssz1/ST_META/share/User/zhujie/database/galaxy_indexes/hg38/hg38full/bwa_mem2_index/hg38full.fa
-      # /ldfssz1/ST_META/share/User/zhujie/database/mouse/GRCm39/bwa_mem2_index/GRCm39.fna
       minimum_seed_length: 23
+
     bowtie2: # recommand
       do: True
       index_prefix: "/home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
       presets: "--very-sensitive"
+
     minimap2:
       do: False
       split_size: "4G"
       preset: "sr"
       index: "/home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/minimap_index/chm13v2.0.fa"
+
     kraken2:
       do: False
       database: "/home/jiezhu/databases/kraken/minikraken2_v2_8GB_201904_UPDATE"
@@ -90,6 +97,7 @@ params:
       confidence: 0
       min_base_quality: 0
       min_hit_groups: 2
+
     kneaddata:
       do: False
       do_trf: False
@@ -102,13 +110,17 @@ params:
       bowtie2_options: "--very-sensitive --dovetail"
       bowtie2_database: "/home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
  
+
   qcreport:
     do: True
     seqkit:
       threads: 4
 
+
   profiling:
     threads: 8
+
+    # DNA-to-DNA
     kraken2:
       do: True
       database: "/home/jiezhu/databases/ecogenomics/Struo2/GTDB_release202/kraken2"
@@ -124,20 +136,12 @@ params:
       classified_out: False
       save_table: False
 
-    index_taxonomy: "/path/to/mag_taxonomy"
-    bgi_soap: # for learning
-      do: False
-      index_prefix: "/path/to/mag_soap_index"
-      minimal_insert_size: 0
-      maximal_insert_size: 1000
-      report_repeat_hits: 1
-      match_model: 4
-      align_seed: 30
-      max_mismatch_num: 5
-      identity: 0.95
-    bowtie2: # for learning
-      do: False
-      index_prefix: "/path/to/mag_bowtie2_index"
+    bracken:
+      do: True
+      reads_len: 100
+      level: ["G", "S"]
+
+    # DNA-to-marker 
     metaphlan:
       do_v2: False
       do_v3: True
@@ -170,19 +174,8 @@ params:
       cami_format_output: False
       no_map: True
       biom: False
-    jgi: # for learning
-      oneway: False
-      do: false
-      fragment: 1200
-      memory_limit: "8G"
-      compression_level: 6
-      index_metadata: "/path/to/mag_metadata"
-      taxonomy: "/path/to/mag_taxonomy"
-      index_prefix: "/path/to/mag_bowtie2_index"
-    bracken:
-      do: True
-      reads_len: 100
-      level: ["G", "S"]
+
+    # Functional profiling
     humann:
       do_v2: False
       do_v3: True
@@ -218,6 +211,34 @@ params:
       database_nucleotide: "/path/to/humann/chocophlan"
       database_nucleotide_v3: "~/databases/humann/chocophlan"
 
+    # custom method
+    bgi_soap: # for learning and test
+      do: False
+      taxonomy: "/path/to/mag_taxonomy"
+      index_prefix: "/path/to/mag_soap_index"
+      minimal_insert_size: 0
+      maximal_insert_size: 1000
+      report_repeat_hits: 1
+      match_model: 4
+      align_seed: 30
+      max_mismatch_num: 5
+      identity: 0.95
+
+    bowtie2: # for learning and test
+      do: False
+      taxonomy: "/path/to/mag_taxonomy"
+      index_prefix: "/path/to/mag_bowtie2_index"
+
+    jgi: # for learning and test
+      do: false
+      metadata: "/path/to/mag_metadata"
+      taxonomy: "/path/to/mag_taxonomy"
+      index_prefix: "/path/to/mag_bowtie2_index"
+      fragment: 1200
+      memory_limit: "8G"
+      compression_level: 6
+ 
+
 output:
   simulate: "results/00.simulate"
   raw: "results/00.raw"
@@ -225,6 +246,7 @@ output:
   rmhost: "results/02.rmhost"
   qcreport: "results/03.qcreport"
   profiling: "results/04.profiling"
+
 
 envs:
   simulate: "envs/simulate.yaml"

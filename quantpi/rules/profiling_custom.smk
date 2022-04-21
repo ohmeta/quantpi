@@ -425,25 +425,3 @@ if config["params"]["profiling"]["jgi"]["do"]:
 else:
     rule profiling_jgi_all:
         input:
-
-
-rule profiling_all:
-    input:
-        rules.profiling_kraken2_all.input,
-        rules.profiling_bracken_all.input,
-        rules.profiling_metaphlan2_all.input,
-        rules.profiling_metaphlan3_all.input,
-        rules.profiling_bgi_soap_all.input,
-        rules.profiling_bowtie2_all.input,
-        rules.profiling_jgi_all.input
-
-
-localrules:
-    profiling_kraken2_all,
-    profiling_bracken_all,
-    profiling_metaphlan2_all,
-    profiling_metaphlan3_all,
-    profiling_bgi_soap_all,
-    profiling_bowtie2_all,
-    profiling_jgi_all,
-    profiling_all
