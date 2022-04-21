@@ -148,115 +148,115 @@ rmhost_report_merge:
 
 profiling_kracken2:
   mem: "10G"
-  output: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_bracken:
   mem: "1G"
-  output: "logs/11.{rule}/{rule}.{wildcards.sample}.{wildcards.level}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{wildcards.sample}.{wildcards.level}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.level}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.level}.{jobid}.e"
 
 profiling_bracken_merge:
   mem: "512M"
-  output: "logs/11.{rule}/{rule}.{wildcards.level}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{wildcards.level}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{wildcards.level}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.level}.{jobid}.e"
 
 profiling_bgi_soap:
   mem: "3G"
-  output: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_bgi_soap_merge:
   mem: "1G"
-  output: "logs/11.{rule}/{rule}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
 
 profiling_bowtie2:
   mem: "3G"
-  output: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_bowtie2_merge:
   mem: "1G"
-  output: "logs/11.{rule}/{rule}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
 
 profiling_jgi:
   mem: "8G"
-  output: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_jgi_merge:
   mem: "1G"
-  output: "logs/11.{rule}/{rule}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
 
 profiling_metaphlan2:
   mem: "3G"
-  output: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_metaphlan2_merge:
   mem: "128M"
-  output: "logs/11.{rule}/{rule}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
 
 profiling_metaphlan3:
   mem: "3G"
-  output: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_metaphlan3_merge:
   mem: "128M"
-  output: "logs/11.{rule}/{rule}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
 
 profiling_humann2_build_chocophlan_pangenome_db:
   mem: "6G"
-  output: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_humann2:
   mem: "10G"
-  output: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_humann2_postprocess:
   mem: "512M"
-  output: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_humann2_join:
   mem: "512M"
-  output: "logs/11.{rule}/{rule}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
 
 profiling_humann2_split_stratified:
   mem: "512M"
-  output: "logs/11.{rule}/{rule}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
 
 profiling_humann3_build_chocophlan_pangenome_db:
   mem: "6G"
-  output: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_humann3:
   mem: "40G"
-  output: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_humann3_postprocess:
   mem: "512M"
-  output: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_humann3_join:
   mem: "512M"
-  output: "logs/11.{rule}/{rule}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
 
 profiling_humann3_split_stratified:
   mem: "512M"
-  output: "logs/11.{rule}/{rule}.{jobid}.o"
-  error: "logs/11.{rule}/{rule}.{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
