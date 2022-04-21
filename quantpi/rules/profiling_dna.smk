@@ -211,7 +211,7 @@ if config["params"]["profiling"]["kraken2"]["do"]:
         profiling_kraken2_combine_kreport_mpa
 
 else:
-    rule profiling_short_reads_kraken2_all:
+    rule profiling_kraken2_all:
         input:
 
 

@@ -146,7 +146,7 @@ rmhost_report_merge:
   output: "logs/02.{rule}/{rule}.{jobid}.o"
   error: "logs/02.{rule}/{rule}.{jobid}.e"
 
-profiling_kracken2:
+profiling_kraken2:
   mem: "10G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
