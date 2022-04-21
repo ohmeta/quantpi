@@ -14,13 +14,13 @@ if config["params"]["profiling"]["kraken2"]["do"]:
         output:
             report = protected(os.path.join(
                 config["output"]["profiling"],
-                "profile/kraken2/{sample}.kraken2.out/{sample}.kraken2.report")),
+                "profile/kraken2/{sample}/{sample}.kraken2.report")),
             report_mpa_reads_count = protected(os.path.join(
                 config["output"]["profiling"],
-                "profile/kraken2/{sample}.kraken2.out/{sample}.kraken2.report.mpa.reads_count")),
+                "profile/kraken2/{sample}/{sample}.kraken2.report.mpa.reads_count")),
             report_mpa_percentages = protected(os.path.join(
                 config["output"]["profiling"],
-                "profile/kraken2/{sample}.kraken2.out/{sample}.kraken2.report.mpa.percentages"))
+                "profile/kraken2/{sample}/{sample}.kraken2.report.mpa.percentages"))
         log:
             os.path.join(config["output"]["profiling"],
                          "logs/kraken2/{sample}.kraken2.log")
@@ -52,21 +52,21 @@ if config["params"]["profiling"]["kraken2"]["do"]:
             unclassified_out = "--unclassified-out %s" % \
                 os.path.join(
                     config["output"]["profiling"],
-                    "profile/kraken2/{sample}.kraken2.out/{sample}.kraken2.unclassified%s.fq" \
+                    "profile/kraken2/{sample}/{sample}.kraken2.unclassified%s.fq" \
                     % "#" if IS_PE else "") \
                     if config["params"]["profiling"]["kraken2"]["unclassified_out"] \
                        else "",
             classified_out = "--classified-out %s" % \
                 os.path.join(
                     config["output"]["profiling"],
-                    "profile/kraken2/{sample}.kraken2.out/{sample}.kraken2.classified%s.fq" \
+                    "profile/kraken2/{sample}/{sample}.kraken2.classified%s.fq" \
                     % "#" if IS_PE else "") \
                     if config["params"]["profiling"]["kraken2"]["classified_out"] \
                        else "",
             table = "--output %s" % \
                 os.path.join(
                     config["output"]["profiling"],
-                    "profile/kraken2/{sample}.kraken2.out/{sample}.kraken2.table") \
+                    "profile/kraken2/{sample}/{sample}.kraken2.table") \
                 if config["params"]["profiling"]["kraken2"]["save_table"] \
                     else "",
         threads:
@@ -120,7 +120,7 @@ if config["params"]["profiling"]["kraken2"]["do"]:
             expand(
                 os.path.join(
                     config["output"]["profiling"],
-                    "profile/kraken2/{sample}.kraken2.out/{sample}.kraken2.report"),
+                    "profile/kraken2/{sample}/{sample}.kraken2.report"),
                 sample=SAMPLES_ID_LIST)
         output:
             os.path.join(
@@ -137,7 +137,7 @@ if config["params"]["profiling"]["kraken2"]["do"]:
             expand(
                 os.path.join(
                     config["output"]["profiling"],
-                    "profile/kraken2/{sample}.kraken2.out/{sample}.kraken2.report"),
+                    "profile/kraken2/{sample}/{sample}.kraken2.report"),
                 sample=SAMPLES_ID_LIST)
         output:
             os.path.join(
@@ -159,11 +159,11 @@ if config["params"]["profiling"]["kraken2"]["do"]:
         input:
             report_mpa_reads_count = expand(os.path.join(
                 config["output"]["profiling"],
-                "profile/kraken2/{sample}.kraken2.out/{sample}.kraken2.report.mpa.reads_count"),
+                "profile/kraken2/{sample}/{sample}.kraken2.report.mpa.reads_count"),
                 sample=SAMPLES_ID_LIST),
             report_mpa_percentages = expand(os.path.join(
                 config["output"]["profiling"],
-                "profile/kraken2/{sample}.kraken2.out/{sample}.kraken2.report.mpa.percentages"),
+                "profile/kraken2/{sample}/{sample}.kraken2.report.mpa.percentages"),
                 sample=SAMPLES_ID_LIST)
         output:
             report_mpa_reads_count = os.path.join(
@@ -189,7 +189,7 @@ if config["params"]["profiling"]["kraken2"]["do"]:
             expand([
                 os.path.join(
                     config["output"]["profiling"],
-                    "profile/kraken2/{sample}.kraken2.out/{sample}.kraken2.report{suffix}"),
+                    "profile/kraken2/{sample}/{sample}.kraken2.report{suffix}"),
                 os.path.join(
                     config["output"]["profiling"],
                     "report/kraken2/kraken2_krona.all.html"),
@@ -215,14 +215,14 @@ if config["params"]["profiling"]["kraken2"]["do"] and \
         input:
             os.path.join(
                 config["output"]["profiling"],
-                "profile/kraken2/{sample}.kraken2.out/{sample}.kraken2.report")
+                "profile/kraken2/{sample}/{sample}.kraken2.report")
         output:
             profile = protected(os.path.join(
                 config["output"]["profiling"],
-                "profile/bracken/{sample}.bracken.out/{sample}.bracken.{level}.profile")),
+                "profile/bracken/{sample}/{sample}.bracken.{level}.profile")),
             report = protected(os.path.join(
                 config["output"]["profiling"],
-                "profile/bracken/{sample}.bracken.out/{sample}.bracken.{level}.report"))
+                "profile/bracken/{sample}/{sample}.bracken.{level}.report"))
         log:
             os.path.join(config["output"]["profiling"],
                          "logs/bracken/{sample}.bracken.{level}.log")
@@ -256,7 +256,7 @@ if config["params"]["profiling"]["kraken2"]["do"] and \
             expand(
                 os.path.join(
                     config["output"]["profiling"],
-                    "profile/bracken/{sample}.bracken.out/{sample}.bracken.{{level}}.profile"),
+                    "profile/bracken/{sample}/{sample}.bracken.{{level}}.profile"),
                  sample=SAMPLES_ID_LIST)
         output:
             os.path.join(
