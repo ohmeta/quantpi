@@ -16,6 +16,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"]:
         params:
             sample_id = "{sample}",
             wrapper_dir = WRAPPER_DIR,
+            outdir = os.path.join(config["output"]["profiling"], "profile/metaphlan2/{sample}"),
             input_str = lambda wildcards: ",".join(profiling_input_with_short_reads(wildcards)),
             read_min_len = config["params"]["profiling"]["metaphlan"]["read_min_len"],
             bowtie2db = config["params"]["profiling"]["metaphlan"]["bowtie2db"],
@@ -38,6 +39,8 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"]:
             config["params"]["profiling"]["threads"]
         shell:
             '''
+            mkdir -p {params.outdir}
+
             python {params.wrapper_dir}/metaphlan2_wrapper.py \
             --input {input.reads} \
             --analysis_type {params.analysis_type} \
@@ -121,6 +124,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v3"]:
             config["envs"]["metaphlan3"]
         params:
             sample_id = "{sample}",
+            outdir = os.path.join(config["output"]["profiling"], "profile/metaphlan3/{sample}"),
             read_min_len = config["params"]["profiling"]["metaphlan"]["read_min_len"],
             bowtie2db = config["params"]["profiling"]["metaphlan"]["bowtie2db"],
             index = config["params"]["profiling"]["metaphlan"]["index_v3"],
@@ -163,6 +167,8 @@ if config["params"]["profiling"]["metaphlan"]["do_v3"]:
             config["params"]["profiling"]["threads"]
         shell:
             '''
+            mkdir -p {params.outdir}
+
             reads=$(python -c "import sys; print(','.join(sys.argv[1:]))" {input.reads})
 
             metaphlan \
