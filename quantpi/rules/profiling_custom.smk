@@ -255,9 +255,9 @@ if config["params"]["profiling"]["jgi"]["do"]:
                 suffix=["1.bt2l", "2.bt2l", "3.bt2l", "4.bt2l",
                         "rev.1.bt2l", "rev.2.bt2l"])
         output:
-            protected(os.path.join(
+            os.path.join(
                 config["output"]["profiling"],
-                "profile/jgi/{sample}/{sample}.jgi.coverage.gz"))
+                "profile/jgi/{sample}/{sample}.jgi.coverage.gz")
         conda:
             config["envs"]["jgi"]
         log:

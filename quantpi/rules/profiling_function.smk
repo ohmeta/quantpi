@@ -84,15 +84,15 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"] and \
                 "database/humann2/{{sample}}/{{sample}}_bowtie2_index.{suffix}"),
                            suffix=["1.bt2", "2.bt2", "3.bt2", "4.bt2", "rev.1.bt2", "rev.2.bt2"])
         output:
-            genefamilies = protected(os.path.join(
+            genefamilies = os.path.join(
                 config["output"]["profiling"],
-                "profile/humann2/{sample}/{sample}_genefamilies.tsv")),
-            pathabundance = protected(os.path.join(
+                "profile/humann2/{sample}/{sample}_genefamilies.tsv"),
+            pathabundance = os.path.join(
                 config["output"]["profiling"],
-                "profile/humann2/{sample}/{sample}_pathabundance.tsv")),
-            pathcoverage = protected(os.path.join(
+                "profile/humann2/{sample}/{sample}_pathabundance.tsv"),
+            pathcoverage = os.path.join(
                 config["output"]["profiling"],
-                "profile/humann2/{sample}/{sample}_pathcoverage.tsv"))
+                "profile/humann2/{sample}/{sample}_pathcoverage.tsv")
         log:
             os.path.join(config["output"]["profiling"], "logs/{sample}.humann2.log")
         benchmark:
@@ -464,15 +464,15 @@ if config["params"]["profiling"]["metaphlan"]["do_v3"] and \
                 config["output"]["profiling"],
                 "profile/metaphlan3/{sample}/{sample}.metaphlan3.abundance.profile.tsv")
         output:
-            genefamilies = protected(os.path.join(
+            genefamilies = os.path.join(
                 config["output"]["profiling"],
-                "profile/humann3/{sample}/{sample}_genefamilies.tsv")),
-            pathabundance = protected(os.path.join(
+                "profile/humann3/{sample}/{sample}_genefamilies.tsv"),
+            pathabundance = os.path.join(
                 config["output"]["profiling"],
-                "profile/humann3/{sample}/{sample}_pathabundance.tsv")),
-            pathcoverage = protected(os.path.join(
+                "profile/humann3/{sample}/{sample}_pathabundance.tsv"),
+            pathcoverage = os.path.join(
                 config["output"]["profiling"],
-                "profile/humann3/{sample}/{sample}_pathcoverage.tsv"))
+                "profile/humann3/{sample}/{sample}_pathcoverage.tsv")
         log:
             os.path.join(config["output"]["profiling"], "logs/humann3/{sample}.humann3.log")
         benchmark:

@@ -833,6 +833,10 @@ and (not config["params"]["rmhost"]["kneaddata"]["do"]):
             input_list = [str(i) for i in input]
             quantpi.flagstats_summary(input_list, 2, output=output.flagstat)
 
+    
+    localrules:
+        rmhost_alignment_report
+
 
 if config["params"]["rmhost"]["bwa"]["do"]:
     rule rmhost_bwa_all:

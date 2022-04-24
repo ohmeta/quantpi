@@ -3,9 +3,9 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"]:
         input:
             reads = profiling_input_with_short_reads
         output:
-           profile = protected(os.path.join(
+           profile = os.path.join(
                config["output"]["profiling"],
-               "profile/metaphlan2/{sample}/{sample}.metaphlan2.abundance.profile.tsv"))
+               "profile/metaphlan2/{sample}/{sample}.metaphlan2.abundance.profile.tsv")
         conda:
             config["envs"]["metaphlan2"]
         log:
@@ -112,9 +112,9 @@ if config["params"]["profiling"]["metaphlan"]["do_v3"]:
             #    mpa_name = config["params"]["profiling"]["metaphlan"]["index_v3"],
             #    suffix=["1.bt2", "2.bt2", "3.bt2", "4.bt2", "rev.1.bt2", "rev.2.bt2", "pkl"])
         output:
-            protected(os.path.join(
+            os.path.join(
                 config["output"]["profiling"],
-                    "profile/metaphlan3/{sample}/{sample}.metaphlan3.abundance.profile.tsv"))
+                    "profile/metaphlan3/{sample}/{sample}.metaphlan3.abundance.profile.tsv")
         log:
             os.path.join(config["output"]["profiling"], "logs/metaphlan3/{sample}.metaphlan3.log")
         benchmark:

@@ -12,15 +12,15 @@ if config["params"]["profiling"]["kraken2"]["do"]:
         input:
             reads = profiling_input_with_short_reads
         output:
-            report = protected(os.path.join(
+            report = os.path.join(
                 config["output"]["profiling"],
-                "profile/kraken2/{sample}/{sample}.kraken2.report")),
-            report_mpa_reads_count = protected(os.path.join(
+                "profile/kraken2/{sample}/{sample}.kraken2.report"),
+            report_mpa_reads_count = os.path.join(
                 config["output"]["profiling"],
-                "profile/kraken2/{sample}/{sample}.kraken2.report.mpa.reads_count")),
-            report_mpa_percentages = protected(os.path.join(
+                "profile/kraken2/{sample}/{sample}.kraken2.report.mpa.reads_count"),
+            report_mpa_percentages = os.path.join(
                 config["output"]["profiling"],
-                "profile/kraken2/{sample}/{sample}.kraken2.report.mpa.percentages"))
+                "profile/kraken2/{sample}/{sample}.kraken2.report.mpa.percentages")
         log:
             os.path.join(config["output"]["profiling"],
                          "logs/kraken2/{sample}.kraken2.log")
@@ -223,12 +223,12 @@ if config["params"]["profiling"]["kraken2"]["do"] and \
                 config["output"]["profiling"],
                 "profile/kraken2/{sample}/{sample}.kraken2.report")
         output:
-            profile = protected(os.path.join(
+            profile = os.path.join(
                 config["output"]["profiling"],
-                "profile/bracken/{sample}/{sample}.bracken.{level}.profile")),
-            report = protected(os.path.join(
+                "profile/bracken/{sample}/{sample}.bracken.{level}.profile"),
+            report = os.path.join(
                 config["output"]["profiling"],
-                "profile/bracken/{sample}/{sample}.bracken.{level}.report"))
+                "profile/bracken/{sample}/{sample}.bracken.{level}.report")
         log:
             os.path.join(config["output"]["profiling"],
                          "logs/bracken/{sample}.bracken.{level}.log")
