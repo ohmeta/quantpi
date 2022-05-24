@@ -146,7 +146,7 @@ params:
       do_v2: False
       do_v3: True
       do_v3_one_way: False
-      bowtie2db: "~/databases/metaphlan"
+      bowtie2db: "/home/jiezhu/databases/ecogenomics/MetaPhlAn"
       index_v2: "v20_m200"
       index_v3: "mpa_v30_CHOCOPhlAn_201901"
       bowtie2_presets: "very-sensitive"
@@ -204,12 +204,12 @@ params:
       #  "uniref90_infogo1000",
       #  "uniref90_rxn",
       update_config: False # humann save config to humann install dir
-      database_utility_mapping: "/path/to/humann/utility_mapping"
-      database_utility_mapping_v3: "~/databases/humann/utility_mapping"
-      database_protein: "/path/to/humann/uniref"
-      database_protein_v3: "~/databases/humann/uniref"
-      database_nucleotide: "/path/to/humann/chocophlan"
-      database_nucleotide_v3: "~/databases/humann/chocophlan"
+      database_utility_mapping: "/home/jiezhu/databases/funcgenomics/humann2/utility_mapping"
+      database_utility_mapping_v3: "/home/jiezhu/databases/funcgenomics/humann/utility_mapping"
+      database_protein: "/home/jiezhu/databases/funcgenomics/humann2/uniref"
+      database_protein_v3: "/home/jiezhu/databases/funcgenomics/humann/uniref"
+      database_nucleotide: "/home/jiezhu/databases/funcgenomics/humann2/chocophlan"
+      database_nucleotide_v3: "/home/jiezhu/databases/funcgenomics/humann/chocophlan"
 
     # custom method
     bgi_soap: # for learning and test
