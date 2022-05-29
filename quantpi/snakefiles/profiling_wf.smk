@@ -63,12 +63,26 @@ READS_FORMAT = "sra" \
        else "fastq"
 
 
+KMCP_DBS = []
+KMCP_TAXIDMAP = []
+if config["params"]["profiling"]["kmcp"]["do"]["bacteriome"]:
+    KMCP_DBS.append("bacteriome")
+    KMCP_TAXIDMAP.append(config["params"]["profiling"]["kmcp"]["database"]["bacteriome"])
+if config["params"]["profiling"]["kmcp"]["do"]["mycobiome"]:
+    KMCP_DBS.append("mycobiome")
+    KMCP_TAXIDMAP.append(config["params"]["profiling"]["kmcp"]["database"]["mycobiome"])
+if config["params"]["profiling"]["kmcp"]["do"]["virome"]:
+    KMCP_DBS.append("virome")
+    KMCP_TAXIDMAP.append(config["params"]["profiling"]["kmcp"]["database"]["virome"])
+
+
 include: "../rules/simulate.smk"
 include: "../rules/raw.smk"
 include: "../rules/trimming.smk"
 include: "../rules/rmhost.smk"
 include: "../rules/qcreport.smk"
 include: "../rules/profiling_dna.smk"
+include: "../rules/profiling_kmer.smk"
 include: "../rules/profiling_marker.smk"
 include: "../rules/profiling_custom.smk"
 include: "../rules/profiling_function.smk"

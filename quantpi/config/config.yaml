@@ -141,6 +141,33 @@ params:
       reads_len: 100
       level: ["G", "S"]
 
+    # DNA-to-DNA
+    kmcp:
+      do:
+        bacteriome: True
+        mycobiome: True
+        virome: True
+      database:
+        bacteriome: /home/zhujie/databases/ecogenomics/KMCP/bacteriome/GTDB_r202/gtdb.kmcp 
+        mycobiome: /home/zhujie/databases/ecogenomics/KMCP/mycobiome/RefSeq_r208/refseq-fungi.kmcp
+        virome: /home/zhujie/databases/ecogenomics/KMCP/virome/GenBank_246/genbank-viral.kmcp
+        ncbi_taxdump: /home/zhujie/.taxonkit
+      search:
+        reads_mode: "Single-end" # "Paired-end" # Recommended Single-end
+        min_query_len: 30
+        min_query_cov: 0.55
+        external_opts: ""
+      profile:
+        min_query_cov: 0.55
+        min_chunks_reads: 50
+        min_chunks_fraction: 0.8
+        max_chunks_depth_stdev: 2
+        min_uniq_reads: 20
+        min_hic_ureads: 5
+        min_hic_ureads_qcov: 0.75
+        min_hic_ureads_prop: 0.1
+        external_opts: ""
+
     # DNA-to-marker 
     metaphlan:
       do_v2: False
@@ -253,6 +280,7 @@ envs:
   simulate: "envs/simulate.yaml"
   soap: "envs/soap.yaml"
   kraken2: "envs/kraken2.yaml"
+  kmcp: "envs/kmcp.yaml"
   metaphlan2: "envs/biobakery2.yaml"
   metaphlan3: "envs/biobakery3.yaml"
   humann2: "envs/biobakery2.yaml"

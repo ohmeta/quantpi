@@ -161,6 +161,21 @@ profiling_bracken_merge:
   output: "logs/04.{rule}/{rule}.{wildcards.level}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.level}.{jobid}.e"
 
+profiling_kmcp_search:
+  mem: "1G"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.kmcp_db}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.kmcp_db}.{jobid}.e"
+
+profiling_kmcp_search_merge:
+  mem: "1G"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+
+profiling_kmcp_profile:
+  mem: "1G"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.profiling_mode}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.profiling_mode}.{jobid}.e"
+
 profiling_bgi_soap:
   mem: "3G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
