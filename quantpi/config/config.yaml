@@ -158,14 +158,6 @@ params:
         min_query_cov: 0.55
         external_opts: ""
       profile:
-        min_query_cov: 0.55
-        min_chunks_reads: 50
-        min_chunks_fraction: 0.8
-        max_chunks_depth_stdev: 2
-        min_uniq_reads: 20
-        min_hic_ureads: 5
-        min_hic_ureads_qcov: 0.75
-        min_hic_ureads_prop: 0.1
         metaphlan_report_version: 3
         external_opts: ""
 

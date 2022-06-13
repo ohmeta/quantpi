@@ -130,14 +130,6 @@ if KMCP_DB_NUMBER > 0:
             binning_result = os.path.join(config["output"]["profiling"],
                 "profile/kmcp/{sample}/{sample}.kmcp.{profiling_mode}"),
             profiling_mode = lambda wildcards: KMCP_PROFILING_MODE[wildcards.profiling_mode],
-            min_query_cov = config["params"]["profiling"]["kmcp"]["profile"]["min_query_cov"],
-            min_chunks_reads = config["params"]["profiling"]["kmcp"]["profile"]["min_chunks_reads"],
-            min_chunks_fraction = config["params"]["profiling"]["kmcp"]["profile"]["min_chunks_fraction"],
-            max_chunks_depth_stdev = config["params"]["profiling"]["kmcp"]["profile"]["max_chunks_depth_stdev"],
-            min_uniq_reads = config["params"]["profiling"]["kmcp"]["profile"]["min_uniq_reads"],
-            min_hic_ureads = config["params"]["profiling"]["kmcp"]["profile"]["min_hic_ureads"],
-            min_hic_ureads_qcov = config["params"]["profiling"]["kmcp"]["profile"]["min_hic_ureads_qcov"],
-            min_hic_ureads_prop = config["params"]["profiling"]["kmcp"]["profile"]["min_hic_ureads_prop"],
             metaphlan_report_version = config["params"]["profiling"]["kmcp"]["profile"]["metaphlan_report_version"],
             external_opts = config["params"]["profiling"]["kmcp"]["profile"]["external_opts"]
         threads:
@@ -152,14 +144,6 @@ if KMCP_DB_NUMBER > 0:
             --taxdump {input.taxdump} \
             --level species \
             --mode {params.profiling_mode} \
-            --min-query-cov {params.min_query_cov} \
-            --min-chunks-reads {params.min_chunks_reads} \
-            --min-chunks-fraction {params.min_chunks_fraction} \
-            --max-chunks-depth-stdev {params.max_chunks_depth_stdev} \
-            --min-uniq-reads {params.min_uniq_reads} \
-            --min-hic-ureads {params.min_hic_ureads} \
-            --min-hic-ureads-qcov {params.min_hic_ureads_qcov} \
-            --min-hic-ureads-prop {params.min_hic_ureads_prop} \
             --out-prefix {output.default_profile} \
             --metaphlan-report {output.metaphlan_profile} \
             --metaphlan-report-version {params.metaphlan_report_version} \
