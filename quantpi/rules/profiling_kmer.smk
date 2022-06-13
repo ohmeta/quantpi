@@ -116,7 +116,7 @@ if KMCP_DB_NUMBER > 0:
             cami_profile = os.path.join(config["output"]["profiling"],
                 "profile/kmcp/{sample}/{sample}.kmcp.CAMI_format.{profiling_mode}.profile"),
             binning_result = os.path.join(config["output"]["profiling"],
-                "profile/kmcp/{sample}/{sample}.kmcp.binning.{profiling_mode}.gz")
+                "profile/kmcp/{sample}/{sample}.kmcp.{profiling_mode}.binning.gz")
         conda:
             config["envs"]["kmcp"]
         log:
@@ -127,6 +127,8 @@ if KMCP_DB_NUMBER > 0:
                 "benchmark/kmcp/profile/{sample}.kmcp_profile_{profiling_mode}.benchmark.txt")
         params:
             sample_id = "{sample}",
+            binning_result = os.path.join(config["output"]["profiling"],
+                "profile/kmcp/{sample}/{sample}.kmcp.{profiling_mode}"),
             profiling_mode = lambda wildcards: KMCP_PROFILING_MODE[wildcards.profiling_mode],
             min_query_cov = config["params"]["profiling"]["kmcp"]["profile"]["min_query_cov"],
             min_chunks_reads = config["params"]["profiling"]["kmcp"]["profile"]["min_chunks_reads"],
@@ -163,7 +165,7 @@ if KMCP_DB_NUMBER > 0:
             --metaphlan-report-version {params.metaphlan_report_version} \
             --cami-report {output.cami_profile} \
             --sample-id {params.sample_id} \
-            --binning-result {output.binning_result} \
+            --binning-result {params.binning_result} \
             --log {log} \
             {params.external_opts} \
             {input.search}
@@ -176,7 +178,7 @@ if KMCP_DB_NUMBER > 0:
                 os.path.join(config["output"]["profiling"],
                     "profile/kmcp/{sample}/{sample}.kmcp.{profile_format}.{profiling_mode}.profile"),
                 os.path.join(config["output"]["profiling"],
-                    "profile/kmcp/{sample}/{sample}.kmcp.binning.{profiling_mode}.gz")],
+                    "profile/kmcp/{sample}/{sample}.kmcp.{profiling_mode}.binning.gz")],
                 sample=SAMPLES_ID_LIST,
                 profile_format=["default_format", "metaphlan_format", "CAMI_format"],
                 profiling_mode=list(KMCP_PROFILING_MODE.keys()))
