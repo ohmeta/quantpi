@@ -1,11 +1,13 @@
-if len(KMCP_DBS) > 0:
+KMCP_DB_NUMBER = len(KMCP_DBS)
+
+if KMCP_DB_NUMBER > 0:
     rule profiling_kmcp_search:
         input:
             reads = profiling_input_with_short_reads,
             db_dir = lambda wildcards: config["params"]["profiling"]["kmcp"]["database"][wildcards.kmcp_db]
         output:
-            os.path.join(config["output"]["profiling"],
-                "search/kmcp/{sample}/{sample}.kmcp_search@{kmcp_db}.tsv.gz")
+            temp(os.path.join(config["output"]["profiling"],
+                "search/kmcp/{sample}/{sample}.kmcp_search@{kmcp_db}.tsv.gz"))
         conda:
             config["envs"]["kmcp"]
         log:
@@ -59,8 +61,8 @@ if len(KMCP_DBS) > 0:
                 "search/kmcp/{{sample}}/{{sample}}.kmcp_search@{kmcp_db}.tsv.gz"),
                 kmcp_db=KMCP_DBS)
         output:
-            os.path.join(config["output"]["profiling"],
-                "search/kmcp/{sample}/{sample}.kmcp_search@all.tsv.gz")
+            temp(os.path.join(config["output"]["profiling"],
+                "search/kmcp/{sample}/{sample}.kmcp_search@all.tsv.gz"))
         conda:
             config["envs"]["kmcp"]
         log:
@@ -69,12 +71,21 @@ if len(KMCP_DBS) > 0:
         benchmark:
             os.path.join(config["output"]["profiling"],
                 "benchmark/kmcp/search_merge/{sample}.kmcp_search_merge.benchmark.txt")
+        params:
+            kmcp_db_number = KMCP_DB_NUMBER
         shell:
             '''
-            kmcp merge \
-            {input} \
-            --out-file {output} \
-            --log {log}
+            rm -rf {output}
+
+            if [ {params.kmcp_db_number} == 1 ]
+            then
+                ln -s {input[0]} {output}
+            else
+                kmcp merge \
+                {input} \
+                --out-file {output} \
+                --log {log}
+            fi
             '''
 
 
@@ -92,15 +103,15 @@ if len(KMCP_DBS) > 0:
         input:
             search = os.path.join(config["output"]["profiling"],
                 "search/kmcp/{sample}/{sample}.kmcp_search@all.tsv.gz"),
-            taxid = KMCP_TAXIDMAP,
+            taxidmap= KMCP_TAXIDMAP,
             taxdump = config["params"]["profiling"]["kmcp"]["database"]["ncbi_taxdump"]
         output:
             default_profile = os.path.join(config["output"]["profiling"],
-                "profile/kmcp/{sample}/{sample}.kmcp.default_format.profile.{profiling_mode}.tsv.gz"),
+                "profile/kmcp/{sample}/{sample}.kmcp.default_format.{profiling_mode}.profile"),
             metaphlan_profile = os.path.join(config["output"]["profiling"],
-                "profile/kmcp/{sample}/{sample}.kmcp.metaphlan_format.profile.{profiling_mode}.tsv.gz"),
+                "profile/kmcp/{sample}/{sample}.kmcp.metaphlan_format.{profiling_mode}.profile"),
             cami_profile = os.path.join(config["output"]["profiling"],
-                "profile/kmcp/{sample}/{sample}.kmcp.CAMI_format.profile.{profiling_mode}.tsv.gz"),
+                "profile/kmcp/{sample}/{sample}.kmcp.CAMI_format.{profiling_mode}.profile"),
             binning_result = os.path.join(config["output"]["profiling"],
                 "profile/kmcp/{sample}/{sample}.kmcp.binning.{profiling_mode}.gz")
         conda:
@@ -112,6 +123,7 @@ if len(KMCP_DBS) > 0:
             os.path.join(config["output"]["profiling"],
                 "benchmark/kmcp/profile/{sample}.kmcp_profile_{profiling_mode}.benchmark.txt")
         params:
+            sample_id = "{sample}",
             profiling_mode = lambda wildcards: KMCP_PROFILING_MODE[wildcards.profiling_mode],
             min_query_cov = config["params"]["profiling"]["kmcp"]["profile"]["min_query_cov"],
             min_chunks_reads = config["params"]["profiling"]["kmcp"]["profile"]["min_chunks_reads"],
@@ -121,12 +133,15 @@ if len(KMCP_DBS) > 0:
             min_hic_ureads = config["params"]["profiling"]["kmcp"]["profile"]["min_hic_ureads"],
             min_hic_ureads_qcov = config["params"]["profiling"]["kmcp"]["profile"]["min_hic_ureads_qcov"],
             min_hic_ureads_prop = config["params"]["profiling"]["kmcp"]["profile"]["min_hic_ureads_prop"],
+            metaphlan_report_version = config["params"]["profiling"]["kmcp"]["profile"]["metaphlan_report_version"],
             external_opts = config["params"]["profiling"]["kmcp"]["profile"]["external_opts"]
         shell:
             '''
+            taxidmap=$(python -c "import sys; print(','.join(sys.argv[1:]))" {input.taxidmap})
+
             kmcp profile \
             {input.search} \
-            --taxid-map {input.taxid} \
+            --taxid-map $taxidmap \
             --taxdump {input.taxdump} \
             --level species \
             --mode {params.profiling_mode} \
@@ -141,7 +156,9 @@ if len(KMCP_DBS) > 0:
             {params.external_opts} \
             --out-prefix {output.default_profile} \
             --metaphlan-report {output.metaphlan_profile} \
+            --metaphlan-report-version {params.metaphlan_report_version} \
             --cami-report {output.cami_profile} \
+            --sample-id {params.sample_id} \
             --binning-result {output.binning_result} \
             --log {log}
             '''
@@ -151,7 +168,7 @@ if len(KMCP_DBS) > 0:
         input:
             expand([
                 os.path.join(config["output"]["profiling"],
-                    "profile/kmcp/{sample}/{sample}.kmcp.{profile_format}.profile.{profiling_mode}.tsv.gz"),
+                    "profile/kmcp/{sample}/{sample}.kmcp.{profile_format}.{profiling_mode}.profile"),
                 os.path.join(config["output"]["profiling"],
                     "profile/kmcp/{sample}/{sample}.kmcp.binning.{profiling_mode}.gz")],
                 sample=SAMPLES_ID_LIST,

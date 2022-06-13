@@ -166,6 +166,7 @@ params:
         min_hic_ureads: 5
         min_hic_ureads_qcov: 0.75
         min_hic_ureads_prop: 0.1
+        metaphlan_report_version: 3
         external_opts: ""
 
     # DNA-to-marker 

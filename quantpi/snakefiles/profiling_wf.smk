@@ -67,13 +67,13 @@ KMCP_DBS = []
 KMCP_TAXIDMAP = []
 if config["params"]["profiling"]["kmcp"]["do"]["bacteriome"]:
     KMCP_DBS.append("bacteriome")
-    KMCP_TAXIDMAP.append(config["params"]["profiling"]["kmcp"]["database"]["bacteriome"])
+    KMCP_TAXIDMAP.append(os.path.join(config["params"]["profiling"]["kmcp"]["database"]["bacteriome"], "taxid.map"))
 if config["params"]["profiling"]["kmcp"]["do"]["mycobiome"]:
     KMCP_DBS.append("mycobiome")
-    KMCP_TAXIDMAP.append(config["params"]["profiling"]["kmcp"]["database"]["mycobiome"])
+    KMCP_TAXIDMAP.append(os.path.join(config["params"]["profiling"]["kmcp"]["database"]["mycobiome"], "taxid.map"))
 if config["params"]["profiling"]["kmcp"]["do"]["virome"]:
     KMCP_DBS.append("virome")
-    KMCP_TAXIDMAP.append(config["params"]["profiling"]["kmcp"]["database"]["virome"])
+    KMCP_TAXIDMAP.append(os.path.join(config["params"]["profiling"]["kmcp"]["database"]["virome"], "taxid.map"))
 
 
 include: "../rules/simulate.smk"
