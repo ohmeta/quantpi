@@ -73,6 +73,8 @@ if KMCP_DB_NUMBER > 0:
                 "benchmark/kmcp/search_merge/{sample}.kmcp_search_merge.benchmark.txt")
         params:
             kmcp_db_number = KMCP_DB_NUMBER
+        threads:
+            config["params"]["profiling"]["threads"]
         shell:
             '''
             rm -rf {output}
@@ -82,9 +84,10 @@ if KMCP_DB_NUMBER > 0:
                 ln -s {input[0]} {output}
             else
                 kmcp merge \
-                {input} \
+                --threads {threads} \
                 --out-file {output} \
-                --log {log}
+                --log {log} \
+                {input}
             fi
             '''
 
@@ -135,12 +138,14 @@ if KMCP_DB_NUMBER > 0:
             min_hic_ureads_prop = config["params"]["profiling"]["kmcp"]["profile"]["min_hic_ureads_prop"],
             metaphlan_report_version = config["params"]["profiling"]["kmcp"]["profile"]["metaphlan_report_version"],
             external_opts = config["params"]["profiling"]["kmcp"]["profile"]["external_opts"]
+        threads:
+            config["params"]["profiling"]["threads"]
         shell:
             '''
             taxidmap=$(python -c "import sys; print(','.join(sys.argv[1:]))" {input.taxidmap})
 
             kmcp profile \
-            {input.search} \
+            --threads {threads} \
             --taxid-map $taxidmap \
             --taxdump {input.taxdump} \
             --level species \
@@ -153,14 +158,15 @@ if KMCP_DB_NUMBER > 0:
             --min-hic-ureads {params.min_hic_ureads} \
             --min-hic-ureads-qcov {params.min_hic_ureads_qcov} \
             --min-hic-ureads-prop {params.min_hic_ureads_prop} \
-            {params.external_opts} \
             --out-prefix {output.default_profile} \
             --metaphlan-report {output.metaphlan_profile} \
             --metaphlan-report-version {params.metaphlan_report_version} \
             --cami-report {output.cami_profile} \
             --sample-id {params.sample_id} \
             --binning-result {output.binning_result} \
-            --log {log}
+            --log {log} \
+            {params.external_opts} \
+            {input.search}
             '''
 
 
