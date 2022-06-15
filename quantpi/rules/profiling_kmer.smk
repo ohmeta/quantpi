@@ -131,7 +131,7 @@ if KMCP_DB_NUMBER > 0:
                 "profile/kmcp/{sample}/{sample}.kmcp.{profiling_mode}"),
             profiling_mode = lambda wildcards: KMCP_PROFILING_MODE[wildcards.profiling_mode],
             metaphlan_report_version = config["params"]["profiling"]["kmcp"]["profile"]["metaphlan_report_version"],
-            disable_two_stage_taxonomy_assignment = "--no-amr-cor" \
+            disable_two_stage_taxonomy_assignment = "--no-amb-corr" \
                 if config["params"]["profiling"]["kmcp"]["profile"]["disable_two_stage_taxonomy_assignment"] \
                 else "",
             external_opts = config["params"]["profiling"]["kmcp"]["profile"]["external_opts"]
