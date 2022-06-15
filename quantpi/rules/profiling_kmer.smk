@@ -93,13 +93,22 @@ if KMCP_DB_NUMBER > 0:
 
 
     KMCP_PROFILING_MODE = {
-        "pathogen_detection": 0,
-        "higher_recall": 1,
-        "high_recall": 2,
-        "default": 3,
-        "high_precision": 4,
-        "higher_precision": 5
-        }
+        0: "pathogen_detection",
+        1: "higher_recall",
+        2: "high_recall",
+        3: "default",
+        4: "high_precision",
+        5: "higher_precision"
+    }
+
+
+    KMCP_PROFILING_MODE_DO = {}
+    for profile_mode in config["params"]["profiling"]["kmcp"]["profile"]["mode"]:
+        if profile_mode in KMCP_PROFILING_MODE:
+            KMCP_PROFILING_MODE_DO[KMCP_PROFILING_MODE[profile_mode]] = profile_mode
+        else:
+            print(f'''profile mode {profile_mode} is not supported by KMCP''')
+            sys.exit(1)
 
 
     rule profiling_kmcp_profile:
@@ -129,7 +138,7 @@ if KMCP_DB_NUMBER > 0:
             sample_id = "{sample}",
             binning_result = os.path.join(config["output"]["profiling"],
                 "profile/kmcp/{sample}/{sample}.kmcp.{profiling_mode}"),
-            profiling_mode = lambda wildcards: KMCP_PROFILING_MODE[wildcards.profiling_mode],
+            profiling_mode = lambda wildcards: KMCP_PROFILING_MODE_DO[wildcards.profiling_mode],
             metaphlan_report_version = config["params"]["profiling"]["kmcp"]["profile"]["metaphlan_report_version"],
             disable_two_stage_taxonomy_assignment = "--no-amb-corr" \
                 if config["params"]["profiling"]["kmcp"]["profile"]["disable_two_stage_taxonomy_assignment"] \
@@ -169,7 +178,7 @@ if KMCP_DB_NUMBER > 0:
                     "profile/kmcp/{sample}/{sample}.kmcp.{profiling_mode}.binning.gz")],
                 sample=SAMPLES_ID_LIST,
                 profile_format=["default_format", "metaphlan_format", "CAMI_format"],
-                profiling_mode=list(KMCP_PROFILING_MODE.keys()))
+                profiling_mode=list(KMCP_PROFILING_MODE_DO.keys()))
  
 else:
     rule profiling_kmcp_all:

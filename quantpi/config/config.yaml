@@ -158,6 +158,7 @@ params:
         min_query_cov: 0.55
         external_opts: ""
       profile:
+        mode: [0, 1, 2, 3, 4, 5]
         metaphlan_report_version: 3
         disable_two_stage_taxonomy_assignment: True # --no-amb-corr
         external_opts: ""
