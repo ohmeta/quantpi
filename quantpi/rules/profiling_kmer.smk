@@ -25,7 +25,7 @@ if KMCP_DB_NUMBER > 0:
         priority:
             20
         threads:
-            config["params"]["profiling"]["threads"]
+            config["params"]["profiling"]["kmcp"]["search"]["threads"]
         shell:
             '''
             if [ {params.reads_layout} -eq 1 ] && [ "{params.reads_mode}" == "Paired-end" ]
@@ -74,7 +74,7 @@ if KMCP_DB_NUMBER > 0:
         params:
             kmcp_db_number = KMCP_DB_NUMBER
         threads:
-            config["params"]["profiling"]["threads"]
+            config["params"]["profiling"]["kmcp"]["profile"]["threads"]
         shell:
             '''
             rm -rf {output}
@@ -116,7 +116,7 @@ if KMCP_DB_NUMBER > 0:
             search = os.path.join(config["output"]["profiling"],
                 "search/kmcp/{sample}/{sample}.kmcp_search@all.tsv.gz"),
             taxidmap= KMCP_TAXIDMAP,
-            taxdump = config["params"]["profiling"]["kmcp"]["database"]["ncbi_taxdump"]
+            taxdump = config["params"]["profiling"]["kmcp"]["database"]["taxdump"]
         output:
             default_profile = os.path.join(config["output"]["profiling"],
                 "profile/kmcp/{sample}/{sample}.kmcp.default_format.{profiling_mode}.profile"),
@@ -145,7 +145,7 @@ if KMCP_DB_NUMBER > 0:
                 else "",
             external_opts = config["params"]["profiling"]["kmcp"]["profile"]["external_opts"]
         threads:
-            config["params"]["profiling"]["threads"]
+            config["params"]["profiling"]["kmcp"]["profile"]["threads"]
         shell:
             '''
             taxidmap=$(python -c "import sys; print(','.join(sys.argv[1:]))" {input.taxidmap})

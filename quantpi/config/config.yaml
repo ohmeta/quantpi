@@ -148,17 +148,39 @@ params:
         mycobiome: True
         virome: True
       database:
-        bacteriome: /home/zhujie/databases/ecogenomics/KMCP/bacteriome/GTDB_r202/gtdb.kmcp 
-        mycobiome: /home/zhujie/databases/ecogenomics/KMCP/mycobiome/RefSeq_r208/refseq-fungi.kmcp
-        virome: /home/zhujie/databases/ecogenomics/KMCP/virome/GenBank_246/genbank-viral.kmcp
-        ncbi_taxdump: /home/zhujie/.taxonkit
+        bacteriome: /home/jiezhu/databases/ecogenomics/KMCP/bacteriome/GTDB_r202/gtdb.kmcp 
+        mycobiome: /home/jiezhu/databases/ecogenomics/KMCP/mycobiome/RefSeq_r208/refseq-fungi.kmcp
+        virome: /home/jiezhu/databases/ecogenomics/KMCP/virome/GenBank_246/genbank-viral.kmcp
+        taxdump: /home/jiezhu/.taxonkit
       search:
+        threads: 24
         reads_mode: "Single-end" # "Paired-end" # Recommended Single-end
         min_query_len: 30
         min_query_cov: 0.55
         external_opts: ""
       profile:
+        threads: 4 # recommand
         mode: [0, 1, 2, 3, 4, 5]
+        # reference: https://bioinf.shenwei.me/kmcp/tutorial/profiling/
+        # kmcp profile mode details
+        # 0: for pathogen detection
+        # 1: higher recall
+        # 2: high recall
+        # 3: default
+        # 4: high precision
+        # 5: higher precision
+        # options                       m=0    m=1   m=2   m=3    m=4   m=5
+        # ---------------------------   ----   ---   ---   ----   ---   ----
+        # -r/--min-chunks-reads         1      5     10    50     100   100
+        # -p/--min-chunks-fraction      0.2    0.6   0.7   0.8    1     1
+        # -d/--max-chunks-depth-stdev   10     2     2     2      2     1.5
+        # -u/--min-uniq-reads           1      2     5     20     50    50
+        # -U/--min-hic-ureads           1      1     2     5      10    10
+        # -H/--min-hic-ureads-qcov      0.55   0.7   0.7   0.75   0.8   0.8
+        # -P/--min-hic-ureads-prop      0.01   0.1   0.2   0.1    0.1   0.15
+        # --keep-main-matches           true                            
+        # --max-qcov-gap                0.4
+        # If you want to overide some parameter setted by preset mode, just add it to external_opts below.
         metaphlan_report_version: 3
         disable_two_stage_taxonomy_assignment: True # --no-amb-corr
         external_opts: ""
