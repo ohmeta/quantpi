@@ -159,6 +159,7 @@ params:
         external_opts: ""
       profile:
         metaphlan_report_version: 3
+        disable_two_stage_taxonomy_assignment: True # --no-amb-corr
         external_opts: ""
 
     # DNA-to-marker 
