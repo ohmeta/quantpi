@@ -68,6 +68,8 @@ if KMCP_DB_NUMBER > 0:
         log:
             os.path.join(config["output"]["profiling"],
                 "logs/kmcp/search_merge/{sample}.kmcp_search_merge.log")
+        priority:
+            21
         benchmark:
             os.path.join(config["output"]["profiling"],
                 "benchmark/kmcp/search_merge/{sample}.kmcp_search_merge.benchmark.txt")
@@ -126,6 +128,8 @@ if KMCP_DB_NUMBER > 0:
                 "profile/kmcp/{sample}/{sample}.kmcp.CAMI_format.{profiling_mode}.profile"),
             binning_result = os.path.join(config["output"]["profiling"],
                 "profile/kmcp/{sample}/{sample}.kmcp.{profiling_mode}.binning.gz")
+        priority:
+            22
         conda:
             config["envs"]["kmcp"]
         log:
