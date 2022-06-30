@@ -117,7 +117,7 @@ if config["params"]["profiling"]["genomecov"]["do"]:
         threads:
             config["params"]["profiling"]["threads"]
         run:
-            metapi.genomecov_merge(input, threads, output_cov=output.report_cov, output_per=output.report_per)
+            quantpi.genomecov_merge(input, threads, output_cov=output.report_cov, output_per=output.report_per)
 
 
     rule profiling_genomecov_all:
