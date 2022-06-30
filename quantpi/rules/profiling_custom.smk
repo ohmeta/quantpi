@@ -1,5 +1,5 @@
 if config["params"]["profiling"]["bgi_soap"]["do"]:
-    rule profiling_bgi_soap:
+    rule profiling_custom_bgi_soap:
         input:
             reads = profiling_input_with_short_reads,
             index = expand("{prefix}.{suffix}",
@@ -71,7 +71,7 @@ if config["params"]["profiling"]["bgi_soap"]["do"]:
             shell('''pigz {params.soap}''')
 
 
-    rule profiling_bgi_soap_merge:
+    rule profiling_custom_bgi_soap_merge:
         input:
             soap_list = expand(os.path.join(
                 config["output"]["profiling"],
@@ -100,7 +100,7 @@ if config["params"]["profiling"]["bgi_soap"]["do"]:
             abun_df.to_csv(output.abun_profile, sep='\t', index=False)
 
 
-    rule profiling_bgi_soap_all:
+    rule profiling_custom_bgi_soap_all:
         input:
             os.path.join(
                 config["output"]["profiling"],
@@ -112,12 +112,12 @@ if config["params"]["profiling"]["bgi_soap"]["do"]:
             rules.qcreport_all.input
 
 else:
-    rule profiling_bgi_soap_all:
+    rule profiling_custom_bgi_soap_all:
         input:
 
 
 if config["params"]["profiling"]["bowtie2"]["do"]:
-    rule profiling_bowtie2:
+    rule profiling_custom_bowtie2:
         input:
             reads = profiling_input_with_short_reads,
             index = expand("{prefix}.{suffix}",
@@ -190,7 +190,7 @@ if config["params"]["profiling"]["bowtie2"]["do"]:
             abun_df.reset_index().to_csv(output.abun_profile, sep='\t', index=False)
 
 
-    rule profiling_bowtie2_merge:
+    rule profiling_custom_bowtie2_merge:
         input:
             count_tsv_list = expand(os.path.join(
                 config["output"]["profiling"],
@@ -229,7 +229,7 @@ if config["params"]["profiling"]["bowtie2"]["do"]:
             abun_df.to_csv(output.abun_profile, sep='\t', index=False)
 
 
-    rule profiling_bowtie2_all:
+    rule profiling_custom_bowtie2_all:
         input:
             os.path.join(
                 config["output"]["profiling"],
@@ -241,12 +241,12 @@ if config["params"]["profiling"]["bowtie2"]["do"]:
             rules.qcreport_all.input
 
 else:
-    rule profiling_bowtie2_all:
+    rule profiling_custom_bowtie2_all:
         input:
 
 
 if config["params"]["profiling"]["jgi"]["do"]:
-    rule profiling_jgi:
+    rule profiling_custom_jgi:
         input:
             reads = profiling_input_with_short_reads,
             index_database = expand(
@@ -317,7 +317,7 @@ if config["params"]["profiling"]["jgi"]["do"]:
             '''
 
 
-    rule profiling_jgi_merge:
+    rule profiling_custom_jgi_merge:
         input:
             coverage = expand(os.path.join(
                 config["output"]["profiling"],
@@ -400,7 +400,7 @@ if config["params"]["profiling"]["jgi"]["do"]:
                                "lineages_strain_new", output.abundance_profile_t)
 
 
-    rule profiling_jgi_all:
+    rule profiling_custom_jgi_all:
         input:
             expand([
                 os.path.join(
@@ -423,5 +423,5 @@ if config["params"]["profiling"]["jgi"]["do"]:
             rules.qcreport_all.input
 
 else:
-    rule profiling_jgi_all:
+    rule profiling_custom_jgi_all:
         input:

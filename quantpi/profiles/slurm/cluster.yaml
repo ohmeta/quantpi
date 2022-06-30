@@ -192,32 +192,32 @@ profiling_kmcp_profile:
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.profiling_mode}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.profiling_mode}.{jobid}.e"
 
-profiling_bgi_soap:
+profiling_custom_bgi_soap:
   mem: "3G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
-profiling_bgi_soap_merge:
+profiling_custom_bgi_soap_merge:
   mem: "1G"
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"
 
-profiling_bowtie2:
+profiling_custom_bowtie2:
   mem: "3G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
-profiling_bowtie2_merge:
+profiling_custom_bowtie2_merge:
   mem: "1G"
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"
 
-profiling_jgi:
+profiling_custom_jgi:
   mem: "8G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
-profiling_jgi_merge:
+profiling_custom_jgi_merge:
   mem: "1G"
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"
