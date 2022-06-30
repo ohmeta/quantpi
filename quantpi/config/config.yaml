@@ -260,6 +260,7 @@ params:
       do: False
       bowtie2_db_prefix: "/home/jiezhu/databases/ecogenomics/virome/virome.fasta"
       bowtie2_db_fasta: "/home/jiezhu/databases/ecogenomics/virome/virome.fasta"
+      gen_contig_cov_script: /lustre1/g/sph_tunlab/jiezhu/toolkit/metassemble/scripts/validate/map/gen_contig_cov_per_bam_table.py
 
     # custom method
     bgi_soap: # for learning and test

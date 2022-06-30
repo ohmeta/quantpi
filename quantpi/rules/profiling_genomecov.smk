@@ -18,7 +18,7 @@ rule profiling_alignment_bowtie2:
         '''
         rm -rf {output.bam}
         rm -rf {output.flagstat}
-        rm -rf {params}*
+        rm -rf {params.tmp_bam}*
 
         if [ {params.reads_layout} -eq 1 ]
         then
@@ -33,7 +33,7 @@ rule profiling_alignment_bowtie2:
             samtools sort -T {params.tmp_bam} -@1 -m 8G -O BAM -o {output.bam} >{log} 2>&1
         else
             bowtie2 \
-            --no-unal -p {threads} -x {params.bowtie2_db} \
+            --no-unal -p {threads} -x {params.bowtie2_db_prefix} \
             -U {input.reads} \
             2> {log} | \
             tee >(samtools flagstat \
@@ -46,7 +46,7 @@ rule profiling_alignment_bowtie2:
 
 rule profiling_alignment_bam_postprocess:
     input:
-        bam = os.path.join(config["output"]["profiling"], "align/bowtie2/{sample}/{sample}.sorted.bam"),
+        bam = os.path.join(config["output"]["profiling"], "align/bowtie2/{sample}/{sample}.sorted.bam")
     output:
         bam = os.path.join(config["output"]["profiling"], "align/bowtie2/{sample}/{sample}.sorted.uniq.bam")
     threads:
@@ -78,18 +78,18 @@ if config["params"]["profiling"]["genomecov"]["do"]:
             1
         shell:
             '''
-            bedtools genomecov -ibam {intput.bam} > {output.coverage} 2> {log}
+            bedtools genomecov -ibam {input.bam} > {output.bed} 2> {log}
             '''
 
 
     rule profiling_genomecov_gen_cov:
         input:
-            bowtie2_db_fasta = config["params"]["profiling"]["coverage"]["bowtie2_db_fasta"],
-            bed = os.path.join(config["output"]["profiling"], "profile/bedtools_genomecov/{sample}/{sample}.coverage.bed")
+            bowtie2_db_fasta = config["params"]["profiling"]["genomecov"]["bowtie2_db_fasta"],
+            bed = os.path.join(config["output"]["profiling"], "profile/genomecov/{sample}/{sample}.coverage.bed")
         output:
-            coverage = os.path.join(config["output"]["profiling"], "profile/bedtools_genomecov/{sample}/{sample}.coverage.tsv")
+            coverage = os.path.join(config["output"]["profiling"], "profile/genomecov/{sample}/{sample}.coverage.tsv")
         params:
-            gen_contig_cov_per_bam_table_script = config["params"]["profiling"]["coverage"]["gen_contig_cov_per_bam_table_script"]
+            gen_contig_cov_script = config["params"]["profiling"]["genomecov"]["gen_contig_cov_script"]
         log:
             os.path.join(config["output"]["profiling"], "logs/gen_contig_cov/{sample}.gen_contig_cov.log")
         benchmark:
@@ -98,7 +98,7 @@ if config["params"]["profiling"]["genomecov"]["do"]:
             1
         shell:
             '''
-            python {params.gen_contig_cov_per_bam_table_script} \
+            python {params.gen_contig_cov_script} \
             --isbedfiles \
             {input.bowtie2_db_fasta} \
             {input.bed} \
@@ -109,11 +109,11 @@ if config["params"]["profiling"]["genomecov"]["do"]:
     rule profiling_genomecov_gen_cov_merge:
         input:
             expand(os.path.join(config["output"]["profiling"],
-                                "profile/bedtools_genomecov/{sample}/{sample}.coverage.tsv"),
+                                "profile/genomecov/{sample}/{sample}.coverage.tsv"),
                                 sample=SAMPLES_ID_LIST)
         output:
-            report_cov = os.path.join(config["output"]["profiling"], "report/bedtools_genomecov/contigs_coverage.cov.tsv"), 
-            report_per = os.path.join(config["output"]["profiling"], "report/bedtools_genomecov/contigs_coverage.per.tsv")
+            report_cov = os.path.join(config["output"]["profiling"], "report/genomecov/contigs_coverage.cov.tsv"), 
+            report_per = os.path.join(config["output"]["profiling"], "report/genomecov/contigs_coverage.per.tsv")
         threads:
             config["params"]["profiling"]["threads"]
         run:
@@ -123,7 +123,7 @@ if config["params"]["profiling"]["genomecov"]["do"]:
     rule profiling_genomecov_all:
         input:
             expand(os.path.join(config["output"]["profiling"],
-                                "report/bedtools_genomecov/contigs_coverage.{suffix}"),
+                                "report/genomecov/contigs_coverage.{suffix}"),
                                 suffix=["cov.tsv", "per.tsv"])
 
 else:
