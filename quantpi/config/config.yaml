@@ -255,6 +255,12 @@ params:
       database_nucleotide: "/home/jiezhu/databases/funcgenomics/humann2/chocophlan"
       database_nucleotide_v3: "/home/jiezhu/databases/funcgenomics/humann/chocophlan"
 
+    # alignment method
+    genomecov:
+      do: False
+      bowtie2_db_prefix: "/home/jiezhu/databases/ecogenomics/virome/virome.fasta"
+      bowtie2_db_fasta: "/home/jiezhu/databases/ecogenomics/virome/virome.fasta"
+
     # custom method
     bgi_soap: # for learning and test
       do: False

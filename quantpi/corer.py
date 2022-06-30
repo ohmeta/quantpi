@@ -37,6 +37,7 @@ WORKFLOWS_PROFILING = [
     "profiling_bracken_all",
     "profiling_metaphlan2_all",
     "profiling_metaphlan3_all",
+    "profiling_genomecov_all",
     "profiling_custom_bgi_soap_all",
     "profiling_custom_bowtie2_all",
     "profiling_custom_jgi_all",

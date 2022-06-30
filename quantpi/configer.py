@@ -82,7 +82,12 @@ class metaconfig:
         "logs/04.profiling_humann3",
         "logs/04.profiling_humann3_postprocess",
         "logs/04.profiling_humann3_join",
-        "logs/04.profiling_humann3_split_stratified"
+        "logs/04.profiling_humann3_split_stratified",
+        "logs/04.profiling_alignment_bowtie2",
+        "logs/04.profiling_alignment_bam_postprocess",
+        "logs/04.profiling_genomecov_gen_bed",
+        "logs/04.profiling_genomecov_gen_cov",
+        "logs/04.profiling_genomecov_gen_cov_merge"
     ]
 
     def __init__(self, work_dir):

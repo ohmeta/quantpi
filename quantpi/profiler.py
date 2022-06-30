@@ -10,6 +10,35 @@ import pysam
 import re
 
 
+def genomecov_parse(tsv_file):
+    sample_name = os.path.basename(tsv_file).split(".")[0]
+    df = pd.read_csv(tsv_file, sep="\t")
+    df = df.rename(columns={
+        "cov_mean_sample_0": f"cov_mean_{sample_name}",
+        "percentage_covered_sample_0": f"percentage_covered_{sample_name}"})
+    df = df.set_index(["contig", "length", "GC"])
+    #print(df.head())
+
+    return df.loc[:, [f"cov_mean_{sample_name}"]], df.loc[:, [f"percentage_covered_{sample_name}"]]
+
+
+def genomecov_merge(tsv_files, workers, **kwargs):
+    df_list_cov = []
+    df_list_per = []
+    with concurrent.futures.ProcessPoolExecutor(max_workers=workers) as executor:
+        for df_cov, df_per in executor.map(genomecov_parse, tsv_files):
+            df_list_cov.append(df_cov)
+            df_list_per.append(df_per)
+
+    cov_df = pd.concat(df_list_cov, axis=1).reset_index()
+    per_df = pd.concat(df_list_per, axis=1).reset_index()
+
+    if "output_cov" in kwargs:
+        cov_df.to_csv(kwargs["output_cov"], sep="\t", index=False)
+    if "output_per" in kwargs:
+        per_df.to_csv(kwargs["output_per"], sep="\t", index=False)
+
+
 def metaphlan_init(version):
     global METAPHLAN_VERSION
     METAPHLAN_VERSION = version

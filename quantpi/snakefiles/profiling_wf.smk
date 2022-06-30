@@ -81,10 +81,14 @@ include: "../rules/raw.smk"
 include: "../rules/trimming.smk"
 include: "../rules/rmhost.smk"
 include: "../rules/qcreport.smk"
+
 include: "../rules/profiling_dna.smk"
 include: "../rules/profiling_kmer.smk"
 include: "../rules/profiling_marker.smk"
+include: "../rules/profiling_genomecov.smk"
+
 include: "../rules/profiling_custom.smk"
+
 include: "../rules/profiling_function.smk"
 
 

@@ -176,6 +176,31 @@ profiling_kmcp_profile:
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.profiling_mode}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.profiling_mode}.{jobid}.e"
 
+profiling_alignment_bowtie2:
+  mem: "8G"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+
+profiling_alignment_bam_postprocess:
+  mem: "8G"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+
+profiling_genomecov_gen_bed:
+  mem: "2G"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+
+profiling_genomecov_gen_cov:
+  mem: "1G"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+
+profiling_genomecov_gen_cov_merge:
+  mem: "1G"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
+
 profiling_custom_bgi_soap:
   mem: "3G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
