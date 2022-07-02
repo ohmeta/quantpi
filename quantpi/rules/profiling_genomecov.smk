@@ -105,7 +105,7 @@ if config["params"]["profiling"]["genomecov"]["do"]:
             --isbedfiles \
             {input.bowtie2_db_fasta} \
             {input.bed} \
-            > {output.coverage} 2> {log}
+            | gzip -c > {output.coverage} 2> {log}
             '''
 
 
