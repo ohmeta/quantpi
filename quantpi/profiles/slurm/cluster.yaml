@@ -217,6 +217,16 @@ profiling_genomecov_gen_cov_merge:
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"
 
+profiling_genome_coverm:
+  mem: "1G"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+
+profiling_genome_coverm_merge:
+  mem: "1G"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
+
 profiling_custom_bgi_soap:
   mem: "3G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"

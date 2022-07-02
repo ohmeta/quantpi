@@ -257,10 +257,21 @@ params:
 
     # alignment method
     genomecov:
-      do: False
+      do: True
       bowtie2_db_prefix: "/home/jiezhu/databases/ecogenomics/virome/virome.fasta"
       bowtie2_db_fasta: "/home/jiezhu/databases/ecogenomics/virome/virome.fasta"
-      gen_contig_cov_script: /lustre1/g/sph_tunlab/jiezhu/toolkit/metassemble/scripts/validate/map/gen_contig_cov_per_bam_table.py
+      gen_contig_cov_script: /home/jiezhu/toolkit/metassemble/scripts/validate/map/gen_contig_cov_per_bam_table.py
+
+    # alignment method
+    coverm:
+      do: True
+      genome_dir: "/home/jiezhu/databases/ecogenomics/virome/genomes" 
+      genome_fasta_extension: "fna"
+      methods: ["relative_abundance", "mean", "trimmed_mean", "covered_fraction", "covered_bases", "variance", "rpkm", "tpm"]
+      min_covered_fraction: 10
+      contig_end_exclusion: 75
+      trim_min: 5
+      trim_max: 95
 
     # custom method
     bgi_soap: # for learning and test

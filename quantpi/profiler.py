@@ -8,6 +8,37 @@ import argparse
 import gzip
 import pysam
 import re
+import numpy as np
+from natsort import index_natsorted
+from pprint import pprint
+
+
+def coverm_parse(table_file):
+    sample_name = os.path.basename(table_file).split(".")[0]
+    df = pd.read_csv(table_file, sep="\t")
+    names = df.columns.tolist()
+    df_list = []
+    for method_name in names[1:]:
+        df_ = df.loc[:, [names[0], method_name]].rename(columns={method_name: sample_name}).set_index(names[0])
+        df_list.append(df_)
+    return df_list
+
+
+def coverm_merge(table_files, method_list, workers, output_list):
+    df_dict = {}
+    for method_name in method_list:
+        df_dict[method_name] = []
+
+    with concurrent.futures.ProcessPoolExecutor(max_workers=workers) as executor:
+        for df_list in executor.map(coverm_parse, table_files):
+            for i in range(len(df_list)):
+                df_dict[method_list[i]].append(df_list[i])
+
+    for i in range(len(method_list)):
+        df_out = pd.concat(df_dict[method_list[i]], axis=1).reset_index()
+        df_out = df_out.sort_values(by="Genome",
+                                    key=lambda x: np.argsort(index_natsorted(df_out["Genome"])))
+        df_out.to_csv(output_list[i], sep="\t", index=False)
 
 
 def genomecov_parse(tsv_file):

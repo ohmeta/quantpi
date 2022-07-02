@@ -87,7 +87,9 @@ class metaconfig:
         "logs/04.profiling_alignment_bam_postprocess",
         "logs/04.profiling_genomecov_gen_bed",
         "logs/04.profiling_genomecov_gen_cov",
-        "logs/04.profiling_genomecov_gen_cov_merge"
+        "logs/04.profiling_genomecov_gen_cov_merge",
+        "logs/04.profiling_genome_coverm",
+        "logs/04.profiling_genome_coverm_merge"
     ]
 
     def __init__(self, work_dir):

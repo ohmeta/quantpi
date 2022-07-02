@@ -30,9 +30,10 @@ from quantpi.profiler import get_abun_df_jgi
 from quantpi.profiler import get_profile
 from quantpi.profiler import metaphlan_init
 from quantpi.profiler import merge_metaphlan_tables
-
 from quantpi.profiler import genomecov_parse
 from quantpi.profiler import genomecov_merge
+from quantpi.profiler import coverm_parse
+from quantpi.profiler import coverm_merge
 
 from quantpi.__about__ import __version__, __author__
 

@@ -796,6 +796,7 @@ rule profiling_all:
         rules.profiling_custom_bowtie2_all.input,
         rules.profiling_custom_jgi_all.input,
         rules.profiling_genomecov_all.input,
+        rules.profiling_genome_coverm_all.input,
         rules.profiling_humann2_all.input,
         rules.profiling_humann3_all.input
 
@@ -807,6 +808,7 @@ localrules:
     profiling_metaphlan3_all,
     profiling_kmcp_all,
     profiling_genomecov_all,
+    profiling_genome_coverm_all,
     profiling_custom_bgi_soap_all,
     profiling_custom_bowtie2_all,
     profiling_custom_jgi_all,
