@@ -69,25 +69,28 @@ if config["params"]["profiling"]["genomecov"]["do"]:
         input:
             bam = os.path.join(config["output"]["profiling"], "align/bowtie2/{sample}/{sample}.sorted.uniq.bam")
         output:
-            bed = os.path.join(config["output"]["profiling"], "profile/genomecov/{sample}/{sample}.coverage.bed")
+            bed = os.path.join(config["output"]["profiling"], "profile/genomecov/{sample}/{sample}.coverage.bed.gz")
         log:
             os.path.join(config["output"]["profiling"], "logs/genomecov/{sample}.genomecov.log")
         benchmark:
             os.path.join(config["output"]["profiling"], "benchmark/genomecov/{sample}.genomecov.txt")
+        params:
+            bed = os.path.join(config["output"]["profiling"], "profile/genomecov/{sample}/{sample}.coverage.bed")
         threads:
             1
         shell:
             '''
-            bedtools genomecov -ibam {input.bam} > {output.bed} 2> {log}
+            bedtools genomecov -ibam {input.bam} > {params.bed} 2> {log}
+            gzip {params.bed} 2>> {log}
             '''
 
 
     rule profiling_genomecov_gen_cov:
         input:
             bowtie2_db_fasta = config["params"]["profiling"]["genomecov"]["bowtie2_db_fasta"],
-            bed = os.path.join(config["output"]["profiling"], "profile/genomecov/{sample}/{sample}.coverage.bed")
+            bed = os.path.join(config["output"]["profiling"], "profile/genomecov/{sample}/{sample}.coverage.bed.gz")
         output:
-            coverage = os.path.join(config["output"]["profiling"], "profile/genomecov/{sample}/{sample}.coverage.tsv")
+            coverage = os.path.join(config["output"]["profiling"], "profile/genomecov/{sample}/{sample}.coverage.tsv.gz")
         params:
             gen_contig_cov_script = config["params"]["profiling"]["genomecov"]["gen_contig_cov_script"]
         log:
@@ -109,11 +112,11 @@ if config["params"]["profiling"]["genomecov"]["do"]:
     rule profiling_genomecov_gen_cov_merge:
         input:
             expand(os.path.join(config["output"]["profiling"],
-                                "profile/genomecov/{sample}/{sample}.coverage.tsv"),
+                                "profile/genomecov/{sample}/{sample}.coverage.tsv.gz"),
                                 sample=SAMPLES_ID_LIST)
         output:
-            report_cov = os.path.join(config["output"]["profiling"], "report/genomecov/contigs_coverage.cov.tsv"), 
-            report_per = os.path.join(config["output"]["profiling"], "report/genomecov/contigs_coverage.per.tsv")
+            report_cov = os.path.join(config["output"]["profiling"], "report/genomecov/contigs_coverage.cov.tsv.gz"), 
+            report_per = os.path.join(config["output"]["profiling"], "report/genomecov/contigs_coverage.per.tsv.gz")
         threads:
             config["params"]["profiling"]["threads"]
         run:
@@ -123,8 +126,8 @@ if config["params"]["profiling"]["genomecov"]["do"]:
     rule profiling_genomecov_all:
         input:
             expand(os.path.join(config["output"]["profiling"],
-                                "report/genomecov/contigs_coverage.{suffix}"),
-                                suffix=["cov.tsv", "per.tsv"])
+                                "report/genomecov/contigs_coverage.{suffix}.tsv.gz"),
+                                suffix=["cov", "per"])
 
 else:
     rule profiling_genomecov_all:
