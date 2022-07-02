@@ -2,7 +2,7 @@ rule profiling_alignment_bowtie2:
     input:
         reads = profiling_input_with_short_reads
     output:
-        bam = os.path.join(config["output"]["profiling"], "align/bowtie2/{sample}/{sample}.sorted.bam"),
+        bam = temp(os.path.join(config["output"]["profiling"], "align/bowtie2/{sample}/{sample}.sorted.bam")),
         flagstat = os.path.join(config["output"]["profiling"], "align/bowtie2/{sample}/{sample}.flagstats")
     log:
         os.path.join(config["output"]["profiling"], "logs/bowtie2_samtools/{sample}.bowtie2.log")
