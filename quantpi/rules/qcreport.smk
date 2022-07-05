@@ -18,7 +18,7 @@ if config["params"]["qcreport"]["do"]:
             config["params"]["qcreport"]["seqkit"]["threads"]
         run:
             df = quantpi.merge(input, quantpi.parse, threads)
-            quantpi.compute_host_rate(df, STEPS, SAMPLES_ID_LIST, output=output[0])
+            quantpi.compute_host_rate(df, STEPS, SAMPLES_ID_LIST, allow_miss_samples=True, output=output[0])
 
 
     rule qcreport_plot:
