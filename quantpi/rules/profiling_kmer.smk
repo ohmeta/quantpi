@@ -6,8 +6,8 @@ if KMCP_DB_NUMBER > 0:
             reads = profiling_input_with_short_reads,
             db_dir = lambda wildcards: config["params"]["profiling"]["kmcp"]["database"][wildcards.kmcp_db]
         output:
-            temp(os.path.join(config["output"]["profiling"],
-                "search/kmcp/{sample}/{sample}.kmcp_search@{kmcp_db}.tsv.gz"))
+            os.path.join(config["output"]["profiling"],
+                "search/kmcp/{sample}/{sample}.kmcp_search@{kmcp_db}.tsv.gz")
         conda:
             config["envs"]["kmcp"]
         log:
@@ -61,8 +61,8 @@ if KMCP_DB_NUMBER > 0:
                 "search/kmcp/{{sample}}/{{sample}}.kmcp_search@{kmcp_db}.tsv.gz"),
                 kmcp_db=KMCP_DBS)
         output:
-            temp(os.path.join(config["output"]["profiling"],
-                "search/kmcp/{sample}/{sample}.kmcp_search@all.tsv.gz"))
+            os.path.join(config["output"]["profiling"],
+                "search/kmcp/{sample}/{sample}.kmcp_search@all.tsv.gz")
         conda:
             config["envs"]["kmcp"]
         log:
