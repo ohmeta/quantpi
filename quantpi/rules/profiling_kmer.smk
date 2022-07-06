@@ -74,7 +74,8 @@ if KMCP_DB_NUMBER > 0:
             os.path.join(config["output"]["profiling"],
                 "benchmark/kmcp/search_merge/{sample}.kmcp_search_merge.benchmark.txt")
         params:
-            kmcp_db_number = KMCP_DB_NUMBER
+            kmcp_db_number = KMCP_DB_NUMBER,
+            outdir = os.path.join(config["output"]["profiling"], "search/kmcp/{sample}")
         threads:
             config["params"]["profiling"]["kmcp"]["profile"]["threads"]
         shell:
@@ -83,7 +84,9 @@ if KMCP_DB_NUMBER > 0:
 
             if [ {params.kmcp_db_number} == 1 ]
             then
-                ln -s {input[0]} {output}
+                pushd {params.outdir} &&
+                ln -s ${{basename {input[0]}}} ${{basename {output}}} &&
+                popd
             else
                 kmcp merge \
                 --threads {threads} \
