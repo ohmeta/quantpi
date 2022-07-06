@@ -85,7 +85,7 @@ if KMCP_DB_NUMBER > 0:
             if [ {params.kmcp_db_number} == 1 ]
             then
                 pushd {params.outdir} &&
-                ln -s ${{basename {input[0]}}} ${{basename {output}}} &&
+                ln -s $(basename {input[0]}) $(basename {output}) &&
                 popd
             else
                 kmcp merge \
