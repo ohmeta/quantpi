@@ -121,7 +121,7 @@ def merge_metaphlan_tables(table_files, workers, **kwargs):
     for i in ["t", "s", "g", "f", "o", "c", "p", "k"]:
         profile_df = pd.DataFrame()
         if METAPHLAN_VERSION == 2:
-            profile_df = abun_df_.filter(regex=f"{i}__\w*$", axis=0).reset_index() 
+            profile_df = abun_df_.filter(regex=f"\|{i}__\w*$", axis=0).reset_index() 
         elif METAPHLAN_VERSION == 3:
             profile_df = abun_df_.filter(regex=f"UNKNOWN|{i}__\w*$", axis=0).reset_index()
         df_list.append(profile_df)
