@@ -192,6 +192,11 @@ profiling_kmcp_profile:
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.profiling_mode}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.profiling_mode}.{jobid}.e"
 
+profiling_kmcp_profile_merge:
+  mem: "8G"
+  output: "logs/04.{rule}/{rule}.{wildcards.profiling_mode}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.profiling_mode}.{jobid}.e"
+
 profiling_alignment_bowtie2:
   mem: "8G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
