@@ -120,6 +120,12 @@ def run_snakemake(args, unknown, snakefile, workflow):
     print(f'''\nReal running cmd:\n{cmd_str}''')
 
 
+def update_env_path(conf, work_dir):
+    for env_name in conf["envs"]:
+        conf["envs"][env_name] = os.path.join(os.path.abspath(work_dir), conf["envs"][env_name])
+    return conf
+
+
 def update_config_tools(conf, begin, trimmer, rmhoster):
     conf["params"]["simulate"]["do"] = False
     conf["params"]["begin"] = begin
@@ -165,6 +171,7 @@ def init(args, unknown):
         conf = update_config_tools(
             conf, args.begin, args.trimmer, args.rmhoster
         )
+        conf = update_env_path(conf, args.workdir)
 
         if args.samples:
             conf["params"]["samples"] = args.samples
