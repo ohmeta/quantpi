@@ -1,47 +1,85 @@
 KMCP_DB_NUMBER = len(KMCP_DBS)
 
 if KMCP_DB_NUMBER > 0:
-    rule profiling_kmcp_search:
-        input:
-            reads = profiling_input_with_short_reads,
-            db_dir = lambda wildcards: config["params"]["profiling"]["kmcp"]["database"][wildcards.kmcp_db]
-        output:
-            os.path.join(config["output"]["profiling"],
-                "search/kmcp/{sample}/{sample}.kmcp_search@{kmcp_db}.tsv.gz")
-        conda:
-            config["envs"]["kmcp"]
-        log:
-            os.path.join(config["output"]["profiling"],
-                "logs/kmcp/search/{sample}.kmcp_search@{kmcp_db}.log")
-        benchmark:
-            os.path.join(config["output"]["profiling"],
-                "benchmark/kmcp/search/{sample}.kmcp_search@{kmcp_db}.benchmark.txt")
-        params:
-            reads_mode = config["params"]["profiling"]["kmcp"]["search"]["reads_mode"],
-            reads_layout = 1 if IS_PE else 0,
-            min_query_len = config["params"]["profiling"]["kmcp"]["search"]["min_query_len"],
-            min_query_cov = config["params"]["profiling"]["kmcp"]["search"]["min_query_cov"],
-            external_opts = config["params"]["profiling"]["kmcp"]["search"]["external_opts"]
-        priority:
-            20
-        threads:
-            config["params"]["profiling"]["kmcp"]["search"]["threads"]
-        shell:
-            '''
-            if [ {params.reads_layout} -eq 1 ] && [ "{params.reads_mode}" == "Paired-end" ]
-            then 
-                kmcp search \
-                --threads {threads} \
-                --load-whole-db \
-                --db-dir {input.db_dir} \
-                --min-query-len {params.min_query_len} \
-                --min-query-cov {params.min_query_cov} \
-                {params.external_opts} \
-                -1 {input.reads[0]} \
-                -2 {input.reads[1]} \
-                --out-file {output} \
-                --log {log}
-            else
+    if IS_PE:
+        rule profiling_kmcp_search:
+            input:
+                reads = profiling_input_with_short_reads,
+                db_dir = lambda wildcards: config["params"]["profiling"]["kmcp"]["database"][wildcards.kmcp_db]
+            output:
+                os.path.join(config["output"]["profiling"],
+                    "search/kmcp/{sample}/{sample}.kmcp_search@{kmcp_db}.tsv.gz")
+            conda:
+                config["envs"]["kmcp"]
+            log:
+                os.path.join(config["output"]["profiling"],
+                    "logs/kmcp/search/{sample}.kmcp_search@{kmcp_db}.log")
+            benchmark:
+                os.path.join(config["output"]["profiling"],
+                    "benchmark/kmcp/search/{sample}.kmcp_search@{kmcp_db}.benchmark.txt")
+            params:
+                reads_mode = config["params"]["profiling"]["kmcp"]["search"]["reads_mode"],
+                min_query_len = config["params"]["profiling"]["kmcp"]["search"]["min_query_len"],
+                min_query_cov = config["params"]["profiling"]["kmcp"]["search"]["min_query_cov"],
+                external_opts = config["params"]["profiling"]["kmcp"]["search"]["external_opts"]
+            priority:
+                20
+            threads:
+                config["params"]["profiling"]["kmcp"]["search"]["threads"]
+            shell:
+                '''
+                if [ "{params.reads_mode}" == "Paired-end" ]
+                then 
+                    kmcp search \
+                    --threads {threads} \
+                    --load-whole-db \
+                    --db-dir {input.db_dir} \
+                    --min-query-len {params.min_query_len} \
+                    --min-query-cov {params.min_query_cov} \
+                    {params.external_opts} \
+                    -1 {input.reads[0]} \
+                    -2 {input.reads[1]} \
+                    --out-file {output} \
+                    --log {log}
+                else
+                    kmcp search \
+                    --threads {threads} \
+                    --load-whole-db \
+                    --db-dir {input.db_dir} \
+                    --min-query-len {params.min_query_len} \
+                    --min-query-cov {params.min_query_cov} \
+                    {input.reads} \
+                    --out-file {output} \
+                    --log {log}
+                fi
+                '''
+    else:
+        rule profiling_kmcp_search:
+            input:
+                reads = profiling_input_with_short_reads,
+                db_dir = lambda wildcards: config["params"]["profiling"]["kmcp"]["database"][wildcards.kmcp_db]
+            output:
+                os.path.join(config["output"]["profiling"],
+                    "search/kmcp/{sample}/{sample}.kmcp_search@{kmcp_db}.tsv.gz")
+            conda:
+                config["envs"]["kmcp"]
+            log:
+                os.path.join(config["output"]["profiling"],
+                    "logs/kmcp/search/{sample}.kmcp_search@{kmcp_db}.log")
+            benchmark:
+                os.path.join(config["output"]["profiling"],
+                    "benchmark/kmcp/search/{sample}.kmcp_search@{kmcp_db}.benchmark.txt")
+            params:
+                reads_mode = config["params"]["profiling"]["kmcp"]["search"]["reads_mode"],
+                min_query_len = config["params"]["profiling"]["kmcp"]["search"]["min_query_len"],
+                min_query_cov = config["params"]["profiling"]["kmcp"]["search"]["min_query_cov"],
+                external_opts = config["params"]["profiling"]["kmcp"]["search"]["external_opts"]
+            priority:
+                20
+            threads:
+                config["params"]["profiling"]["kmcp"]["search"]["threads"]
+            shell:
+                '''
                 kmcp search \
                 --threads {threads} \
                 --load-whole-db \
@@ -51,8 +89,7 @@ if KMCP_DB_NUMBER > 0:
                 {input.reads} \
                 --out-file {output} \
                 --log {log}
-            fi
-            '''
+                '''
 
 
     rule profiling_kmcp_search_merge:

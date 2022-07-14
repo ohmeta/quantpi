@@ -1,47 +1,67 @@
-rule profiling_alignment_bowtie2:
-    input:
-        reads = profiling_input_with_short_reads
-    output:
-        bam = temp(os.path.join(config["output"]["profiling"], "align/bowtie2/{sample}/{sample}.sorted.bam")),
-        flagstat = os.path.join(config["output"]["profiling"], "align/bowtie2/{sample}/{sample}.flagstats")
-    log:
-        os.path.join(config["output"]["profiling"], "logs/bowtie2_samtools/{sample}.bowtie2.log")
-    benchmark:
-        os.path.join(config["output"]["profiling"], "benchmark/bowtie2_samtools/{sample}.bowtie2.txt")
-    threads:
-        config["params"]["profiling"]["threads"]
-    params:
-        bowtie2_db_prefix = config["params"]["profiling"]["genomecov"]["bowtie2_db_prefix"],
-        reads_layout = 1 if IS_PE else 0,
-        tmp_bam = os.path.join(config["output"]["profiling"], "align/bowtie2/{sample}/{sample}.bam.tmp")
-    shell:
-        '''
-        rm -rf {output.bam}
-        rm -rf {output.flagstat}
-        rm -rf {params.tmp_bam}*
+if IS_PE:
+    rule profiling_alignment_bowtie2:
+        input:
+            reads = profiling_input_with_short_reads
+        output:
+            bam = temp(os.path.join(config["output"]["profiling"], "align/bowtie2/{sample}/{sample}.sorted.bam")),
+            flagstat = os.path.join(config["output"]["profiling"], "align/bowtie2/{sample}/{sample}.flagstats")
+        log:
+            os.path.join(config["output"]["profiling"], "logs/bowtie2_samtools/{sample}.bowtie2.log")
+        benchmark:
+            os.path.join(config["output"]["profiling"], "benchmark/bowtie2_samtools/{sample}.bowtie2.txt")
+        threads:
+            config["params"]["profiling"]["threads"]
+        params:
+            bowtie2_db_prefix = config["params"]["profiling"]["genomecov"]["bowtie2_db_prefix"],
+            tmp_bam = os.path.join(config["output"]["profiling"], "align/bowtie2/{sample}/{sample}.bam.tmp")
+        shell:
+            '''
+            rm -rf {output.bam}
+            rm -rf {output.flagstat}
+            rm -rf {params.tmp_bam}*
 
-        if [ {params.reads_layout} -eq 1 ]
-        then
             bowtie2 \
             --no-unal -p {threads} -x {params.bowtie2_db_prefix} \
             -1 {input.reads[0]} \
             -2 {input.reads[1]} \
             2> {log} | \
             tee >(samtools flagstat \
-                  -@{threads} - \
-                  > {output.flagstat}) | \
+                -@{threads} - \
+                > {output.flagstat}) | \
             samtools sort -T {params.tmp_bam} -@1 -m 8G -O BAM -o {output.bam} >{log} 2>&1
-        else
+            '''
+
+else:
+    rule profiling_alignment_bowtie2:
+        input:
+            reads = profiling_input_with_short_reads
+        output:
+            bam = temp(os.path.join(config["output"]["profiling"], "align/bowtie2/{sample}/{sample}.sorted.bam")),
+            flagstat = os.path.join(config["output"]["profiling"], "align/bowtie2/{sample}/{sample}.flagstats")
+        log:
+            os.path.join(config["output"]["profiling"], "logs/bowtie2_samtools/{sample}.bowtie2.log")
+        benchmark:
+            os.path.join(config["output"]["profiling"], "benchmark/bowtie2_samtools/{sample}.bowtie2.txt")
+        threads:
+            config["params"]["profiling"]["threads"]
+        params:
+            bowtie2_db_prefix = config["params"]["profiling"]["genomecov"]["bowtie2_db_prefix"],
+            tmp_bam = os.path.join(config["output"]["profiling"], "align/bowtie2/{sample}/{sample}.bam.tmp")
+        shell:
+            '''
+            rm -rf {output.bam}
+            rm -rf {output.flagstat}
+            rm -rf {params.tmp_bam}*
+
             bowtie2 \
             --no-unal -p {threads} -x {params.bowtie2_db_prefix} \
             -U {input.reads} \
             2> {log} | \
             tee >(samtools flagstat \
-                  -@{threads} - \
-                  > {output.flagstat}) | \
+                 -@{threads} - \
+                 > {output.flagstat}) | \
             samtools sort -T {params.tmp_bam} -@1 -m 8G -O BAM -o {output.bam} >{log} 2>&1
-        fi
-        '''
+            '''
 
 
 rule profiling_alignment_bam_postprocess:
