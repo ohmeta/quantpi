@@ -161,6 +161,7 @@ params:
       profile:
         threads: 4 # recommand
         mode: [0, 1, 2, 3, 4, 5]
+        level: "strain" # ["species", "strain", "assembly"]
         # reference: https://bioinf.shenwei.me/kmcp/tutorial/profiling/
         # kmcp profile mode details
         # 0: for pathogen detection

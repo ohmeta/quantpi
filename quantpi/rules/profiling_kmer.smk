@@ -180,6 +180,7 @@ if KMCP_DB_NUMBER > 0:
                 "benchmark/kmcp/profile/{sample}.kmcp_profile_{profiling_mode}.benchmark.txt")
         params:
             sample_id = "{sample}",
+            level = config["params"]["profiling"]["kmcp"]["profile"]["level"],
             binning_result = os.path.join(config["output"]["profiling"],
                 "profile/kmcp/{sample}/{sample}.kmcp.{profiling_mode}"),
             profiling_mode = lambda wildcards: KMCP_PROFILING_MODE_DO[wildcards.profiling_mode],
@@ -198,7 +199,7 @@ if KMCP_DB_NUMBER > 0:
             --threads {threads} \
             --taxid-map $taxidmap \
             --taxdump {input.taxdump} \
-            --level species \
+            --level {params.level} \
             --mode {params.profiling_mode} \
             --out-prefix {output.default_profile} \
             --metaphlan-report {output.metaphlan_profile} \
