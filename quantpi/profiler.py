@@ -121,11 +121,15 @@ def merge_metaphlan_tables(table_files, workers, **kwargs):
     for i in ["t", "s", "g", "f", "o", "c", "p", "k"]:
         profile_df = pd.DataFrame()
         if METAPHLAN_VERSION == 2:
-            regex_pattern = f"{i}__[^\|]*$"
+            regex_pattern = f"\|{i}__[^\|]*$"
+            if i == "k":
+                regex_pattern = f"k__[^\|]*$"
             profile_df = abun_df_.filter(regex=regex_pattern, axis=0).reset_index() 
 
         elif METAPHLAN_VERSION == 3:
-            regex_pattern = f"UNKNOWN|{i}__[^\|]*$"
+            regex_pattern = f"UNKNOWN|\|{i}__[^\|]*$"
+            if i == "k":
+                regex_pattern = f"UNKNOWN|k__[^\|]*$"
             profile_df = abun_df_.filter(regex=regex_pattern, axis=0).reset_index()
 
         df_list.append(profile_df)
