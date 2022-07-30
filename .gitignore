@@ -1,2 +1,5 @@
 test
 quantpi/__pycache__
+build/
+dist/
+quantpi.egg-info
