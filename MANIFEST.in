@@ -1,0 +1,14 @@
+include *.md *.txt
+include LICENSE
+
+recursive-include quantpi/ *
+recursive-include quantpi/wrappers *
+recursive-include quantpi/rules *
+recursive-include quantpi/snakefiles *
+recursive-include quantpi/envs *
+recursive-include quantpi/config *
+
+global-exclude quantpi/ *.pyc
+global-exclude quantpi/__pycache__ *.pyc
+global-exclude quantpi/wrappers/ *.pyc
+global-exclude quantpi/wrappers/__pycache__ *.pyc

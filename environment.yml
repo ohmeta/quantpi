@@ -1,0 +1,16 @@
+name: quantpi
+channels:
+  - bioconda
+  - conda-forge
+  - defaults
+dependencies:
+  - setuptools
+  - pandas
+  - numpy
+  - ruamel.yaml
+  - snakemake >=7.0
+  - openpyxl
+  - natsort
+  - biopython >=1.73
+  - seaborn
+  - matplotlib
