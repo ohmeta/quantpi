@@ -59,8 +59,8 @@ if KMCP_DB_NUMBER > 0:
                 reads = profiling_input_with_short_reads,
                 db_dir = lambda wildcards: config["params"]["profiling"]["kmcp"]["database"][wildcards.kmcp_db]
             output:
-                os.path.join(config["output"]["profiling"],
-                    "search/kmcp/{sample}/{sample}.kmcp_search@{kmcp_db}.tsv.gz")
+                temp(os.path.join(config["output"]["profiling"],
+                     "search/kmcp/{sample}/{sample}.kmcp_search@{kmcp_db}.tsv.gz"))
             conda:
                 config["envs"]["kmcp"]
             log:
@@ -122,7 +122,7 @@ if KMCP_DB_NUMBER > 0:
             if [ {params.kmcp_db_number} == 1 ]
             then
                 pushd {params.outdir} && \
-                ln -s $(basename {input[0]}) $(basename {output}) && \
+                mv $(basename {input[0]}) $(basename {output}) && \
                 popd
             else
                 kmcp merge \
