@@ -31,7 +31,7 @@ def link_or_cat(args):
 
 
 def main():
-    parser = argparse.ArgumentParser("metapi misc")
+    parser = argparse.ArgumentParser("quantpi misc")
     parser.add_argument("--basename", dest="basename")
     parser.add_argument("--input-file", dest="input_file", nargs="+")
     parser.add_argument("--output-dir", dest="output_dir")

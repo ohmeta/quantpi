@@ -26,7 +26,7 @@ package_data = {
 }
 data_files = [(".", ["LICENSE", "README.md"])]
 
-entry_points = {"console_scripts": ["metapi=quantpi.corer:main"]}
+entry_points = {"console_scripts": ["quantpi=quantpi.corer:main"]}
 
 requires = [
     req.strip()
