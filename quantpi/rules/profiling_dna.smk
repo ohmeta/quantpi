@@ -71,48 +71,49 @@ if config["params"]["profiling"]["kraken2"]["do"]:
                     else "",
         threads:
             config["params"]["profiling"]["threads"]
-        run:
-            shell(
-                '''
-                kraken2 \
-                {params.quick} \
-                {params.memory_mapping} \
-                {params.use_mpa_style} \
-                {params.use_names} \
-                {params.report_zero_counts} \
-                --threads {threads} \
-                --db {params.database} \
-                --confidence {params.confidence} \
-                --minimum-base-quality {params.min_base_quality} \
-                --minimum-hit-groups {params.min_hit_groups} \
-                {params.unclassified_out} \
-                {params.classified_out} \
-                {params.table} \
-                --report {output.report} \
-                --gzip-compressed \
-                {params.paired} \
-                {input.reads} \
-                2> {log}
-                ''')
+        conda:
+            config["envs"]["kraken2"]
+        shell:
+            '''
+            kraken2 \
+            {params.quick} \
+            {params.memory_mapping} \
+            {params.use_mpa_style} \
+            {params.use_names} \
+            {params.report_zero_counts} \
+            --threads {threads} \
+            --db {params.database} \
+            --confidence {params.confidence} \
+            --minimum-base-quality {params.min_base_quality} \
+            --minimum-hit-groups {params.min_hit_groups} \
+            {params.unclassified_out} \
+            {params.classified_out} \
+            {params.table} \
+            --report {output.report} \
+            --gzip-compressed \
+            {params.paired} \
+            {input.reads} \
+            2> {log}
 
-            shell(
-                '''
-                kreport2mpa.py \
-                --report-file {output.report} \
-                --display-header \
-                --no-intermediate-ranks \
-                --read_count \
-                --output {output.report_mpa_reads_count}
+            kreport2mpa.py \
+            --report-file {output.report} \
+            --display-header \
+            --no-intermediate-ranks \
+            --read_count \
+            --output {output.report_mpa_reads_count}
 
-                kreport2mpa.py \
-                --report {output.report} \
-                --no-intermediate-ranks \
-                --percentages \
-                --output {output.report_mpa_percentages}
-                ''')
+            kreport2mpa.py \
+            --report {output.report} \
+            --no-intermediate-ranks \
+            --percentages \
+            --output {output.report_mpa_percentages}
 
-            if params.save_table:
-                shell('''pigz %s''' % params.table.split(" ")[-1])
+            if [ "{params.save_table}" == "True" ];
+            then
+                tablef=`awk '{{print $2}}' {params.table}`
+                pigz $tablef
+            fi
+            '''
 
 
     rule profiling_kraken2_krona_report:
@@ -126,6 +127,8 @@ if config["params"]["profiling"]["kraken2"]["do"]:
             os.path.join(
                 config["output"]["profiling"],
                 "report/kraken2/kraken2_krona.all.html")
+        conda:
+            config["envs"]["kraken2"]
         shell:
             '''
             ktImportTaxonomy -q 2 -t 3 {input} -o {output}
@@ -145,6 +148,8 @@ if config["params"]["profiling"]["kraken2"]["do"]:
                 "report/kraken2/kraken2_report.all.tsv")
         params:
             samples_name = " ".join(list(SAMPLES_ID_LIST))
+        conda:
+            config["envs"]["kraken2"]
         shell:
             '''
             combine_kreports.py \
@@ -172,6 +177,8 @@ if config["params"]["profiling"]["kraken2"]["do"]:
             report_mpa_percentages = os.path.join(
                 config["output"]["profiling"],
                 "report/kraken2/kraken2_report.mpa.percentages.tsv")
+        conda:
+            config["envs"]["kraken2"]
         shell:
             '''
             combine_mpa.py \
@@ -243,6 +250,8 @@ if config["params"]["profiling"]["kraken2"]["do"] and \
             20
         threads:
             config["params"]["profiling"]["threads"]
+        conda:
+            config["envs"]["kraken2"]
         shell:
             '''
             bracken \
@@ -273,15 +282,18 @@ if config["params"]["profiling"]["kraken2"]["do"] and \
         log:
             os.path.join(config["output"]["profiling"],
                          "logs/bracken/bracken.merged.{level}.log")
-        run:
-            shell(
-                '''
-                combine_bracken_outputs.py \
-                --files {input} \
-                --names %s \
-                --output {output} \
-                > {log} 2>&1
-                ''' % ",".join(SAMPLES_ID_LIST))
+        params:
+            samples_id_list = ",".join(SAMPLES_ID_LIST)
+        conda:
+            config["envs"]["kraken2"]
+        shell:
+            '''
+            combine_bracken_outputs.py \
+            --files {input} \
+            --names {params.samples_id_list} \
+            --output {output} \
+            > {log} 2>&1
+            '''
 
 
     rule profiling_bracken_all:

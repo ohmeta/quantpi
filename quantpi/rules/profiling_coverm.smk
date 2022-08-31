@@ -20,6 +20,8 @@ if config["params"]["profiling"]["coverm"]["do"]:
             trim_max = config["params"]["profiling"]["coverm"]["trim_max"]
         threads:
             config["params"]["profiling"]["threads"]
+        conda:
+            config["envs"]["align"]
         shell:
             '''
             rm -rf {params.outdir}

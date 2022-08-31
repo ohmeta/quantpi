@@ -14,6 +14,8 @@ if IS_PE:
         params:
             bowtie2_db_prefix = config["params"]["profiling"]["genomecov"]["bowtie2_db_prefix"],
             tmp_bam = os.path.join(config["output"]["profiling"], "align/bowtie2/{sample}/{sample}.bam.tmp")
+        conda:
+            config["envs"]["align"]
         shell:
             '''
             rm -rf {output.bam}
@@ -47,6 +49,8 @@ else:
         params:
             bowtie2_db_prefix = config["params"]["profiling"]["genomecov"]["bowtie2_db_prefix"],
             tmp_bam = os.path.join(config["output"]["profiling"], "align/bowtie2/{sample}/{sample}.bam.tmp")
+        conda:
+            config["envs"]["align"]
         shell:
             '''
             rm -rf {output.bam}
@@ -75,6 +79,8 @@ rule profiling_alignment_bam_postprocess:
         os.path.join(config["output"]["profiling"], "logs/sambamba/{sample}.sambamba.log")
     benchmark:
         os.path.join(config["output"]["profiling"], "benchmark/sambamba/{sample}.sambamba.txt")
+    conda:
+        config["envs"]["align"]
     shell:
         '''
         sambamba view \
@@ -98,6 +104,8 @@ if config["params"]["profiling"]["genomecov"]["do"]:
             bed = os.path.join(config["output"]["profiling"], "profile/genomecov/{sample}/{sample}.coverage.bed")
         threads:
             1
+        conda:
+            config["envs"]["align"]
         shell:
             '''
             bedtools genomecov -ibam {input.bam} > {params.bed} 2> {log}
