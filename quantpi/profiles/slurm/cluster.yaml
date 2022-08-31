@@ -72,11 +72,6 @@ raw_report_merge:
   output: "logs/00.{rule}/{rule}.{jobid}.o"
   error: "logs/00.{rule}/{rule}.{jobid}.e"
 
-trimming_oas1:
-  mem: "1G"
-  output: "logs/01.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
-  error: "logs/01.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
-
 trimming_sickle:
   mem: "1G"
   output: "logs/01.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
@@ -101,16 +96,6 @@ trimming_report_merge:
   mem: "512M"
   output: "logs/01.{rule}/{rule}.{jobid}.o"
   error: "logs/01.{rule}/{rule}.{jobid}.e"
-
-rmhost_soap_index:
-  mem: "1G"
-  output: "logs/02.{rule}/{rule}.{jobid}.o"
-  error: "logs/02.{rule}/{rule}.{jobid}.e"
-
-rmhost_soap:
-  mem: "6G"
-  output: "logs/02.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
-  error: "logs/02.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 rmhost_bwa_index:
   mem: "1G"

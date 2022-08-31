@@ -3,6 +3,5 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - kraken2=2.1.2
-  - krakentools=1.2
-  - pigz
+  - sickle-trim=1.33
+  - fastp=0.23.2

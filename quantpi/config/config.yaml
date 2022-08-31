@@ -21,13 +21,6 @@ params:
   trimming:
     save_reads: False
 
-    oas1:
-      do: False
-      quality_system: 33
-      min_length: 30
-      seed_oa: 0.9
-      fragment_oa: 0.8
-
     sickle:
       do: False
       quality_type: "sanger"
@@ -55,6 +48,8 @@ params:
       cut_right_mean_quality: 20
       length_required: 51
       n_base_limit: 5
+      dedup: False
+      dup_calc_accuracy: 3 # [1, 2, 3, 4, 5, 6] # only used when dedup: True
 
   rmhost:
     host_fasta: "/home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
@@ -62,15 +57,6 @@ params:
     save_reads: True
     save_bam: False
     compression: 6
-
-    soap:
-      do: False
-      index_prefix: "/home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
-      match_model: 4
-      align_seed: 30
-      report_repeat_hits: 1
-      max_mismatch_num: 7
-      identity: 0.9
 
     bwa:
       do: False
@@ -102,7 +88,7 @@ params:
       do: False
       do_trf: False
       do_trimmomatic: False
-      trimmomatic_options: 'MINLEN:50 ILLUMINACLIP:/-PE.fa:2:40:15 SLIDINGWINDOW:4:20'
+      trimmomatic_options: 'MINLEN:50 ILLUMINACLIP:/-PE-2.fa:2:40:15 SLIDINGWINDOW:4:20'
       sequencer_source: "TruSeq3" # ["NexteraPE", "TruSeq2", "TruSeq3", "none"]
       do_bmtagger: False
       do_bowtie2: True

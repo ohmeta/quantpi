@@ -3,6 +3,5 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - kraken2=2.1.2
-  - krakentools=1.2
+  - kneaddata=0.10.0
   - pigz
