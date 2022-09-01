@@ -296,9 +296,9 @@ if config["params"]["profiling"]["metaphlan"]["do_v4"]:
         output:
             os.path.join(
                 config["output"]["profiling"],
-                    "profile/metaphlan4/{sample}/{sample}.metaphlan3.abundance.profile.tsv")
+                    "profile/metaphlan4/{sample}/{sample}.metaphlan4.abundance.profile.tsv")
         log:
-            os.path.join(config["output"]["profiling"], "logs/metaphlan4/{sample}.metaphlan3.log")
+            os.path.join(config["output"]["profiling"], "logs/metaphlan4/{sample}.metaphlan4.log")
         benchmark:
             os.path.join(config["output"]["profiling"],
                          "benchmark/metaphlan4/{sample}.metaphlan4.benchmark.txt")
@@ -341,10 +341,10 @@ if config["params"]["profiling"]["metaphlan"]["do_v4"]:
             map_out = "--no_map" if config["params"]["profiling"]["metaphlan"]["no_map"] \
                 else "--bowtie2out %s" % os.path.join(
                     config["output"]["profiling"],
-                    "profile/metaphlan3/{sample}/{sample}.metaphlan3.bowtie2.bz2"),
+                    "profile/metaphlan4/{sample}/{sample}.metaphlan4.bowtie2.bz2"),
             biom_out = "--biom %s" % os.path.join(
                 config["output"]["profiling"],
-                "profile/metaphlan3/{sample}/{sample}.metaphlan3.abundance.profile.biom") \
+                "profile/metaphlan4/{sample}/{sample}.metaphlan4.abundance.profile.biom") \
                 if config["params"]["profiling"]["metaphlan"]["biom"] \
                 else "",
             legacy_output = "--legacy-output" \
