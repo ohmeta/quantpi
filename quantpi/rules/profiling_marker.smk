@@ -36,13 +36,13 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"]:
                 else "",
             ignore_eukaryotes = "--ignore_eukaryotes" \
                 if config["params"]["profiling"]["metaphlan"]["ignore_eukaryotes"] \
-                esle "",
+                else "",
             ignore_bacteria = "--ignore_bacteria" \
                 if config["params"]["profiling"]["metaphlan"]["ignore_bacteria"] \
-                esle "",
+                else "",
             ignore_archaea = "--ignore_archaea" \
                 if config["params"]["profiling"]["metaphlan"]["ignore_archaea"] \
-                esle "",
+                else "",
             map_out = "--no_map" if config["params"]["profiling"]["metaphlan"]["no_map"] \
                 else "--bowtie2out %s" % os.path.join(
                     config["output"]["profiling"],
@@ -178,13 +178,13 @@ if config["params"]["profiling"]["metaphlan"]["do_v3"]:
                 else "",
             ignore_eukaryotes = "--ignore_eukaryotes" \
                 if config["params"]["profiling"]["metaphlan"]["ignore_eukaryotes"] \
-                esle "",
+                else "",
             ignore_bacteria = "--ignore_bacteria" \
                 if config["params"]["profiling"]["metaphlan"]["ignore_bacteria"] \
-                esle "",
+                else "",
             ignore_archaea = "--ignore_archaea" \
                 if config["params"]["profiling"]["metaphlan"]["ignore_archaea"] \
-                esle "",
+                else "",
             map_out = "--no_map" if config["params"]["profiling"]["metaphlan"]["no_map"] \
                 else "--bowtie2out %s" % os.path.join(
                     config["output"]["profiling"],
@@ -325,19 +325,19 @@ if config["params"]["profiling"]["metaphlan"]["do_v4"]:
                 else "",
             ignore_eukaryotes = "--ignore_eukaryotes" \
                 if config["params"]["profiling"]["metaphlan"]["ignore_eukaryotes"] \
-                esle "",
+                else "",
             ignore_bacteria = "--ignore_bacteria" \
                 if config["params"]["profiling"]["metaphlan"]["ignore_bacteria"] \
-                esle "",
+                else "",
             ignore_archaea = "--ignore_archaea" \
                 if config["params"]["profiling"]["metaphlan"]["ignore_archaea"] \
-                esle "",
+                else "",
             ignore_ksgbs = "--ignore_ksgbs" \
                 if config["params"]["profiling"]["metaphlan"]["ignore_ksgbs"] \
-                esle "",
+                else "",
             ignore_usgbs = "--ignore_usgbs" \
                 if config["params"]["profiling"]["metaphlan"]["ignore_usgbs"] \
-                esle "",
+                else "",
             map_out = "--no_map" if config["params"]["profiling"]["metaphlan"]["no_map"] \
                 else "--bowtie2out %s" % os.path.join(
                     config["output"]["profiling"],
