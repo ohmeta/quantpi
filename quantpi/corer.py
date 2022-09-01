@@ -36,6 +36,7 @@ WORKFLOWS_PROFILING = [
     "profiling_kmcp_all",
     "profiling_metaphlan2_all",
     "profiling_metaphlan3_all",
+    "profiling_metaphlan4_all",
     "profiling_genomecov_all",
     "profiling_genome_coverm_all",
     "profiling_custom_bgi_soap_all",

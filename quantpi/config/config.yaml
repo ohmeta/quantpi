@@ -174,18 +174,21 @@ params:
 
     # DNA-to-marker 
     metaphlan:
-      do_v2: False
-      do_v3: True
-      do_v3_one_way: False
-      bowtie2db: "/home/jiezhu/databases/ecogenomics/MetaPhlAn"
-      index_v2: "v20_m200"
-      index_v3: "mpa_v30_CHOCOPhlAn_201901"
-      bowtie2_presets: "very-sensitive"
-      taxonomic_level: "a"
-      min_cu_len: 2000
-      ignore_markers: "/path/to/ignore_markers.txt"
-      avoid_disqm: True
-      analysis_type: "rel_ab_w_read_stats"
+      do_v2: False                                                # metaphaln2
+      do_v3: True                                                 # metaphlan3
+      do_v4: True                                                 # metaphlan4
+      # please put metaphlan{2,3,4} bowtie2 index on one folder
+      bowtie2db: "/home/jiezhu/databases/ecogenomics/MetaPhlAn"   # common
+      index_v2: "v20_m200"                                        # metaphlan2
+      index_v3: "mpa_v30_CHOCOPhlAn_201901"                       # metaphlan3
+      index_v4: "mpa_vJan21_CHOCOPhlAnSGB_202103"                 # metaphlan4
+      bowtie2_presets: "very-sensitive"                           # common
+      taxonomic_level: "a"                                        # common
+      min_cu_len: 2000                                            # common
+      read_min_len: 70                                            # common
+      ignore_markers: "/path/to/ignore_markers.txt"               # common
+      avoid_disqm: True # recommended                             # common
+      analysis_type: "rel_ab_w_read_stats"                        # common
       #  [
       #    "rel_ab",
       #    "rel_ab_w_read_stats",
@@ -195,16 +198,21 @@ params:
       #    "marker_counts",
       #    "marker_pres_table",
       #  ]
-      stat_q_v2: "0.1"
-      stat_q_v3: "0.2"
-      stat: "tavg_g"
-      unknown_estimation: True
-      add_viruses: True
-      read_min_len: 70
-      legacy_output: False
-      cami_format_output: False
-      no_map: True
-      biom: False
+      stat: "tavg_g"                                              # common
+      stat_q_v2: "0.1"                                            # metaphlan2
+      stat_q_v3: "0.2"                                            # metaphlan3
+      stat_q_v4: "0.2"                                            # metaphlan4
+      unknown_estimation: True                                    # metaphlan3 or metaphlan4
+      add_viruses: True                                           # metaphlan2 or metaphlan3
+      ignore_eukaryotes: False                                    # common
+      ignore_bacteria: False                                      # common
+      ignore_archaea: False                                       # common
+      ignore_ksgbs: False                                         # metaphlan4                    
+      ignore_usgbs: False                                         # metaphlan4
+      legacy_output: False                                        # common
+      cami_format_output: False                                   # metaphlan3 or metaphlan4
+      no_map: True                                                # common
+      biom: False                                                 # common
 
     # Functional profiling
     humann:
@@ -310,5 +318,6 @@ envs:
   kmcp: "envs/kmcp.yaml"
   metaphlan2: "envs/biobakery2.yaml"
   metaphlan3: "envs/biobakery3.yaml"
+  metaphlan4: "envs/biobakery4.yaml"
   humann2: "envs/biobakery2.yaml"
   humann3: "envs/biobakery3.yaml"

@@ -75,6 +75,8 @@ class metaconfig:
         "logs/04.profiling_metaphlan2_merge",
         "logs/04.profiling_metaphlan3",
         "logs/04.profiling_metaphlan3_merge",
+        "logs/04.profiling_metaphlan4",
+        "logs/04.profiling_metaphlan4_merge",
         "logs/04.profiling_humann2_config",
         "logs/04.profiling_humann2_build_chocophlan_pangenome_db",
         "logs/04.profiling_humann2",

@@ -272,6 +272,16 @@ profiling_metaphlan3_merge:
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"
 
+profiling_metaphlan4:
+  mem: "3G"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+
+profiling_metaphlan4_merge:
+  mem: "128M"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
+
 profiling_humann2_build_chocophlan_pangenome_db:
   mem: "6G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"

@@ -89,7 +89,7 @@ def read_metaphlan_table(table):
         df = pd.DataFrame(dict_).set_index("clade_name")
         return df
 
-    elif METAPHLAN_VERSION == 3:
+    elif (METAPHLAN_VERSION == 3) or (METAPHLAN_VERSION == 4):
         dict_ = {"clade_name": [], "clade_taxid": [], sample_id: []}
         with open(table, "r") as ih:
             for line in ih:
