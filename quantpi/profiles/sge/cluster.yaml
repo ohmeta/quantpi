@@ -76,6 +76,11 @@ trimming_report:
   output: "logs/01.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
   error: "logs/01.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
+trimming_report_refine:
+  mem: "512M"
+  output: "logs/01.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/01.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+
 trimming_report_merge:
   mem: "512M"
   output: "logs/01.{rule}/{rule}.{jobid}.o"
@@ -128,6 +133,11 @@ rmhost_alignment_report:
 
 rmhost_report:
   mem: "1G"
+  output: "logs/02.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/02.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+
+rmhost_report_refine:
+  mem: "512M"
   output: "logs/02.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
   error: "logs/02.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
