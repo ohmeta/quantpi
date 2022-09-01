@@ -306,7 +306,6 @@ output:
 
 
 envs:
-  general: "envs/general.yaml"
   simulate: "envs/simulate.yaml"
   fastqc: "envs/fastqc.yaml"
   trimming: "envs/trimming.yaml"
