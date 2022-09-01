@@ -84,6 +84,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"]:
             {params.map_out} \
             {params.biom_out} \
             --sample_id {params.sample_id} \
+            --sample_id_key {params.sample_id} \
             --output_file {output} \
             2> {log}
             '''
@@ -235,6 +236,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v3"]:
             {params.legacy_output} \
             {params.cami_format_output} \
             --sample_id {params.sample_id} \
+            --sample_id_key {params.sample_id} \
             --output_file {output} \
             2> {log}
             '''
