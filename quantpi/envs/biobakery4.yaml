@@ -3,4 +3,4 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - metaphlan=4.0.1
+  - metaphlan=4.0.2
