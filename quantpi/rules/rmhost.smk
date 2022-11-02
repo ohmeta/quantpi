@@ -648,6 +648,7 @@ if config["params"]["rmhost"]["kneaddata"]["do"]:
             do_bmtagger = "yes" if config["params"]["rmhost"]["kneaddata"]["do_bmtagger"] else "no",
             output_dir = os.path.join(config["output"]["rmhost"], "short_reads/{sample}"),
             output_prefix = "{sample}.rmhost",
+            pe = "pe" if IS_PE else "se"
         priority:
             10
         threads:

@@ -242,7 +242,7 @@ params:
       #  "uniref90_level4ec",
       #  "uniref90_infogo1000",
       #  "uniref90_rxn",
-      update_config: False # humann save config to humann install dir
+      update_config: True # humann save config to humann install dir
       database_utility_mapping: "/home/jiezhu/databases/funcgenomics/humann2/utility_mapping"
       database_utility_mapping_v3: "/home/jiezhu/databases/funcgenomics/humann/utility_mapping"
       database_protein: "/home/jiezhu/databases/funcgenomics/humann2/uniref"
