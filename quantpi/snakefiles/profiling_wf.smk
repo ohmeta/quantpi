@@ -33,7 +33,7 @@ HAVE_LONG = True \
 TRIMMING_DO = True \
     if config["params"]["trimming"]["sickle"]["do"] or \
        config["params"]["trimming"]["fastp"]["do"] or \
-       config["params"]["trimming"]["trimmomatic"]["do"] or \
+       config["params"]["trimming"]["trimmomatic"]["do"] \
        else False
 
 
