@@ -21,6 +21,7 @@ WORKFLOWS_PROFILING = [
     "raw_all",
     "trimming_sickle_all",
     "trimming_fastp_all",
+    "trimming_trimmomatic_all",
     "trimming_report_all",
     "trimming_all",
     "rmhost_bwa_all",
