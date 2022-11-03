@@ -364,7 +364,7 @@ if config["params"]["trimming"]["trimmomatic"]["do"]:
         input:
             expand([
                 os.path.join(config["output"]["trimming"],
-                             "short_reads/{sample}/{sample}.trimmomatic.summary"),
+                             "short_reads/{sample}/{sample}.trimmomatic.summary.txt"),
                 os.path.join(config["output"]["trimming"],
                              "report/trimmomatic_multiqc_report.html"),
                 #os.path.join(config["output"]["trimming"],
