@@ -296,7 +296,7 @@ if config["params"]["trimming"]["trimmomatic"]["do"]:
         conda:
             config["envs"]["trimming"]
         threads:
-            config["params"]["trimming"["threads"]
+            config["params"]["trimming"]["threads"]
         shell:
             '''
             if [ "{params.pe}" == "pe" ];
