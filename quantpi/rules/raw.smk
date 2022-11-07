@@ -63,7 +63,8 @@ if config["params"]["raw"]["do"]:
         params:
             output_dir = os.path.join(config["output"]["raw"],
                                    "short_reads/{sample}"),
-            interleaved = config["params"]["interleaved"]
+            interleaved = config["params"]["interleaved"],
+            check_paired = config["params"]["check_paired"]
         threads:
             config["params"]["raw"]["threads"]
         log:
@@ -78,46 +79,55 @@ if config["params"]["raw"]["do"]:
                 if IS_PE:
                     if not params.interleaved:
                         if reads_num == 2:
-                            os.symlink(os.path.realpath(input[0]), f'''{output.reads[0]}.temp.gz''')
-                            os.symlink(os.path.realpath(input[1]), f'''{output.reads[1]}.temp.gz''')
+                            if params.check_paired:
+                                os.symlink(os.path.realpath(input[0]), f'''{output.reads[0]}.temp.gz''')
+                                os.symlink(os.path.realpath(input[1]), f'''{output.reads[1]}.temp.gz''')
+                            else:
+                                os.symlink(os.path.realpath(input[0]), f'''{output.reads[0]}''')
+                                os.symlink(os.path.realpath(input[1]), f'''{output.reads[1]}''')
                         else:
-                            shell(f'''cat {" ".join(input[0:reads_num//2])} > {output.reads[0]}.temp.gz 2>> {log}''')
-                            shell(f'''cat {" ".join(input[reads_num//2:])}  > {output.reads[1]}.temp.gz 2>> {log}''')
+                            if params.check_paired:
+                                shell(f'''cat {" ".join(input[0:reads_num//2])} > {output.reads[0]}.temp.gz 2>> {log}''')
+                                shell(f'''cat {" ".join(input[reads_num//2:])}  > {output.reads[1]}.temp.gz 2>> {log}''')
+                            else:
+                                shell(f'''cat {" ".join(input[0:reads_num//2])} > {output.reads[0]} 2>> {log}''')
+                                shell(f'''cat {" ".join(input[reads_num//2:])}  > {output.reads[1]} 2>> {log}''')
+ 
+                        if params.check_paired:
+                            shell(f'''seqkit seq -ni {output.reads[0]}.temp.gz | sed 's#/1$##g' > {params.output_dir}/id.list.1 2>> {log}''') 
+                            shell(f'''seqkit seq -ni {output.reads[1]}.temp.gz | sed 's#/2$##g' > {params.output_dir}/id.list.2 2>> {log}''') 
 
-                        shell(f'''seqkit seq -ni {output.reads[0]}.temp.gz | sed 's#/1$##g' > {params.output_dir}/id.list.1 2>> {log}''') 
-                        shell(f'''seqkit seq -ni {output.reads[1]}.temp.gz | sed 's#/2$##g' > {params.output_dir}/id.list.2 2>> {log}''') 
-
-                        if filecmp.cmp(f'''{params.output_dir}/id.list.1''', f'''{params.output_dir}/id.list.2'''): 
-                            shell(f'''mv {output.reads[0]}.temp.gz {output.reads[0]} 2>> {log}''')
-                            shell(f'''mv {output.reads[1]}.temp.gz {output.reads[1]} 2>> {log}''')
-                        else:
-                            shell(
-                                '''
-                                sort -T {params.output_dir} {params.output_dir}/id.list.1 {params.output_dir}/id.list.2 | \
-                                uniq -c | \
-                                awk '$1==2{{print $2}}' > {params.output_dir}/id.list.paired 2>> {log}
-                                ''')
-
-                            oneline = gzip.open(f'''{output.reads[0]}.temp.gz''', 'rt').readline().strip().split()[0]
-                            if "/1" in oneline:
-                                shell(
-                                    '''
-                                    seqkit grep -f <(awk '{{print $0 "/1"}}' {params.output_dir}/id.list.paired) {output.reads[0]}.temp.gz -o {output.reads[0]} 2>> {log}
-                                    seqkit grep -f <(awk '{{print $0 "/2"}}' {params.output_dir}/id.list.paired) {output.reads[1]}.temp.gz -o {output.reads[1]} 2>> {log}
-                                    ''')
+                            if filecmp.cmp(f'''{params.output_dir}/id.list.1''', f'''{params.output_dir}/id.list.2'''): 
+                                shell(f'''mv {output.reads[0]}.temp.gz {output.reads[0]} 2>> {log}''')
+                                shell(f'''mv {output.reads[1]}.temp.gz {output.reads[1]} 2>> {log}''')
                             else:
                                 shell(
-                                    f'''
-                                    seqkit grep -f {params.output_dir}/id.list.paired {output.reads[0]}.temp.gz -o {output.reads[0]} 2>> {log}
-                                    seqkit grep -f {params.output_dir}/id.list.paired {output.reads[1]}.temp.gz -o {output.reads[1]} 2>> {log}
+                                    '''
+                                    sort -T {params.output_dir} {params.output_dir}/id.list.1 {params.output_dir}/id.list.2 | \
+                                    uniq -c | \
+                                    awk '$1==2{{print $2}}' > {params.output_dir}/id.list.paired 2>> {log}
                                     ''')
 
-                            shell(f'''rm -rf {output.reads[0]}.temp.gz 2>> {log}''')
-                            shell(f'''rm -rf {output.reads[1]}.temp.gz 2>> {log}''')
-                            shell(f'''rm -rf {params.output_dir}/id.list.paired 2>> {log}''')
+                                oneline = gzip.open(f'''{output.reads[0]}.temp.gz''', 'rt').readline().strip().split()[0]
+                                if "/1" in oneline:
+                                    shell(
+                                        '''
+                                        seqkit grep -f <(awk '{{print $0 "/1"}}' {params.output_dir}/id.list.paired) {output.reads[0]}.temp.gz -o {output.reads[0]} 2>> {log}
+                                        seqkit grep -f <(awk '{{print $0 "/2"}}' {params.output_dir}/id.list.paired) {output.reads[1]}.temp.gz -o {output.reads[1]} 2>> {log}
+                                        ''')
+                                else:
+                                    shell(
+                                        f'''
+                                        seqkit grep -f {params.output_dir}/id.list.paired {output.reads[0]}.temp.gz -o {output.reads[0]} 2>> {log}
+                                        seqkit grep -f {params.output_dir}/id.list.paired {output.reads[1]}.temp.gz -o {output.reads[1]} 2>> {log}
+                                        ''')
 
-                        shell(f'''rm -rf {params.output_dir}/id.list.1 2>> {log}''')
-                        shell(f'''rm -rf {params.output_dir}/id.list.2 2>> {log}''')
+                                shell(f'''rm -rf {output.reads[0]}.temp.gz 2>> {log}''')
+                                shell(f'''rm -rf {output.reads[1]}.temp.gz 2>> {log}''')
+                                shell(f'''rm -rf {params.output_dir}/id.list.paired 2>> {log}''')
+
+                            shell(f'''rm -rf {params.output_dir}/id.list.1 2>> {log}''')
+                            shell(f'''rm -rf {params.output_dir}/id.list.2 2>> {log}''')
 
                     else:
                         shell(
