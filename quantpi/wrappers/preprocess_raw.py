@@ -6,17 +6,17 @@ import gzip
 import subprocess as sp
 
 
-input_fq_list = snakemake["input"]
-output_fq_list = snakemake["output"]["reads"]
+input_fq_list = snakemake.input
+output_fq_list = snakemake.output.get("reads", "")
 
-threads = snakemake["threads"]
-log = snakemake["log"]
+threads = snakemake.threads
+log = snakemake.log
 
-check_paired = snakemake["params"]["check_paired"]
-output_dir = snakemake["params"]["output_dir"]
-reads_format = snakeamke["params"]["reads_format"]
-is_pe = snakemake["params"]["is_pe"]
-is_interleaved = snakemake["params"]["is_interleaved"]
+check_paired = snakemake.params.get("check_paired", "")
+output_dir = snakemake.params.get("output_dir", "")
+reads_format = snakemake.params.get("reads_format", "")
+is_pe = snakemake.params.get("is_pe", "")
+is_interleaved = snakemake.params.get("is_interleaved", "")
 
 reads_num = len(input_fq_list)
 
