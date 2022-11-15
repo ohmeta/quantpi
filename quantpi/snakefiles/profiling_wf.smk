@@ -81,15 +81,22 @@ include: "../rules/trimming.smk"
 include: "../rules/rmhost.smk"
 include: "../rules/qcreport.smk"
 
-include: "../rules/profiling_dna.smk"
-include: "../rules/profiling_kmer.smk"
-include: "../rules/profiling_marker.smk"
+include: "../rules/profiling_kraken2_bracken.smk"
+
+include: "../rules/profiling_kmcp.smk"
+
+include: "../rules/profiling_metaphlan2.smk"
+include: "../rules/profiling_metaphlan3.smk"
+include: "../rules/profiling_metaphlan4.smk"
+
 include: "../rules/profiling_genomecov.smk"
 include: "../rules/profiling_coverm.smk"
-
 include: "../rules/profiling_custom.smk"
 
-include: "../rules/profiling_function.smk"
+include: "../rules/profiling_humann2.smk"
+include: "../rules/profiling_humann3.smk"
+
+include: "../rules/profiling_all.smk"
 
 
 rule all:
