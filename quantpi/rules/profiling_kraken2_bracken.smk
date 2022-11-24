@@ -141,15 +141,15 @@ if config["params"]["profiling"]["kraken2"]["do"]:
                 kronadir=$(dirname $(realpath $(which ktUpdateTaxonomy.sh)))
                 extaxpl=$kronadir/scripts/extractTaxonomy.pl
 
-                echo "No $taxtab found, run $extaxpl\n" >{log} 2>&1
+                echo "No $taxtab found, run $extaxpl" >{log} 2>&1
                 perl $extaxpl {input.taxonomy} >>{log} 2>&1
             else
-                echo "Found $taxtab.\n" >{log} 2>&1
+                echo "Found $taxtab." >{log} 2>&1
             fi
 
             if [ -e $taxtab ];
             then
-                echo "Running ktImportTaxonomy.\n" >>{log} 2>&1
+                echo "Running ktImportTaxonomy." >>{log} 2>&1
                 ktImportTaxonomy \
                 -q 2 \
                 -t 3 \
