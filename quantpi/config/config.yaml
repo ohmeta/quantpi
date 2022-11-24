@@ -103,7 +103,7 @@ params:
       decontaminate_pairs: "strict" # ["strict", "lenient", "unpaired"]
       bowtie2_options: "--very-sensitive --dovetail"
       bowtie2_database: "/home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/" # directory, not bowtie2 index prefix
- 
+
 
   qcreport:
     do: True
@@ -118,6 +118,7 @@ params:
     kraken2:
       do: True
       database: "/home/jiezhu/databases/ecogenomics/Struo2/GTDB_release202/kraken2"
+      taxonomy: "/home/jiezhu/databases/ecogenomics/Struo2/GTDB_release202/kraken2/taxonomy"
       quick: False
       memory_mapping: False
       use_names: True
@@ -142,7 +143,7 @@ params:
         mycobiome: True
         virome: True
       database:
-        bacteriome: /home/jiezhu/databases/ecogenomics/KMCP/bacteriome/GTDB_r202/gtdb.kmcp 
+        bacteriome: /home/jiezhu/databases/ecogenomics/KMCP/bacteriome/GTDB_r202/gtdb.kmcp
         mycobiome: /home/jiezhu/databases/ecogenomics/KMCP/mycobiome/RefSeq_r208/refseq-fungi.kmcp
         virome: /home/jiezhu/databases/ecogenomics/KMCP/virome/GenBank_246/genbank-viral.kmcp
         taxdump: /home/jiezhu/.taxonkit
@@ -173,14 +174,14 @@ params:
         # -U/--min-hic-ureads           1      1     2     5      10    10
         # -H/--min-hic-ureads-qcov      0.55   0.7   0.7   0.75   0.8   0.8
         # -P/--min-hic-ureads-prop      0.01   0.1   0.2   0.1    0.1   0.15
-        # --keep-main-matches           true                            
+        # --keep-main-matches           true
         # --max-qcov-gap                0.4
         # If you want to overide some parameter setted by preset mode, just add it to external_opts below.
         metaphlan_report_version: 3
         disable_two_stage_taxonomy_assignment: True # --no-amb-corr
         external_opts: ""
 
-    # DNA-to-marker 
+    # DNA-to-marker
     metaphlan:
       do_v2: False                                                # metaphaln2
       do_v3: True                                                 # metaphlan3
@@ -215,7 +216,7 @@ params:
       ignore_eukaryotes: False                                    # common
       ignore_bacteria: False                                      # common
       ignore_archaea: False                                       # common
-      ignore_ksgbs: False                                         # metaphlan4                    
+      ignore_ksgbs: False                                         # metaphlan4
       ignore_usgbs: False                                         # metaphlan4
       legacy_output: False                                        # common
       cami_format_output: False                                   # metaphlan3 or metaphlan4
@@ -268,7 +269,7 @@ params:
     # alignment method
     coverm:
       do: False
-      genome_dir: "/home/jiezhu/databases/ecogenomics/virome/genomes" 
+      genome_dir: "/home/jiezhu/databases/ecogenomics/virome/genomes"
       genome_fasta_extension: "fna"
       methods: ["relative_abundance", "mean", "trimmed_mean", "covered_fraction", "covered_bases", "variance", "rpkm", "tpm"]
       min_covered_fraction: 10
@@ -302,7 +303,7 @@ params:
       fragment: 1200
       memory_limit: "8G"
       compression_level: 6
- 
+
 
 output:
   simulate: "results/00.simulate"

@@ -129,6 +129,8 @@ if config["params"]["profiling"]["kraken2"]["do"]:
                 "report/kraken2/kraken2_krona.all.html")
         conda:
             config["envs"]["kraken2"]
+        params:
+            taxonomy = config["params"]["profiling"]["kraken2"]["taxonomy"]
         log:
             os.path.join(config["output"]["profiling"],
                          "logs/krona/krona_report.log")
@@ -137,6 +139,7 @@ if config["params"]["profiling"]["kraken2"]["do"]:
             ktImportTaxonomy \
             -q 2 \
             -t 3 \
+            -tax {params.taxonomy} \
             {input} \
             -o {output} \
             > {log} 2>&1
