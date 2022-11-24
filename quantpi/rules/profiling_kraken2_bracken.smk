@@ -118,7 +118,8 @@ if config["params"]["profiling"]["kraken2"]["do"]:
 
     rule profiling_kraken2_krona_report:
         input:
-            expand(
+            taxonomy = config["params"]["profiling"]["kraken2"]["taxonomy"],
+            report = expand(
                 os.path.join(
                     config["output"]["profiling"],
                     "profile/kraken2/{sample}/{sample}.kraken2.report"),
@@ -129,20 +130,36 @@ if config["params"]["profiling"]["kraken2"]["do"]:
                 "report/kraken2/kraken2_krona.all.html")
         conda:
             config["envs"]["kraken2"]
-        params:
-            taxonomy = config["params"]["profiling"]["kraken2"]["taxonomy"]
         log:
             os.path.join(config["output"]["profiling"],
                          "logs/krona/krona_report.log")
         shell:
             '''
-            ktImportTaxonomy \
-            -q 2 \
-            -t 3 \
-            -tax {params.taxonomy} \
-            {input} \
-            -o {output} \
-            > {log} 2>&1
+            taxtab={input.taxonomy}/taxonomy.tab
+            if [ ! -e $taxtab ];
+            then
+                kronadir=$(dirname $(realpath $(which ktUpdateTaxonomy.sh)))
+                extaxpl=$kronadir/scripts/extractTaxonomy.pl
+
+                echo "No $taxtab found, run $extaxpl\n" >{log} 2>&1
+                perl $extaxpl {input.taxonomy} >>{log} 2>&1
+            else
+                echo "Found $taxtab.\n" >{log} 2>&1
+            fi
+
+            if [ -e $taxtab ];
+            then
+                echo "Running ktImportTaxonomy.\n" >>{log} 2>&1
+                ktImportTaxonomy \
+                -q 2 \
+                -t 3 \
+                -tax {params.taxonomy} \
+                {input} \
+                -o {output} \
+                >>{log} 2>&1
+            else
+                echo "No $taxtab found, run ktImportTaxonomy failed." >> {log} 2>&1
+            fi
             '''
 
 
