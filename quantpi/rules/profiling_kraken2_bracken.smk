@@ -138,7 +138,7 @@ if config["params"]["profiling"]["kraken2"]["do"]:
             taxtab={input.taxonomy}/taxonomy.tab
             if [ ! -e $taxtab ];
             then
-                kronadir=`dirname (realpath (which ktUpdateTaxonomy.sh))`
+                kronadir=$(dirname $(realpath $(which ktUpdateTaxonomy.sh)))
                 extaxpl=$kronadir/scripts/extractTaxonomy.pl
 
                 echo "No $taxtab found, run $extaxpl" >{log} 2>&1
