@@ -68,7 +68,7 @@ if config["params"]["profiling"]["kraken2"]["do"]:
                     config["output"]["profiling"],
                     "profile/kraken2/{sample}/{sample}.kraken2.table") \
                 if config["params"]["profiling"]["kraken2"]["save_table"] \
-                    else "",
+                    else "--output /dev/null"
         threads:
             config["params"]["profiling"]["threads"]
         conda:
@@ -302,7 +302,7 @@ if config["params"]["profiling"]["kraken2"]["do"] and \
                 config["output"]["profiling"],
                 "report/bracken/bracken.merged.abundance.profile.{level}.tsv"),
                    level=config["params"]["profiling"]["bracken"]["level"]),
-           
+
             #rules.rmhost_all.input,
             rules.qcreport_all.input
 
