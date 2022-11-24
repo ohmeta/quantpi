@@ -129,9 +129,17 @@ if config["params"]["profiling"]["kraken2"]["do"]:
                 "report/kraken2/kraken2_krona.all.html")
         conda:
             config["envs"]["kraken2"]
+        log:
+            os.path.join(config["output"]["profiling"],
+                         "logs/krona/krona_report.log")
         shell:
             '''
-            ktImportTaxonomy -q 2 -t 3 {input} -o {output}
+            ktImportTaxonomy \
+            -q 2 \
+            -t 3 \
+            {input} \
+            -o {output} \
+            > {log} 2>&1
             '''
 
 
@@ -150,13 +158,17 @@ if config["params"]["profiling"]["kraken2"]["do"]:
             samples_name = " ".join(list(SAMPLES_ID_LIST))
         conda:
             config["envs"]["kraken2"]
+        log:
+            os.path.join(config["output"]["profiling"],
+                         "logs/krakentools/combine_kreports.log")
         shell:
             '''
             combine_kreports.py \
             --report-file {input} \
             --sample-names {params.samples_name} \
             --display-headers \
-            --output {output}
+            --output {output} \
+            > {log} 2>&1
             '''
 
 
@@ -179,15 +191,22 @@ if config["params"]["profiling"]["kraken2"]["do"]:
                 "report/kraken2/kraken2_report.mpa.percentages.tsv")
         conda:
             config["envs"]["kraken2"]
+        log:
+            os.path.join(config["output"]["profiling"],
+                         "logs/krakentools/combine_kreports_mpa.log")
         shell:
             '''
+            echo "process 1:" > {log} 2>&1
             combine_mpa.py \
             --input {input.report_mpa_reads_count} \
-            --output {output.report_mpa_reads_count}
+            --output {output.report_mpa_reads_count} \
+            >> {log} 2>&1
 
+            echo "process 1:" >> {log} 2>&1
             combine_mpa.py \
             --input {input.report_mpa_percentages} \
-            --output {output.report_mpa_percentages}
+            --output {output.report_mpa_percentages} \
+            >> {log} 2>&1
             '''
 
 
