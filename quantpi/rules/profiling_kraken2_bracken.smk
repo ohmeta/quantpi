@@ -154,7 +154,7 @@ if config["params"]["profiling"]["kraken2"]["do"]:
                 -q 2 \
                 -t 3 \
                 -tax {params.taxonomy} \
-                {input} \
+                {input.report} \
                 -o {output} \
                 >>{log} 2>&1
             else
