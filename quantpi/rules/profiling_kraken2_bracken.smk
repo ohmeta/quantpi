@@ -293,6 +293,8 @@ if config["params"]["profiling"]["kraken2"]["do"] and \
             config["envs"]["kraken2"]
         shell:
             '''
+            set +e
+
             bracken \
             -d {params.database} \
             -i {input} \
@@ -302,6 +304,29 @@ if config["params"]["profiling"]["kraken2"]["do"] and \
             -l {params.level} \
             -t {threads} \
             > {log} 2>&1
+
+
+            exitcode=$?
+            echo "Exit code is: $exitcode" >> {log}
+
+            if [ $exitcode -eq 1 ];
+            then
+                grep -oEi "Error: no reads found" {log}
+                grepcode=$?
+                if [ $grepcode -eq 0 ];
+                then
+                    echo "Touch {output.report}" >> {log}
+                    echo "Touch {output.profile}" >> {log}
+                    touch {output.report} >> {log} 2>&1
+                    touch {output.profile} >> {log} 2>&1
+                    exit 0
+                else
+                    echo "Runing failed, check kraken2 report please." >> {log} 2>&1
+                    exit $exitcode
+                fi
+            else
+                exit $exitcode
+            fi
             '''
 
 
