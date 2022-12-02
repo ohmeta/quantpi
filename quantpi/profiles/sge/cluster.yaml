@@ -1,5 +1,5 @@
 __resources__:
-  gpu: 
+  gpu:
     - "gpu"
     - "nvidia_gpu"
 
@@ -262,7 +262,7 @@ profiling_metaphlan2:
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_metaphlan2_merge:
-  mem: "128M"
+  mem: "1G"
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"
 
@@ -272,17 +272,17 @@ profiling_metaphlan3:
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_metaphlan3_merge:
-  mem: "128M"
+  mem: "1G"
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"
 
 profiling_metaphlan4:
-  mem: "3G"
+  mem: "10G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_metaphlan4_merge:
-  mem: "128M"
+  mem: "1G"
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"
 
@@ -297,17 +297,17 @@ profiling_humann2:
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_humann2_postprocess:
-  mem: "512M"
+  mem: "1G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_humann2_join:
-  mem: "512M"
+  mem: "1G"
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"
 
 profiling_humann2_split_stratified:
-  mem: "512M"
+  mem: "1G"
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"
 
@@ -322,16 +322,16 @@ profiling_humann3:
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_humann3_postprocess:
-  mem: "512M"
+  mem: "1G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_humann3_join:
-  mem: "512M"
+  mem: "2G"
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"
 
 profiling_humann3_split_stratified:
-  mem: "512M"
+  mem: "1G"
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"
