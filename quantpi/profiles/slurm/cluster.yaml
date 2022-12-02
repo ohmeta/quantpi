@@ -293,7 +293,7 @@ profiling_metaphlan3_merge:
   error: "logs/04.{rule}/{rule}.{jobid}.e"
 
 profiling_metaphlan4:
-  mem: "10G"
+  mem: "12G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
