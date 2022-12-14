@@ -132,6 +132,12 @@ def merge_metaphlan_tables(table_files, workers, **kwargs):
                 regex_pattern = f"UNKNOWN|k__[^\|]*$"
             profile_df = abun_df_.filter(regex=regex_pattern, axis=0).reset_index()
 
+        elif METAPHLAN_VERSION == 4:
+            regex_pattern = f"UNCLASSIFIED|\|{i}__[^\|]*$"
+            if i == "k":
+                regex_pattern = f"UNCLASSIFIED|k__[^\|]*$"
+            profile_df = abun_df_.filter(regex=regex_pattern, axis=0).reset_index()
+
         df_list.append(profile_df)
     return [abun_df_.reset_index()] + df_list
 
