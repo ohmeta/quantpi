@@ -14,10 +14,10 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"]:
                 "profile/metaphlan2/{sample}/{sample}.metaphlan2.abundance.profile.tsv"),
             samout = temp(os.path.join(
                 config["output"]["profiling"],
-                "profile/metaphlan2/{sample}/{sample}.metaphlan2.sam")) \
+                "profile/metaphlan2/{sample}/{sample}.metaphlan2.sam.bz2")) \
                 if config["params"]["profiling"]["metaphlan"]["no_sam"] \
                 else os.path.join(config["output"]["profiling"],
-                "profile/metaphlan2/{sample}/{sample}.metaphlan2.sam"),
+                "profile/metaphlan2/{sample}/{sample}.metaphlan2.sam.bz2"),
             mapout = temp(os.path.join(
                 config["output"]["profiling"],
                 "profile/metaphlan2/{sample}/{sample}.metaphlan2.bowtie2.bz2")) \
