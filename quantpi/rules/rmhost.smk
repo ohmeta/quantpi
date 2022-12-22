@@ -365,7 +365,7 @@ if config["params"]["rmhost"]["minimap2"]["do"]:
             20
         shell:
             '''
-            minimap2 -I {params.split_size} -d {output} {intput}
+            minimap2 -I {params.split_size} -d {output} {input}
             ''' 
 
 
