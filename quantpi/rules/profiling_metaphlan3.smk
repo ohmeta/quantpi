@@ -2,17 +2,29 @@
 if config["params"]["profiling"]["metaphlan"]["do_v3"]:
     rule profiling_metaphlan3:
         input:
-            reads = profiling_input_with_short_reads
-            #index_mp3 = expand(
-            #    os.path.join(
-            #        config["params"]["profiling"]["metaphlan"]["bowtie2db"],
-            #        "{mpa_name}.{suffix}"),
-            #    mpa_name = config["params"]["profiling"]["metaphlan"]["index_v3"],
-            #    suffix=["1.bt2", "2.bt2", "3.bt2", "4.bt2", "rev.1.bt2", "rev.2.bt2", "pkl"])
+            reads = profiling_input_with_short_reads,
+            index = expand(
+                os.path.join(
+                    config["params"]["profiling"]["metaphlan"]["bowtie2db"],
+                    "{index}.{suffix}"),
+                index = config["params"]["profiling"]["metaphlan"]["index_v3"],
+                suffix = ["1.bt2", "2.bt2", "3.bt2", "4.bt2", "rev.1.bt2", "rev.2.bt2", "pkl"])
         output:
-            os.path.join(
+            profile = os.path.join(
                 config["output"]["profiling"],
-                    "profile/metaphlan3/{sample}/{sample}.metaphlan3.abundance.profile.tsv")
+                "profile/metaphlan3/{sample}/{sample}.metaphlan3.abundance.profile.tsv"),
+            samout = temp(os.path.join(
+                config["output"]["profiling"],
+                "profile/metaphlan3/{sample}/{sample}.metaphlan3.sam")) \
+                if config["params"]["profiling"]["metaphlan"]["no_sam"] \
+                else os.path.join(config["output"]["profiling"],
+                "profile/metaphlan3/{sample}/{sample}.metaphlan3.sam"),
+            mapout = temp(os.path.join(
+                config["output"]["profiling"],
+                "profile/metaphlan3/{sample}/{sample}.metaphlan3.bowtie2.bz2")) \
+                if config["params"]["profiling"]["metaphlan"]["no_map"] \
+                else os.path.join(config["output"]["profiling"],
+                "profile/metaphlan3/{sample}/{sample}.metaphlan3.bowtie2.bz2")
         log:
             os.path.join(config["output"]["profiling"], "logs/metaphlan3/{sample}.metaphlan3.log")
         benchmark:
@@ -53,10 +65,6 @@ if config["params"]["profiling"]["metaphlan"]["do_v3"]:
             ignore_archaea = "--ignore_archaea" \
                 if config["params"]["profiling"]["metaphlan"]["ignore_archaea"] \
                 else "",
-            map_out = "--no_map" if config["params"]["profiling"]["metaphlan"]["no_map"] \
-                else "--bowtie2out %s" % os.path.join(
-                    config["output"]["profiling"],
-                    "profile/metaphlan3/{sample}/{sample}.metaphlan3.bowtie2.bz2"),
             biom_out = "--biom %s" % os.path.join(
                 config["output"]["profiling"],
                 "profile/metaphlan3/{sample}/{sample}.metaphlan3.abundance.profile.biom") \
@@ -67,7 +75,8 @@ if config["params"]["profiling"]["metaphlan"]["do_v3"]:
                 else "",
             cami_format_output = "--CAMI_format_output" \
                 if config["params"]["profiling"]["metaphlan"]["cami_format_output"] \
-                else ""
+                else "",
+            external_opts = config["params"]["profiling"]["metaphlan"]["external_opts_v3"]
         priority:
             20
         threads:
@@ -99,13 +108,15 @@ if config["params"]["profiling"]["metaphlan"]["do_v3"]:
             {params.ignore_eukaryotes} \
             {params.ignore_bacteria} \
             {params.ignore_archaea} \
-            {params.map_out} \
             {params.biom_out} \
             {params.legacy_output} \
             {params.cami_format_output} \
+            {params.external_opts} \
             --sample_id {params.sample_id} \
             --sample_id_key {params.sample_id} \
-            --output_file {output} \
+            --bowtie2out {output.mapout} \
+            --samout {output.samout} \
+            --output_file {output.profile} \
             2> {log}
             '''
 
