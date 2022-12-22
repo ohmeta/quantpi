@@ -15,16 +15,16 @@ if config["params"]["profiling"]["metaphlan"]["do_v3"]:
                 "profile/metaphlan3/{sample}/{sample}.metaphlan3.abundance.profile.tsv"),
             samout = temp(os.path.join(
                 config["output"]["profiling"],
-                "profile/metaphlan3/{sample}/{sample}.metaphlan3.sam.bz2")) \
+                "profile/metaphlan3/{sample}/{sample}.sam.bz2")) \
                 if config["params"]["profiling"]["metaphlan"]["no_sam"] \
                 else os.path.join(config["output"]["profiling"],
-                "profile/metaphlan3/{sample}/{sample}.metaphlan3.sam.bz2"),
+                "profile/metaphlan3/{sample}/{sample}.sam.bz2"),
             mapout = temp(os.path.join(
                 config["output"]["profiling"],
-                "profile/metaphlan3/{sample}/{sample}.metaphlan3.bowtie2.bz2")) \
+                "profile/metaphlan3/{sample}/{sample}.bowtie2.bz2")) \
                 if config["params"]["profiling"]["metaphlan"]["no_map"] \
                 else os.path.join(config["output"]["profiling"],
-                "profile/metaphlan3/{sample}/{sample}.metaphlan3.bowtie2.bz2")
+                "profile/metaphlan3/{sample}/{sample}.bowtie2.bz2")
         log:
             os.path.join(config["output"]["profiling"], "logs/metaphlan3/{sample}.metaphlan3.log")
         benchmark:

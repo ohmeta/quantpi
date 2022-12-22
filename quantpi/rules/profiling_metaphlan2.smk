@@ -14,16 +14,16 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"]:
                 "profile/metaphlan2/{sample}/{sample}.metaphlan2.abundance.profile.tsv"),
             samout = temp(os.path.join(
                 config["output"]["profiling"],
-                "profile/metaphlan2/{sample}/{sample}.metaphlan2.sam.bz2")) \
+                "profile/metaphlan2/{sample}/{sample}.sam.bz2")) \
                 if config["params"]["profiling"]["metaphlan"]["no_sam"] \
                 else os.path.join(config["output"]["profiling"],
-                "profile/metaphlan2/{sample}/{sample}.metaphlan2.sam.bz2"),
+                "profile/metaphlan2/{sample}/{sample}.sam.bz2"),
             mapout = temp(os.path.join(
                 config["output"]["profiling"],
-                "profile/metaphlan2/{sample}/{sample}.metaphlan2.bowtie2.bz2")) \
+                "profile/metaphlan2/{sample}/{sample}.bowtie2.bz2")) \
                 if config["params"]["profiling"]["metaphlan"]["no_map"] \
                 else os.path.join(config["output"]["profiling"],
-                "profile/metaphlan2/{sample}/{sample}.metaphlan2.bowtie2.bz2")
+                "profile/metaphlan2/{sample}/{sample}.bowtie2.bz2")
         conda:
             config["envs"]["metaphlan2"]
         log:
