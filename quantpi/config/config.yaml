@@ -227,6 +227,12 @@ params:
       external_opts_v3: ""
       external_opts_v4: ""
 
+    strainphlan:
+      do_v3: True                                                 # metaphlan3
+      do_v4: True                                                 # metaphlan4
+      clades_tsv: "/path/to/clades.tsv"                           # extrct clade markes from specific clades
+
+
     # Functional profiling
     humann:
       do_v2: False
@@ -329,8 +335,6 @@ envs:
   kraken2: "envs/kraken2.yaml"
   kneaddata: "envs/kneaddata.yaml"
   kmcp: "envs/kmcp.yaml"
-  metaphlan2: "envs/biobakery2.yaml"
-  metaphlan3: "envs/biobakery3.yaml"
-  metaphlan4: "envs/biobakery4.yaml"
-  humann2: "envs/biobakery2.yaml"
-  humann3: "envs/biobakery3.yaml"
+  biobakery2: "envs/biobakery2.yaml"
+  biobakery3: "envs/biobakery3.yaml"
+  biobakery4: "envs/biobakery4.yaml"

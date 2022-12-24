@@ -25,7 +25,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"]:
                 else os.path.join(config["output"]["profiling"],
                 "profile/metaphlan2/{sample}/{sample}.bowtie2.bz2")
         conda:
-            config["envs"]["metaphlan2"]
+            config["envs"]["biobakery2"]
         log:
             os.path.join(config["output"]["profiling"], "logs/metaphlan2/{sample}.metaphlan2.log")
         benchmark:

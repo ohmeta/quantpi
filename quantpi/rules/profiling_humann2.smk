@@ -7,7 +7,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"] and \
             log:
                 os.path.join(config["output"]["profiling"], "logs/humann2/humann2.config.log")
             conda:
-                config["envs"]["humann2"]
+                config["envs"]["biobakery2"]
             params:
                 database_utility_mapping = config["params"]["profiling"]["humann"]["database_utility_mapping"],
                 database_nucleotide = config["params"]["profiling"]["humann"]["database_nucleotide"],
@@ -50,7 +50,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"] and \
                 "database/humann2/{{sample}}/{{sample}}_bowtie2_index.{suffix}"),
                    suffix=["1.bt2", "2.bt2", "3.bt2", "4.bt2", "rev.1.bt2", "rev.2.bt2"])
         conda:
-            config["envs"]["humann2"]
+            config["envs"]["biobakery2"]
         log:
             os.path.join(config["output"]["profiling"],
                          "logs/humann2/{sample}.humann2.build_pandb.log")
@@ -99,7 +99,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"] and \
             os.path.join(config["output"]["profiling"],
                          "benchmark/humann2/{sample}.humann2.benchmark.txt")
         conda:
-            config["envs"]["humann2"]
+            config["envs"]["biobakery2"]
         params:
             basename = "{sample}",
             index = os.path.join(config["output"]["profiling"],
@@ -173,7 +173,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"] and \
             os.path.join(config["output"]["profiling"],
                          "logs/humann2/{sample}.humann2_postprocess.log")
         conda:
-            config["envs"]["humann2"]
+            config["envs"]["biobakery2"]
         params:
             wrapper_dir =WRAPPER_DIR,
             normalize_method = config["params"]["profiling"]["humann"]["normalize_method"],
@@ -251,7 +251,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"] and \
             os.path.join(config["output"]["profiling"],
                          "logs/humann2/humann2_join.log")
         conda:
-            config["envs"]["humann2"]
+            config["envs"]["biobakery2"]
         params:
             wrapper_dir =WRAPPER_DIR,
             input_dir = os.path.join(config["output"]["profiling"], "profile/humann2"),
@@ -324,7 +324,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"] and \
             os.path.join(config["output"]["profiling"],
                          "logs/humann2/humann2_split_stratified.log")
         conda:
-            config["envs"]["humann2"]
+            config["envs"]["biobakery2"]
         params:
             wrapper_dir = WRAPPER_DIR,
             output_dir = os.path.join(config["output"]["profiling"], "report/humann2"),

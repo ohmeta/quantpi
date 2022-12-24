@@ -31,7 +31,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v3"]:
             os.path.join(config["output"]["profiling"],
                          "benchmark/metaphlan3/{sample}.metaphlan3.benchmark.txt")
         conda:
-            config["envs"]["metaphlan3"]
+            config["envs"]["biobakery3"]
         params:
             bowtie2db = config["params"]["profiling"]["metaphlan"]["bowtie2db"],
             index = config["params"]["profiling"]["metaphlan"]["index_v3"],

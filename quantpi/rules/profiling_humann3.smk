@@ -8,7 +8,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v3"] and \
             log:
                 os.path.join(config["output"]["profiling"], "logs/humann3/humann3.config.log")
             conda:
-                config["envs"]["humann3"]
+                config["envs"]["biobakery3"]
             params:
                 database_utility_mapping = config["params"]["profiling"]["humann"]["database_utility_mapping_v3"],
                 database_nucleotide = config["params"]["profiling"]["humann"]["database_nucleotide_v3"],
@@ -93,7 +93,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v3"] and \
         priority:
             20
         conda:
-            config["envs"]["humann3"]
+            config["envs"]["biobakery3"]
         params:
             basename = "{sample}",
             wrapper_dir = WRAPPER_DIR,
@@ -183,7 +183,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v3"] and \
             os.path.join(config["output"]["profiling"],
                          "logs/humann3/{sample}.humann3_postprocess.log")
         conda:
-            config["envs"]["humann3"]
+            config["envs"]["biobakery3"]
         params:
             wrapper_dir =WRAPPER_DIR,
             normalize_method = config["params"]["profiling"]["humann"]["normalize_method"],
@@ -261,7 +261,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v3"] and \
             os.path.join(config["output"]["profiling"],
                          "logs/humann3/humann3_join.log")
         conda:
-            config["envs"]["humann3"]
+            config["envs"]["biobakery3"]
         params:
             wrapper_dir =WRAPPER_DIR,
             input_dir = os.path.join(config["output"]["profiling"], "profile/humann3"),
@@ -334,7 +334,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v3"] and \
             os.path.join(config["output"]["profiling"],
                          "logs/humann3/humann3_split_stratified.log")
         conda:
-            config["envs"]["humann3"]
+            config["envs"]["biobakery3"]
         params:
             wrapper_dir = WRAPPER_DIR,
             output_dir = os.path.join(config["output"]["profiling"], "report/humann3"),
