@@ -43,13 +43,13 @@ if config["params"]["profiling"]["strainphlan"]["do_v3"]:
 
     STRAINPHLAN_CLADES_V3 = \
         pd.read_csv(config["params"]["profiling"]["strainphlan"]["clades_tsv_v3"], sep="\t")\
-          .set_index("clades")
+          .set_index("clade")
     STRAINPHLAN_CLADES_LIST_V3 = STRAINPHLAN_CLADES_V3.index.unique()
 
 
     rule profiling_strainphlan3_extract_markers:
         input:
-            clades_tsv = config["params"]["profiling"]["strainphlan"]["clades_tsv"],
+            clades_tsv = config["params"]["profiling"]["strainphlan"]["clades_tsv_v3"],
             database_pkl = expand(os.path.join(
                 config["params"]["profiling"]["metaphlan"]["bowtie2db"], "{index}.pkl"),
                 index = config["params"]["profiling"]["metaphlan"]["index_v3"])
@@ -90,7 +90,7 @@ if config["params"]["profiling"]["strainphlan"]["do_v3"]:
         input:
             clade_marker = os.path.join(
                 config["output"]["profiling"],
-                "databases/strainphlan3/clade_markers/{clade}.fna")
+                "databases/strainphlan3/clade_markers/{clade}.fna"),
             consensus_markers = expand(os.path.join(
                 config["output"]["profiling"],
                 "profile/strainphlan3/{sample}/consensus_markers/{sample}.pkl"),
