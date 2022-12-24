@@ -230,7 +230,10 @@ params:
     strainphlan:
       do_v3: True                                                 # metaphlan3
       do_v4: True                                                 # metaphlan4
-      clades_tsv: "/path/to/clades.tsv"                           # extrct clade markes from specific clades
+      clades_tsv_v3: "/path/to/clades_v3.tsv"                     # extrct clade markes from specific clades, two column, [clade_name. reference_genome_path]
+      clades_tsv_v4: "/path/to/clades_v4.tsv"                     # extrct clade markes from specific clades, two column, [clade_name. reference_genome_path]
+      external_opts_v3: ""
+      external_opts_v4: ""
 
 
     # Functional profiling

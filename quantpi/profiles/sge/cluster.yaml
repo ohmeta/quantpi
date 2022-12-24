@@ -286,6 +286,36 @@ profiling_metaphlan4_merge:
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"
 
+profiling_strainphlan3_sample2markers:
+  mem: "2G"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
+
+profiling_strainphlan3_extract_markers:
+  mem: "2G"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
+
+profiling_strainphlan3:
+  mem: "5G"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
+
+profiling_strainphlan4_sample2markers:
+  mem: "2G"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
+
+profiling_strainphlan4_extract_markers:
+  mem: "2G"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
+
+profiling_strainphlan4:
+  mem: "5G"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
+
 profiling_humann2_build_chocophlan_pangenome_db:
   mem: "6G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
