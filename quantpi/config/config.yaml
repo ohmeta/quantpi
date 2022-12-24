@@ -183,7 +183,7 @@ params:
 
     # DNA-to-marker
     metaphlan:
-      do_v2: False                                                # metaphaln2
+      do_v2: False                                                # metaphlan2
       do_v3: True                                                 # metaphlan3
       do_v4: True                                                 # metaphlan4
       # please put metaphlan{2,3,4} bowtie2 index on one folder

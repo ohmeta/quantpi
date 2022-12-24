@@ -113,7 +113,7 @@ if config["params"]["profiling"]["strainphlan"]["do_v3"]:
         benchmark:
             os.path.join(
                 config["output"]["profiling"],
-                "benchmark/strainphaln3/{sample}.{clade}.strainphaln3.benchmark.txt")
+                "benchmark/strainphlan3/{sample}.{clade}.strainphlan3.benchmark.txt")
         conda:
             config["envs"]["biobakery3"]
         params:
