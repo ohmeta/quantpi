@@ -89,6 +89,9 @@ include: "../rules/profiling_metaphlan2.smk"
 include: "../rules/profiling_metaphlan3.smk"
 include: "../rules/profiling_metaphlan4.smk"
 
+include: "../rules/profiling_strainphaln3.smk"
+include: "../rules/profiling_strainphaln4.smk"
+
 include: "../rules/profiling_genomecov.smk"
 include: "../rules/profiling_coverm.smk"
 include: "../rules/profiling_custom.smk"

@@ -116,7 +116,7 @@ params:
 
     # DNA-to-DNA
     kraken2:
-      do: True
+      do: False
       database: "/home/jiezhu/databases/ecogenomics/Struo2/GTDB_release202/kraken2"
       taxonomy: "/home/jiezhu/databases/ecogenomics/Struo2/GTDB_release202/kraken2/taxonomy"
       quick: False
@@ -132,16 +132,16 @@ params:
       save_table: False
 
     bracken:
-      do: True
+      do: False
       reads_len: 100
-      level: ["G", "S"]
+      level: ["D", "P", "C", "O", "F", "G", "S", "S1"]
 
     # DNA-to-DNA
     kmcp:
       do:
-        bacteriome: True
-        mycobiome: True
-        virome: True
+        bacteriome: False
+        mycobiome: False
+        virome: False
       database:
         bacteriome: /home/jiezhu/databases/ecogenomics/KMCP/bacteriome/GTDB_r202/gtdb.kmcp
         mycobiome: /home/jiezhu/databases/ecogenomics/KMCP/mycobiome/RefSeq_r208/refseq-fungi.kmcp
@@ -230,8 +230,8 @@ params:
     strainphlan:
       do_v3: True                                                 # metaphlan3
       do_v4: True                                                 # metaphlan4
-      clades_tsv_v3: "/path/to/clades_v3.tsv"                     # extrct clade markes from specific clades, two column, [clade_name. reference_genome_path]
-      clades_tsv_v4: "/path/to/clades_v4.tsv"                     # extrct clade markes from specific clades, two column, [clade_name. reference_genome_path]
+      clades_tsv_v3: "/path/to/clades_v3.tsv"                     # extrct clade markes from specific clades, two column, [clade\tfna_path]
+      clades_tsv_v4: "/path/to/clades_v4.tsv"                     # extrct clade markes from specific clades, two column, [clade\tfna_path]
       external_opts_v3: ""
       external_opts_v4: ""
 
