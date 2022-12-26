@@ -57,7 +57,7 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
         output:
             clade_marker = os.path.join(
                 config["output"]["profiling"],
-                "databases/strainphlan4/clade_markers/{clade}.fna")
+                "databases/strainphlan4/clade_markers/{clade}/{clade}.fna")
         log:
             os.path.join(
                 config["output"]["profiling"], 
@@ -70,7 +70,7 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
             config["envs"]["biobakery4"]
         params:
             clade = "{clade}",
-            outdir = os.path.join(config["output"]["profiling"], "databases/strainphlan4/clade_markers")
+            outdir = os.path.join(config["output"]["profiling"], "databases/strainphlan4/clade_markers/{clade}")
         priority:
             20
         threads:
@@ -114,7 +114,7 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
                 index = config["params"]["profiling"]["metaphlan"]["index_v4"]),
             clade_marker = os.path.join(
                 config["output"]["profiling"],
-                "databases/strainphlan4/clade_markers/{clade}.fna"),
+                "databases/strainphlan4/clade_markers/{clade}/{clade}.fna"),
             consensus_markers = expand(os.path.join(
                 config["output"]["profiling"],
                 "profile/strainphlan4/consensus_markers/{sample}.pkl"),

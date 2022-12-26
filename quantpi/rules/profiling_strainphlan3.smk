@@ -53,7 +53,7 @@ if config["params"]["profiling"]["strainphlan"]["do_v3"]:
         output:
             clade_marker = os.path.join(
                 config["output"]["profiling"],
-                "databases/strainphlan3/clade_markers/{clade}.fna")
+                "databases/strainphlan3/clade_markers/{clade}/{clade}.fna")
         log:
             os.path.join(
                 config["output"]["profiling"], 
@@ -66,7 +66,7 @@ if config["params"]["profiling"]["strainphlan"]["do_v3"]:
             config["envs"]["biobakery3"]
         params:
             clade = "{clade}",
-            outdir = os.path.join(config["output"]["profiling"], "databases/strainphlan3/clade_markers")
+            outdir = os.path.join(config["output"]["profiling"], "databases/strainphlan3/clade_markers/{clade}")
         priority:
             20
         threads:
@@ -110,7 +110,7 @@ if config["params"]["profiling"]["strainphlan"]["do_v3"]:
                 index = config["params"]["profiling"]["metaphlan"]["index_v3"]),
             clade_marker = os.path.join(
                 config["output"]["profiling"],
-                "databases/strainphlan3/clade_markers/{clade}.fna"),
+                "databases/strainphlan3/clade_markers/{clade}/{clade}.fna"),
             consensus_markers = expand(os.path.join(
                 config["output"]["profiling"],
                 "profile/strainphlan3/consensus_markers/{sample}.pkl"),
