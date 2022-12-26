@@ -298,8 +298,8 @@ profiling_strainphlan3_extract_markers:
 
 profiling_strainphlan3:
   mem: "5G"
-  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.clade}.{jobid}.o"
-  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.clade}{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{wildcards.clade}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.clade}{jobid}.e"
 
 profiling_strainphlan4_sample2markers:
   mem: "2G"
@@ -313,8 +313,8 @@ profiling_strainphlan4_extract_markers:
 
 profiling_strainphlan4:
   mem: "5G"
-  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.clade}.{jobid}.o"
-  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.clade}{jobid}.e"
+  output: "logs/04.{rule}/{rule}.{wildcards.clade}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.clade}{jobid}.e"
 
 profiling_humann2_build_chocophlan_pangenome_db:
   mem: "6G"

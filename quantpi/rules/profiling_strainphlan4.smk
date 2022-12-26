@@ -15,7 +15,7 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
         output:
             os.path.join(
                 config["output"]["profiling"],
-                "profile/strainphlan4/{sample}/consensus_markers/{sample}.pkl")
+                "profile/strainphlan4/consensus_markers/{sample}.pkl")
         log:
             os.path.join(
                 config["output"]["profiling"],
@@ -24,18 +24,16 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
             os.path.join(
                 config["output"]["profiling"],
                 "benchmark/strainphlan4_sample2markers/{sample}.strainphlan4_sample2markers.benchmark.txt")
+        params:
+            outdir =  os.path.join(config["output"]["profiling"], "profile/strainphlan4/consensus_markers")
         conda:
             config["envs"]["biobakery4"]
-        params:
-            outdir = os.path.join(config["output"]["profiling"], "profile/strainphlan4/{sample}/consensus_markers")
         priority:
             20
         threads:
             config["params"]["profiling"]["threads"]
         shell:
             '''
-            mkdir -p {params.outdir}
-
             sample2markers.py \
             --database {input.database_pkl} \
             --input {input.sam} \
@@ -97,32 +95,32 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
                 "databases/strainphlan4/clade_markers/{clade}.fna"),
             consensus_markers = expand(os.path.join(
                 config["output"]["profiling"],
-                "profile/strainphlan4/{sample}/consensus_markers/{sample}.pkl"),
+                "profile/strainphlan4/consensus_markers/{sample}.pkl"),
                 sample=SAMPLES_ID_LIST),
-            reference_genome = lambda wildcards: STRAINPHLAN_CLADES_V3.loc[wildcards.clade, "fna_path"]
+            reference_genome = lambda wildcards: STRAINPHLAN_CLADES_V4.loc[wildcards.clade, "fna_path"]
         output:
             expand(os.path.join(
                 config["output"]["profiling"],
-                "profile/strainphlan4/{{sample}}/{{clade}}/RAxML_{prefix}.{{clade}}.StrainPhlAn4.tre"),
+                "profile/strainphlan4/clade_markers/{{clade}}/RAxML_{prefix}.{{clade}}.StrainPhlAn4.tre"),
                 prefix=["bestTree", "info", "log", "parsimonyTree", "result"]),
             expand(os.path.join(
                 config["output"]["profiling"],
-                "profile/strainphlan4/{{sample}}/{{clade}}/{{clade}}{suffix}"),
+                "profile/strainphlan4/clade_markers/{{clade}}/{{clade}}{suffix}"),
                 suffix=["_mutation_rates", ".info", ".mutation", ".polymorphic",
                         ".StrainPhlAn4_concatenated.aln"])
         log:
             os.path.join(
                 config["output"]["profiling"],
-                "logs/strainphlan4/{sample}.{clade}.strainphlan4.log")
+                "logs/strainphlan4/{clade}.strainphlan4.log")
         benchmark:
             os.path.join(
                 config["output"]["profiling"],
-                "benchmark/strainphlan4/{sample}.{clade}.strainphlan4.benchmark.txt")
+                "benchmark/strainphlan4/{clade}.strainphlan4.benchmark.txt")
         conda:
             config["envs"]["biobakery4"]
         params:
             clade = "{clade}",
-            outdir = os.path.join(config["output"]["profiling"], "profile/strainphlan4/{sample}/{clade}"),
+            outdir = os.path.join(config["output"]["profiling"], "profile/strainphlan4/clade_markers/{clade}"),
             opts = config["params"]["profiling"]["strainphlan"]["external_opts_v4"]
         priority:
             20
@@ -149,16 +147,14 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
         input:
             expand(os.path.join(
                 config["output"]["profiling"],
-                "profile/strainphlan4/{sample}/{clade}/RAxML_{prefix}.{clade}.StrainPhlAn4.tre"),
+                "profile/strainphlan4/clade_markers/{clade}/RAxML_{prefix}.{clade}.StrainPhlAn4.tre"),
                 prefix=["bestTree", "info", "log", "parsimonyTree", "result"],
-                sample=SAMPLES_ID_LIST,
                 clade=STRAINPHLAN_CLADES_LIST_V4),
             expand(os.path.join(
                 config["output"]["profiling"],
-                "profile/strainphlan4/{sample}/{clade}/{clade}{suffix}"),
+                "profile/strainphlan4/clade_markers/{clade}/{clade}{suffix}"),
                 suffix=["_mutation_rates", ".info", ".mutation", ".polymorphic",
                         ".StrainPhlAn4_concatenated.aln"],
-                sample=SAMPLES_ID_LIST,
                 clade=STRAINPHLAN_CLADES_LIST_V4)
 
 else:
