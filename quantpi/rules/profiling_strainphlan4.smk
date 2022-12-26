@@ -51,7 +51,6 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
 
     rule profiling_strainphlan4_extract_markers:
         input:
-            clades_tsv = config["params"]["profiling"]["strainphlan"]["clades_tsv_v4"],
             database_pkl = expand(os.path.join(
                 config["params"]["profiling"]["metaphlan"]["bowtie2db"], "{index}.pkl"),
                 index = config["params"]["profiling"]["metaphlan"]["index_v4"])
@@ -88,8 +87,31 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
             '''
 
 
+    rule profiling_strainphlan4_prepare_reference_genome:
+        input:
+            reference_genome = lambda wildcards: STRAINPHLAN_CLADES_V4.loc[wildcards.clade, "fna_path"]
+        output:
+            reference_genome = os.path.join(
+                config["output"]["profiling"],
+                "databases/strainphlan4/reference_genomes/{clade}.fna")
+        run:
+            if input.reference_genome.endswith(".gz"):
+                shell(f'''pigz -fkdc {input.reference_genome} > {output.reference_genome}''')
+            else:
+                fna_path = os.path.realpath(input.reference_genome)
+                fna_path_ = os.path.realpath(output.reference_genome)
+                shellf('''ln -s {fna_path} {fna_path_}''')
+
+
+    localrules:
+        profiling_strainphlan4_prepare_reference_genome
+
+
     rule profiling_strainphlan4:
         input:
+            database_pkl = expand(os.path.join(
+                config["params"]["profiling"]["metaphlan"]["bowtie2db"], "{index}.pkl"),
+                index = config["params"]["profiling"]["metaphlan"]["index_v4"]),
             clade_marker = os.path.join(
                 config["output"]["profiling"],
                 "databases/strainphlan4/clade_markers/{clade}.fna"),
@@ -97,7 +119,9 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
                 config["output"]["profiling"],
                 "profile/strainphlan4/consensus_markers/{sample}.pkl"),
                 sample=SAMPLES_ID_LIST),
-            reference_genome = lambda wildcards: STRAINPHLAN_CLADES_V4.loc[wildcards.clade, "fna_path"]
+            reference_genome = os.path.join(
+                config["output"]["profiling"],
+                "databases/strainphlan4/reference_genomes/{clade}.fna")
         output:
             expand(os.path.join(
                 config["output"]["profiling"],
@@ -131,6 +155,7 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
             mkdir -p {params.outdir}
 
             strainphlan \
+            --database {input.database_pkl} \
             --samples {input.consensus_markers} \
             --clade_markers {input.clade_marker} \
             --references {input.reference_genome} \
