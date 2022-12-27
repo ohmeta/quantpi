@@ -153,7 +153,7 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
             marker_in_n_samples = config["params"]["profiling"]["strainphlan"]["marker_in_n_samples"],
             sample_with_n_markers = config["params"]["profiling"]["strainphlan"]["sample_with_n_markers"],
             secondary_sample_with_n_markers = config["params"]["profiling"]["strainphlan"]["secondary_sample_with_n_markers"],
-            sample_with_n_markers_after_filt = config["params"]["profiling"]["strainphlan"]["sample_with_n_markers_after_filt"],
+            #sample_with_n_markers_after_filt = config["params"]["profiling"]["strainphlan"]["sample_with_n_markers_after_filt"],
             breadth_thres = config["params"]["profiling"]["strainphlan"]["breadth_thres"],
             phylophlan_mode = config["params"]["profiling"]["strainphlan"]["phylophlan_mode"],
             opts = config["params"]["profiling"]["strainphlan"]["external_opts_v4"]
@@ -177,7 +177,6 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
             --marker_in_n_samples {params.marker_in_n_samples} \
             --sample_with_n_markers {params.sample_with_n_markers} \
             --secondary_sample_with_n_markers {params.secondary_sample_with_n_markers} \
-            --sample_with_n_markers_after_filt {params.sample_with_n_markers_after_filt} \
             --breadth_thres {params.breadth_thres} \
             --phylophlan_mode {params.phylophlan_mode} \
             --mutation_rates \
