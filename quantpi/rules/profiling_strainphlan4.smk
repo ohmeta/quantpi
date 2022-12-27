@@ -123,15 +123,19 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
                 config["output"]["profiling"],
                 "databases/strainphlan4/reference_genomes/{clade}.fna")
         output:
-            expand(os.path.join(
-                config["output"]["profiling"],
-                "profile/strainphlan4/clade_markers/{{clade}}/RAxML_{prefix}.{{clade}}.StrainPhlAn4.tre"),
-                prefix=["bestTree", "info", "log", "parsimonyTree", "result"]),
-            expand(os.path.join(
-                config["output"]["profiling"],
-                "profile/strainphlan4/clade_markers/{{clade}}/{{clade}}{suffix}"),
-                suffix=["_mutation_rates", ".info", ".mutation", ".polymorphic",
-                        ".StrainPhlAn4_concatenated.aln"])
+            #expand(os.path.join(
+            #    config["output"]["profiling"],
+            #    "profile/strainphlan4/clade_markers/{{clade}}/RAxML_{prefix}.{{clade}}.StrainPhlAn4.tre"),
+            #    prefix=["bestTree", "info", "log", "parsimonyTree", "result"]),
+            #expand(os.path.join(
+            #    config["output"]["profiling"],
+            #    "profile/strainphlan4/clade_markers/{{clade}}/{{clade}}{suffix}"),
+            #    suffix=[".info", ".mutation", ".polymorphic",
+            #            ".StrainPhlAn4_concatenated.aln"]),
+            #directory(os.path.join(
+            #    config["output"]["profiling"],
+            #    "profile/strainphlan4/clade_markers/{clade}/{clade}_mutation_rates"))
+            done = os.path.join(config["output"]["profiling"], "profile/strainphlan4/clade_markers/{clade}/done")
         log:
             os.path.join(
                 config["output"]["profiling"],
@@ -165,21 +169,27 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
             --mutation_rates \
             {params.opts} \
             >{log} 2>&1
+
+            touch {output.done}
             '''
 
 
     rule profiling_strainphlan4_all:
         input:
+            #expand(os.path.join(
+            #    config["output"]["profiling"],
+            #    "profile/strainphlan4/clade_markers/{clade}/RAxML_{prefix}.{clade}.StrainPhlAn4.tre"),
+            #    prefix=["bestTree", "info", "log", "parsimonyTree", "result"],
+            #    clade=STRAINPHLAN_CLADES_LIST_V4),
+            #expand(os.path.join(
+            #    config["output"]["profiling"],
+            #    "profile/strainphlan4/clade_markers/{clade}/{clade}{suffix}"),
+            #    suffix=["_mutation_rates", ".info", ".mutation", ".polymorphic",
+            #            ".StrainPhlAn4_concatenated.aln"],
+            #    clade=STRAINPHLAN_CLADES_LIST_V4)
             expand(os.path.join(
                 config["output"]["profiling"],
-                "profile/strainphlan4/clade_markers/{clade}/RAxML_{prefix}.{clade}.StrainPhlAn4.tre"),
-                prefix=["bestTree", "info", "log", "parsimonyTree", "result"],
-                clade=STRAINPHLAN_CLADES_LIST_V4),
-            expand(os.path.join(
-                config["output"]["profiling"],
-                "profile/strainphlan4/clade_markers/{clade}/{clade}{suffix}"),
-                suffix=["_mutation_rates", ".info", ".mutation", ".polymorphic",
-                        ".StrainPhlAn4_concatenated.aln"],
+                "profile/strainphlan4/clade_markers/{clade}/done"),
                 clade=STRAINPHLAN_CLADES_LIST_V4)
 
 else:
