@@ -466,7 +466,7 @@ if begin from simulate:
         type=str,
         default="bowtie2",
         required=False,
-        choices=["soap", "bwa", "bowtie2", "minimap2", "kraken2", "kneaddata"],
+        choices=["bwa", "bowtie2", "minimap2", "kraken2", "kneaddata"],
         help="which rmhoster used",
     )
     parser_init.set_defaults(func=init)

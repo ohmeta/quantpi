@@ -69,7 +69,6 @@ trimming_report
 trimming_report_merge
 trimming_report_all
 trimming_all
-rmhost_soap_all
 rmhost_bowtie2_index
 rmhost_bowtie2
 rmhost_kraken2_all
