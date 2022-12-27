@@ -232,6 +232,13 @@ params:
       do_v4: True                                                 # metaphlan4
       clades_tsv_v3: "/path/to/clades_v3.tsv"                     # extrct clade markes from specific clades, two column, [clade\tfna_path]
       clades_tsv_v4: "/path/to/clades_v4.tsv"                     # extrct clade markes from specific clades, two column, [clade\tfna_path]
+      trim_sequences: "50"
+      marker_in_n_samples: "80"                                   # reduce it if meet: Phylogeny can not be inferred. Too many markers were discarded
+      sample_with_n_markers: "80"
+      secondary_sample_with_n_markers: "80"
+      sample_with_n_markers_after_filt: "80"
+      phylophlan_mode: "accurate"
+      breadth_thres: "80"                                         # strainphlan4
       external_opts_v3: ""
       external_opts_v4: ""
 

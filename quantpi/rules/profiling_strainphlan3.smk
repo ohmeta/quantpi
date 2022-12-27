@@ -145,6 +145,12 @@ if config["params"]["profiling"]["strainphlan"]["do_v3"]:
         params:
             clade = "{clade}",
             outdir = os.path.join(config["output"]["profiling"], "profile/strainphlan3/clade_markers/{clade}"),
+            trim_sequences = config["params"]["profiling"]["strainphlan"]["trim_sequences"],
+            marker_in_n_samples = config["params"]["profiling"]["strainphlan"]["marker_in_n_samples"],
+            sample_with_n_markers = config["params"]["profiling"]["strainphlan"]["sample_with_n_markers"],
+            secondary_sample_with_n_markers = config["params"]["profiling"]["strainphlan"]["secondary_sample_with_n_markers"],
+            sample_with_n_markers_after_filt = config["params"]["profiling"]["strainphlan"]["sample_with_n_markers_after_filt"],
+            phylophlan_mode = config["params"]["profiling"]["strainphlan"]["phylophlan_mode"],
             opts = config["params"]["profiling"]["strainphlan"]["external_opts_v3"]
         priority:
             20
@@ -162,6 +168,12 @@ if config["params"]["profiling"]["strainphlan"]["do_v3"]:
             --output_dir {params.outdir}/ \
             --nprocs {threads} \
             --clade {params.clade} \
+            --trim_sequences {params.trim_sequences} \
+            --marker_in_n_samples {params.marker_in_n_samples} \
+            --sample_with_n_markers {params.sample_with_n_markers} \
+            --secondary_sample_with_n_markers {params.secondary_sample_with_n_markers} \
+            --sample_with_n_markers_after_filt {params.sample_with_n_markers_after_filt} \
+            --phylophlan_mode {params.phylophlan_mode} \
             --mutation_rates \
             {params.opts} \
             >{log} 2>&1
