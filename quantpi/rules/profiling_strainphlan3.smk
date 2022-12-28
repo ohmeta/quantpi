@@ -158,6 +158,7 @@ if config["params"]["profiling"]["strainphlan"]["do_v3"]:
             config["params"]["profiling"]["threads"]
         shell:
             '''
+            rm -rf {params.outdir}
             mkdir -p {params.outdir}
 
             strainphlan \
