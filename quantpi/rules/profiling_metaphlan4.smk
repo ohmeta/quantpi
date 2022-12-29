@@ -7,7 +7,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v4"]:
                     config["params"]["profiling"]["metaphlan"]["bowtie2db"],
                     "{index}.{suffix}"),
                 index = config["params"]["profiling"]["metaphlan"]["index_v4"],
-                suffix = ["1.bt2", "2.bt2", "3.bt2", "4.bt2", "rev.1.bt2", "rev.2.bt2", "pkl"])
+                suffix = ["1.bt2l", "2.bt2l", "3.bt2l", "4.bt2l", "rev.1.bt2l", "rev.2.bt2l", "pkl"])
         output:
             profile = os.path.join(
                 config["output"]["profiling"],
