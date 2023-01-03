@@ -37,8 +37,8 @@ optional arguments:
 available subcommands:
   
     init         init project
-    profiling_wf
-                 metagenome-profiling pipeline
+    simulate_wf  simulate reads
+    profiling_wf metagenome-profiling pipeline
     sync         quantpi sync project
 ```
 
@@ -50,7 +50,6 @@ Running quantpi profiling_wf:
 snakemake --snakefile /home/jiezhu/toolkit/quantpi/quantpi/snakefiles/profiling_wf.smk --configfile ./config.yaml --cores 240 --rerun-incomplete --keep-going --printshellcmds --re
 ason --until all --list
 
-simulate_all
 prepare_short_reads
 prepare_short_reads_all
 prepare_long_reads_all

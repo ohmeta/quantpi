@@ -5,4 +5,5 @@ channels:
 dependencies:
   - insilicoseq=1.5.4
   - pandas
+  - biopython
   - pigz

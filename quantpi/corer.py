@@ -11,8 +11,12 @@ import pandas as pd
 
 import quantpi
 
+
+WORKFLOWS_SIMULATE = [
+    "simulate_all"
+]
+
 WORKFLOWS_PROFILING = [
-    "simulate_all",
     "prepare_short_reads_all",
     "prepare_long_reads_all",
     "prepare_reads_all",
@@ -187,6 +191,11 @@ def init(args, unknown):
     else:
         print("Please supply a workdir!")
         sys.exit(-1)
+
+
+def simulate_wf(args, unknown):
+    snakefile = os.path.join(os.path.dirname(__file__), "snakefiles/simulate_wf.smk")
+    run_snakemake(args, unknown, snakefile, "simulate_wf")
 
 
 def profiling_wf(args, unknown):
@@ -411,6 +420,13 @@ def main():
         prog="quantpi init",
         help="init project",
     )
+    parser_simulate_wf = subparsers.add_parser(
+        "simulate_wf",
+        formatter_class=quantpi.custom_help_formatter,
+        parents=[common_parser, run_parser],
+        prog="quantpi simulate_wf",
+        help="simulate reads",
+    )
     parser_profiling_wf = subparsers.add_parser(
         "profiling_wf",
         formatter_class=quantpi.custom_help_formatter,
@@ -471,6 +487,17 @@ if begin from simulate:
         help="which rmhoster used",
     )
     parser_init.set_defaults(func=init)
+
+    parser_simulate_wf.add_argument(
+        "task",
+        metavar="TASK",
+        nargs="?",
+        type=str,
+        default="all",
+        choices=WORKFLOWS_SIMULATE,
+        help="pipeline end point. Allowed values are " + ", ".join(WORKFLOWS_SIMULATE),
+    )
+    parser_simulate_wf.set_defaults(func=simulate_wf)
 
     parser_profiling_wf.add_argument(
         "task",

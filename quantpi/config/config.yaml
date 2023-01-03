@@ -220,8 +220,8 @@ params:
       ignore_usgbs: False                                         # metaphlan4
       legacy_output: False                                        # common
       cami_format_output: False                                   # metaphlan3 or metaphlan4
-      no_sam: True                                                # keep it to False when want to run strainphlan, common
-      no_map: True                                                # keep it to False when want to run strainphlan, common
+      no_sam: False                                               # keep it to False when want to run strainphlan, common
+      no_map: False                                               # keep it to False when want to run strainphlan, common
       biom: False                                                 # common
       external_opts_v2: ""
       external_opts_v3: ""

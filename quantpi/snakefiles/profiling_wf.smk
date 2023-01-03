@@ -46,14 +46,10 @@ RMHOST_DO = True \
        else False
 
 
-if config["params"]["simulate"]["do"]:
-    SAMPLES = quantpi.parse_genomes(config["params"]["samples"],
-                                   config["output"]["simulate"])
-else:
-    SAMPLES = quantpi.parse_samples(config["params"]["samples"],
-                                   config["params"]["interleaved"],
-                                   config["params"]["reads_layout"],
-                                   config["params"]["begin"])
+SAMPLES = quantpi.parse_samples(config["params"]["samples"],
+                                config["params"]["interleaved"],
+                                config["params"]["reads_layout"],
+                                config["params"]["begin"])
 
 SAMPLES_ID_LIST = SAMPLES.index.unique()
 
@@ -75,7 +71,6 @@ if config["params"]["profiling"]["kmcp"]["do"]["virome"]:
     KMCP_TAXIDMAP.append(os.path.join(config["params"]["profiling"]["kmcp"]["database"]["virome"], "taxid.map"))
 
 
-include: "../rules/simulate.smk"
 include: "../rules/raw.smk"
 include: "../rules/trimming.smk"
 include: "../rules/rmhost.smk"
@@ -105,7 +100,6 @@ include: "../rules/profiling_all.smk"
 
 rule all:
     input:
-        rules.simulate_all.input,
         rules.raw_all.input,
         rules.trimming_all.input,
         rules.rmhost_all.input,

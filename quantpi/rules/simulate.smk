@@ -13,6 +13,8 @@ if config["params"]["simulate"]["do"]:
             os.path.join(config["output"]["simulate"], "logs/{sample}.iss.log")
         benchmark:
             os.path.join(config["output"]["simulate"], "benchmark/iss/{sample}.iss.benchmark.txt")
+        conda:
+            config["envs"]["simulate"]
         params:
             output_prefix = os.path.join(config["output"]["simulate"],
                                          "short_reads/{sample}"),
@@ -21,12 +23,8 @@ if config["params"]["simulate"]["do"]:
             abundance = lambda wildcards: quantpi.get_simulate_info(SAMPLES, wildcards, "abundance")
         threads:
             config["params"]["simulate"]["threads"]
-        run:
-            quantpi.simulate_short_reads(input.genomes,
-                                        params.output_prefix,
-                                        output.r1, output.r2, output.abunf,
-                                        params.model, params.reads_num,
-                                        params.abundance, threads, str(log))
+        script: 
+            "../wrappers/simulate_reads.py"
 
 
     rule simulate_all:
