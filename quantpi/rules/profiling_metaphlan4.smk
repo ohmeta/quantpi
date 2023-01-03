@@ -117,7 +117,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v4"]:
             --sample_id {params.sample_id} \
             --bowtie2out {output.mapout} \
             --samout {output.samout} \
-            --output_file {output} \
+            --output_file {output.profile} \
             2> {log}
             '''
 
