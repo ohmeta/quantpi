@@ -98,6 +98,7 @@ include: "../rules/profiling_custom.smk"
 
 include: "../rules/profiling_humann2.smk"
 include: "../rules/profiling_humann3.smk"
+include: "../rules/profiling_humann4.smk"
 
 include: "../rules/profiling_all.smk"
 

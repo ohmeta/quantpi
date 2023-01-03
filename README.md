@@ -123,6 +123,12 @@ profiling_genome_coverm_all
 profiling_custom_bgi_soap_all
 profiling_custom_bowtie2_all
 profiling_custom_jgi_all
+profiling_humann2_config
+profiling_humann2_build_chocophlan_pangenome_db
+profiling_humann2
+profiling_humann2_postprocess
+profiling_humann2_join
+profiling_humann2_split_stratified
 profiling_humann2_all
 profiling_humann3_config
 profiling_humann3
@@ -130,6 +136,12 @@ profiling_humann3_postprocess
 profiling_humann3_join
 profiling_humann3_split_stratified
 profiling_humann3_all
+profiling_humann4_config
+profiling_humann4
+profiling_humann4_postprocess
+profiling_humann4_join
+profiling_humann4_split_stratified
+profiling_humann4_all
 profiling_all
 all
 ```
