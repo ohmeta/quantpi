@@ -382,27 +382,27 @@ profiling_humann3_split_stratified:
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"
 
-profiling_humann3.6_build_chocophlan_pangenome_db:
+profiling_humann4_build_chocophlan_pangenome_db:
   mem: "6G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
-profiling_humann3.6:
+profiling_humann4:
   mem: "40G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
-profiling_humann3.6_postprocess:
+profiling_humann4_postprocess:
   mem: "1G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
-profiling_humann3.6_join:
+profiling_humann4_join:
   mem: "2G"
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"
 
-profiling_humann3.6_split_stratified:
+profiling_humann4_split_stratified:
   mem: "1G"
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"

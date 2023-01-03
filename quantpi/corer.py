@@ -47,7 +47,7 @@ WORKFLOWS_PROFILING = [
     "profiling_custom_jgi_all",
     "profiling_humann2_all",
     "profiling_humann3_all",
-    "profiling_humann3.6_all",
+    "profiling_humann4_all",
     "profiling_all",
     "all",
 ]
