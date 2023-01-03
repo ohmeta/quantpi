@@ -247,6 +247,7 @@ params:
     humann:
       do_v2: False
       do_v3: True
+      do_v3.6: True
       evalue: 1.0
       prescreen_threshold: 0.01
       identity_threshold: 50.0
@@ -273,11 +274,14 @@ params:
       #  "uniref90_rxn",
       update_config: True # humann save config to humann install dir
       database_utility_mapping: "/home/jiezhu/databases/funcgenomics/humann2/utility_mapping"
-      database_utility_mapping_v3: "/home/jiezhu/databases/funcgenomics/humann/utility_mapping"
+      database_utility_mapping_v3: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/utility_mapping"
+      database_utility_mapping_v3.6: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/utility_mapping"
       database_protein: "/home/jiezhu/databases/funcgenomics/humann2/uniref"
-      database_protein_v3: "/home/jiezhu/databases/funcgenomics/humann/uniref"
+      database_protein_v3: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/uniref"
+      database_protein_v3.6: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/uniref"
       database_nucleotide: "/home/jiezhu/databases/funcgenomics/humann2/chocophlan"
-      database_nucleotide_v3: "/home/jiezhu/databases/funcgenomics/humann/chocophlan"
+      database_nucleotide_v3: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/chocophlan"
+      database_nucleotide_v3.6: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/chocophlan"
 
     # alignment method
     genomecov:
