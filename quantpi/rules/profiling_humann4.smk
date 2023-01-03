@@ -6,7 +6,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v4"] and \
             output:
                 touch(os.path.join(config["output"]["profiling"], ".humann4.config.done"))
             log:
-                os.path.join(config["output"]["profiling"], "logs/humann3/humann4.config.log")
+                os.path.join(config["output"]["profiling"], "logs/humann4/humann4.config.log")
             conda:
                 config["envs"]["biobakery4"]
             params:
@@ -181,7 +181,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v4"] and \
                 group=config["params"]["profiling"]["humann"]["map_database"])
         log:
             os.path.join(config["output"]["profiling"],
-                         "logs/humann4/{sample}.humann3_postprocess.log")
+                         "logs/humann4/{sample}.humann4_postprocess.log")
         conda:
             config["envs"]["biobakery4"]
         params:
