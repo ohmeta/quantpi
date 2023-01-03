@@ -13,7 +13,8 @@ import quantpi
 
 
 WORKFLOWS_SIMULATE = [
-    "simulate_all"
+    "simulate_all",
+    "all"
 ]
 
 WORKFLOWS_PROFILING = [
