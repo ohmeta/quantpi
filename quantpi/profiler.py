@@ -6,7 +6,7 @@ import os
 import sys
 import argparse
 import gzip
-import pysam
+#import pysam
 import re
 import numpy as np
 from natsort import index_natsorted
@@ -256,6 +256,7 @@ def get_abun_df_bgi_soap(soap_file):
     return count_df, abun_df
 
 
+'''
 def get_abun_df_bowtie2(bam):
     sample_id = os.path.basename(bam).split(".")[0]
 
@@ -287,6 +288,7 @@ def get_abun_df_bowtie2(bam):
     count_df = abun_count.loc[:, ["reads_count"]].rename(
         columns={"reads_count": sample_id})
     return count_df, abun_df
+'''
 
 
 def get_abun_df_hsx(abun_file):
