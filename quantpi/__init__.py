@@ -25,7 +25,7 @@ from quantpi.aligner import flagstats_summary
 from quantpi.profiler import profiler_init
 from quantpi.profiler import get_all_abun_df
 from quantpi.profiler import get_abun_df_bgi_soap
-from quantpi.profiler import get_abun_df_bowtie2
+#from quantpi.profiler import get_abun_df_bowtie2
 from quantpi.profiler import get_abun_df_jgi
 from quantpi.profiler import get_profile
 from quantpi.profiler import metaphlan_init

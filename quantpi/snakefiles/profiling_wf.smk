@@ -89,7 +89,7 @@ include: "../rules/profiling_strainphlan4.smk"
 
 include: "../rules/profiling_genomecov.smk"
 include: "../rules/profiling_coverm.smk"
-include: "../rules/profiling_custom.smk"
+#include: "../rules/profiling_custom.smk"
 
 include: "../rules/profiling_humann2.smk"
 include: "../rules/profiling_humann3.smk"
