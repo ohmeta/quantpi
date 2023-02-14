@@ -11,8 +11,8 @@ if config["params"]["qcreport"]["do"]:
                                 "{step}_stats.tsv"),
                    step=STEPS)
         output:
-            summary_l = os.path.join(config["output"]["qcreport"], "qc_stats.tsv"),
-            summary_w = os.path.join(config["output"]["qcreport"], "qc_stats_subjects.tsv"),
+            summary_l = os.path.join(config["output"]["qcreport"], "qc_stats_l.tsv"),
+            summary_w = os.path.join(config["output"]["qcreport"], "qc_stats_w.tsv"),
         priority:
             30
         threads:
@@ -37,7 +37,8 @@ if config["params"]["qcreport"]["do"]:
 
     rule qcreport_all:
         input:
-            os.path.join(config["output"]["qcreport"], "qc_stats.tsv"),
+            os.path.join(config["output"]["qcreport"], "qc_stats_l.tsv"),
+            os.path.join(config["output"]["qcreport"], "qc_stats_w.tsv"),
             os.path.join(config["output"]["qcreport"], "qc_reads_num_barplot.pdf")#,
 
             #rules.rmhost_all.input
