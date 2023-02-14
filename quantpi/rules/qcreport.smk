@@ -25,7 +25,7 @@ if config["params"]["qcreport"]["do"]:
 
     rule qcreport_plot:
         input:
-            os.path.join(config["output"]["qcreport"], "qc_stats.tsv")
+            os.path.join(config["output"]["qcreport"], "qc_stats_l.tsv")
         output:
             os.path.join(config["output"]["qcreport"], "qc_reads_num_barplot.pdf")
         priority:
