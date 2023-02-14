@@ -224,6 +224,29 @@ def compute_host_rate(df, steps, samples_id_list, allow_miss_samples=True, **kwa
     return df
 
 
+def qc_summary_merge(df, **kwargs):
+    df_ = df.loc[:, ["id", "format", "type", "step", "fq_type",
+                     "num_seqs", "sum_len", "min_len", "avg_len", "max_len",
+                     "Q1", "Q2", "Q3", "sum_gap", "Q20(%)", "Q30(%)"]] 
+    df_ = df.groupby(["id", "format", "type", "step", "fq_type"])\
+            .agg(
+                {
+                    "sum_len": ["sum"],
+                    "min_len": ["min"],
+                    "avg_len": ["mean"],
+                    "max_len": ["max"],
+                    "Q1": ["mean"],
+                    "Q2": ["mean"],
+                    "Q3": ["mean"],
+                    "Q20(%)": ["mean"],
+                    "Q30(%)": ["mean"]
+                }
+            ).reset_index()
+
+    if "output" in kwargs:
+        df_.to_csv(kwargs["output"], sep="\t", index=False)
+
+
 def qc_bar_plot(df, engine, stacked=False, **kwargs):
     if engine == "seaborn":
         # seaborn don't like stacked barplot

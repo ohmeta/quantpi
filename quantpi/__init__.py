@@ -17,6 +17,7 @@ from quantpi.tooler import merge
 
 from quantpi.qcer import change
 from quantpi.qcer import compute_host_rate
+from quantpi.qcer import qc_summary_merge
 from quantpi.qcer import qc_bar_plot
 from quantpi.qcer import parse_fastp_json
 

@@ -11,14 +11,16 @@ if config["params"]["qcreport"]["do"]:
                                 "{step}_stats.tsv"),
                    step=STEPS)
         output:
-            os.path.join(config["output"]["qcreport"], "qc_stats.tsv")
+            summary_l = os.path.join(config["output"]["qcreport"], "qc_stats.tsv"),
+            summary_w = os.path.join(config["output"]["qcreport"], "qc_stats_subjects.tsv"),
         priority:
             30
         threads:
             config["params"]["qcreport"]["seqkit"]["threads"]
         run:
             df = quantpi.merge(input, quantpi.parse, threads)
-            quantpi.compute_host_rate(df, STEPS, SAMPLES_ID_LIST, allow_miss_samples=True, output=output[0])
+            df = quantpi.compute_host_rate(df, STEPS, SAMPLES_ID_LIST, allow_miss_samples=True, output=output.summary_l)
+            quantpi.qc_summary_merge(df, output=output.summary_w)
 
 
     rule qcreport_plot:
