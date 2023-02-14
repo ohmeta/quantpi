@@ -233,18 +233,16 @@ def qc_summary_merge(df, **kwargs):
 
     df_w = df_l.groupby(["id", "format", "type", "step", "fq_type"])\
             .agg(
-                { 
-                    "num_seqs": ["sum"],
-                    "sum_len": ["sum"],
-                    "min_len": ["min"],
-                    "avg_len": ["mean"],
-                    "max_len": ["max"],
-                    "Q1": ["mean"],
-                    "Q2": ["mean"],
-                    "Q3": ["mean"],
-                    "Q20(%)": ["mean"],
-                    "Q30(%)": ["mean"]
-                }
+                num_seqs=("num_seqs", "sum"),
+                sum_len=("sum_len", "sum"),
+                min_len=("min_len", "sum"),
+                avg_len=("avg_len", "mean"),
+                max_len=("max_len", "max"),
+                Q1=("Q1", "mean"),
+                Q2=("Q2", "mean"),
+                Q3=("Q3", "mean"),
+                Q20_per=("Q20(%)", "mean"),
+                Q30_per=("Q30(%)", "mean")
             ).reset_index()
 
     df_summary = pd.merge(df_w, df_host_rate, how="inner", on=["id", "format", "type", "fq_type"])
