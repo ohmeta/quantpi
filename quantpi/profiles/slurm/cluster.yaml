@@ -177,6 +177,21 @@ profiling_kraken2:
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
+profiling_kraken2_krona_report:
+  mem: "10G"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
+
+profiling_kraken2_combine_kreport:
+  mem: "10G"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
+
+profiling_kraken2_combine_kreport_mpa:
+  mem: "10G"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
+
 profiling_bracken:
   mem: "1G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.level}.{jobid}.o"
