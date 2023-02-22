@@ -151,8 +151,8 @@ if config["params"]["profiling"]["kraken2"]["do"]:
             then
                 echo "Running ktImportTaxonomy." >>{log} 2>&1
                 ktImportTaxonomy \
-                -q 2 \
-                -t 3 \
+                -t 5 \
+                -m 3 \
                 -tax {input.taxonomy} \
                 {input.report} \
                 -o {output} \
