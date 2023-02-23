@@ -228,8 +228,8 @@ params:
       external_opts_v4: ""
 
     strainphlan:
-      do_v3: True                                                 # metaphlan3
-      do_v4: True                                                 # metaphlan4
+      do_v3: False                                                # metaphlan3
+      do_v4: False                                                 # metaphlan4
       clades_tsv_v3: "/path/to/clades_v3.tsv"                     # extrct clade markes from specific clades, two column, [clade\tfna_path]
       clades_tsv_v4: "/path/to/clades_v4.tsv"                     # extrct clade markes from specific clades, two column, [clade\tfna_path]
       trim_sequences: "50"
