@@ -134,7 +134,7 @@ options:
 
 ## Real world
 
-### Step 1: download LMAS[https://github.com/B-UMMI/LMAS] data
+### Step 1: download [LMAS](https://github.com/B-UMMI/LMAS) data
 
 A set of simulated samples were generated from the genomes in the ZymoBIOMICS standard though the [InSilicoSeq sequence simulator](https://github.com/HadrienG/InSilicoSeq) (version 1.5.2),
 including both even and logarithmic distribution, with and without Illumina error model. The number of read pairs generated matches the number of read pairs in the real data for each distribution.
