@@ -35,6 +35,8 @@ from quantpi.profiler import genomecov_parse
 from quantpi.profiler import genomecov_merge
 from quantpi.profiler import coverm_parse
 from quantpi.profiler import coverm_merge
+from quantpi.profiler import kmcp_profile_parse
+from quantpi.profiler import kmcp_profile_merge
 
 from quantpi.__about__ import __version__, __author__
 

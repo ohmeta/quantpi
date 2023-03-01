@@ -214,9 +214,67 @@ if KMCP_DB_NUMBER > 0:
             '''
 
 
+    rule profiling_kmcp_profile_merge_kmcp:
+        input:
+            profile = expand(os.path.join(
+                config["output"]["profiling"],
+                "profile/kmcp/{sample}/{sample}.kmcp.default_format.{{profiling_mode}}.profile"),
+                          sample=SAMPLES_ID_LIST)
+        output:
+            percentage = expand(
+                os.path.join(
+                    config["output"]["profiling"],
+                    "report/kmcp/kmcp_format/{{profiling_mode}}/merged.percentage.profile.{level}.tsv"),
+                level=["strain", "species"]),
+            coverage = expand(
+                os.path.join(
+                    config["output"]["profiling"],
+                    "report/kmcp/kmcp_format/{{profiling_mode}}/merged.coverage.profile.{level}.tsv"),
+                level=["strain", "species"]),
+            reads = expand(
+                os.path.join(
+                    config["output"]["profiling"],
+                    "report/kmcp/kmcp_format/{{profiling_mode}}/merged.reads.profile.{level}.tsv"),
+                level=["strain", "species"]),
+            ureads = expand(
+                os.path.join(
+                    config["output"]["profiling"],
+                    "report/kmcp/kmcp_format/{{profiling_mode}}/merged.ureads.profile.{level}.tsv"),
+                level=["strain", "species"]),
+            hicureads = expand(
+                os.path.join(
+                    config["output"]["profiling"],
+                    "report/kmcp/kmcp_format/{{profiling_mode}}/merged.hicureads.profile.{level}.tsv"),
+                level=["strain", "species"])
+        log:
+            os.path.join(config["output"]["profiling"],
+                "logs/kmcp/profile_merge/kmcp_profile_merge_kmcp_{profiling_mode}.log")
+        benchmark:
+            os.path.join(config["output"]["profiling"],
+                "benchmark/kmcp/profile_merge/kmcp_profile_merge_kmcp_{profiling_mode}.benchmark.txt")
+        threads:
+            config["params"]["profiling"]["threads"]
+        priority:
+            24
+        run:
+            output_dict = {
+                "percentage_t": output.percentage[0],
+                "percentage_s": output.percentage[1],
+                "coverage_t": output.coverage[0],
+                "coverage_s": output.coverage[1],
+                "reads_t": output.reads[0],
+                "reads_s": output.reads[1],
+                "ureads_t": output.ureads[0],
+                "ureads_s": output.ureads[1],
+                "hicureads_t": output.hicureads[0],
+                "hicureads_s": output.hicureads[1]
+            }
+            quantpi.kmcp_profile_merge(input.profile, threads, output_dict)
+
+
     rule profiling_kmcp_profile_merge:
         input:
-           abuns = expand(os.path.join(
+           profile = expand(os.path.join(
                 config["output"]["profiling"],
                 "profile/kmcp/{sample}/{sample}.kmcp.metaphlan_format.{{profiling_mode}}.profile"),
                           sample=SAMPLES_ID_LIST)
@@ -224,7 +282,7 @@ if KMCP_DB_NUMBER > 0:
             profiles = expand(
                 os.path.join(
                     config["output"]["profiling"],
-                    "report/kmcp/kmcp.metaphlan_format.{{profiling_mode}}.merged.abundance.profile.{level}.tsv"),
+                    "report/kmcp/metaphlan_format/{{profiling_mode}}/merged.abundance.profile.{level}.tsv"),
                 level=["all", "strain", "species", "genus", "family",
                        "order", "class", "phylum", "superkingdom"])
         log:
@@ -241,7 +299,7 @@ if KMCP_DB_NUMBER > 0:
             metaphlan_report_version = config["params"]["profiling"]["kmcp"]["profile"]["metaphlan_report_version"]
         run:
             quantpi.metaphlan_init(int(params.metaphlan_report_version))
-            profile_list = quantpi.merge_metaphlan_tables(input.abuns, threads)
+            profile_list = quantpi.merge_metaphlan_tables(input.profile, threads)
             for i in range(0, len(profile_list)):
                 profile_list[i].to_csv(output.profiles[i], sep='\t', index=False)
 
@@ -251,9 +309,16 @@ if KMCP_DB_NUMBER > 0:
             expand(
                 os.path.join(
                     config["output"]["profiling"],
-                    "report/kmcp/kmcp.metaphlan_format.{profiling_mode}.merged.abundance.profile.{level}.tsv"),
+                    "report/kmcp/metaphlan_format/{profiling_mode}/merged.abundance.profile.{level}.tsv"),
                 level=["all", "strain", "species", "genus", "family",
                        "order", "class", "phylum", "superkingdom"],
+                profiling_mode=list(KMCP_PROFILING_MODE_DO.keys())),
+            expand(
+                os.path.join(
+                    config["output"]["profiling"],
+                    "report/kmcp/kmcp_format/{profiling_mode}/merged.{target}.profile.{level}.tsv"),
+                target=["percentage", "coverage", "reads", "ureads", "hicureads"],
+                level=["strain", "species"],
                 profiling_mode=list(KMCP_PROFILING_MODE_DO.keys()))
  
 else:
