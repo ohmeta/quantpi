@@ -225,27 +225,27 @@ if KMCP_DB_NUMBER > 0:
                 os.path.join(
                     config["output"]["profiling"],
                     "report/kmcp/kmcp_format/{{profiling_mode}}/merged.percentage.profile.{level}.tsv"),
-                level=["strain", "species"]),
+                level=["species"]),
             coverage = expand(
                 os.path.join(
                     config["output"]["profiling"],
                     "report/kmcp/kmcp_format/{{profiling_mode}}/merged.coverage.profile.{level}.tsv"),
-                level=["strain", "species"]),
+                level=["species"]),
             reads = expand(
                 os.path.join(
                     config["output"]["profiling"],
                     "report/kmcp/kmcp_format/{{profiling_mode}}/merged.reads.profile.{level}.tsv"),
-                level=["strain", "species"]),
+                level=["species"]),
             ureads = expand(
                 os.path.join(
                     config["output"]["profiling"],
                     "report/kmcp/kmcp_format/{{profiling_mode}}/merged.ureads.profile.{level}.tsv"),
-                level=["strain", "species"]),
+                level=["species"]),
             hicureads = expand(
                 os.path.join(
                     config["output"]["profiling"],
                     "report/kmcp/kmcp_format/{{profiling_mode}}/merged.hicureads.profile.{level}.tsv"),
-                level=["strain", "species"])
+                level=["species"])
         log:
             os.path.join(config["output"]["profiling"],
                 "logs/kmcp/profile_merge/kmcp_profile_merge_kmcp_{profiling_mode}.log")
@@ -257,19 +257,26 @@ if KMCP_DB_NUMBER > 0:
         priority:
             24
         run:
+            #output_dict = {
+            #    "percentage_t": output.percentage[0],
+            #    "percentage_s": output.percentage[1],
+            #    "coverage_t": output.coverage[0],
+            #    "coverage_s": output.coverage[1],
+            #    "reads_t": output.reads[0],
+            #    "reads_s": output.reads[1],
+            #    "ureads_t": output.ureads[0],
+            #    "ureads_s": output.ureads[1],
+            #    "hicureads_t": output.hicureads[0],
+            #    "hicureads_s": output.hicureads[1]
+            #}
             output_dict = {
-                "percentage_t": output.percentage[0],
-                "percentage_s": output.percentage[1],
-                "coverage_t": output.coverage[0],
-                "coverage_s": output.coverage[1],
-                "reads_t": output.reads[0],
-                "reads_s": output.reads[1],
-                "ureads_t": output.ureads[0],
-                "ureads_s": output.ureads[1],
-                "hicureads_t": output.hicureads[0],
-                "hicureads_s": output.hicureads[1]
+                "percentage_s": output.percentage[0],
+                "coverage_s": output.coverage[0],
+                "reads_s": output.reads[0],
+                "ureads_s": output.ureads[0],
+                "hicureads_s": output.hicureads[0],
             }
-            quantpi.kmcp_profile_merge(input.profile, threads, output_dict)
+            quantpi.kmcp_profile_merge_species(input.profile, threads, output_dict)
 
 
     rule profiling_kmcp_profile_merge:
@@ -318,7 +325,8 @@ if KMCP_DB_NUMBER > 0:
                     config["output"]["profiling"],
                     "report/kmcp/kmcp_format/{profiling_mode}/merged.{target}.profile.{level}.tsv"),
                 target=["percentage", "coverage", "reads", "ureads", "hicureads"],
-                level=["strain", "species"],
+                #level=["strain", "species"],
+                level=["species"],
                 profiling_mode=list(KMCP_PROFILING_MODE_DO.keys()))
  
 else:
