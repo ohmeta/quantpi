@@ -35,7 +35,7 @@
 # or
 ➤ pip install quantpi=0.2.0
 
-# or
+# or latest version
 ➤ git clone https://github.com/ohmeta/quantpi
 ➤ echo "export PYTHONPATH=/path/to/quantpi:$PYTHONPATH" >> ~/.bashrc
 # relogin
@@ -170,7 +170,7 @@ The following samples are available in Zenodo:
 ### Step 2: prepare samples sheet
 
 ```bash
-➤ fd -a fq.gz fastq/ | sort | uniq | paste - - | awk -F'[/_]' 'BEGIN{print "sample_id\tfq1\tfq1"};{print $(NF-1) "\t" $0} > samples.tsv 
+➤ fd -a fq.gz fastq/ | sort | uniq | paste - - | awk -F'[/_]' 'BEGIN{print "sample_id\tfq1\tfq1"};{print $(NF-1) "\t" $0}' > samples.tsv 
 ```
 
 `samples.tsv` looks like below:
@@ -193,9 +193,9 @@ The following samples are available in Zenodo:
 ### Step 4: workflow list
 
 ```bash
-➤ quantpi profling_wf --list
+➤ quantpi profiling_wf --list
 # or
-➤ python /path/to/quantpi/run_quantpi.py profling_wf --list
+➤ python /path/to/quantpi/run_quantpi.py profiling_wf --list
 Running quantpi profiling_wf:
 snakemake --snakefile /home/jiezhu/toolkit/quantpi/quantpi/snakefiles/profiling_wf.smk --configfile ./config.yaml --cores 240 --keep-going --printshellcmds --reason --until all --list
 all
