@@ -130,6 +130,8 @@ params:
       unclassified_out: False
       classified_out: False
       save_table: False
+      krona:
+        do: False
 
     bracken:
       do: False
