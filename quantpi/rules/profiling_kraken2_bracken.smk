@@ -271,8 +271,8 @@ else:
 
 
 if config["params"]["profiling"]["kraken2"]["do"] and \
-   config["params"]["profiling"]["bracken"]["do"]:
-    rule profiling_bracken:
+   config["params"]["profiling"]["kraken2"]["bracken"]["do"]:
+    rule profiling_kraken2_bracken:
         input:
             os.path.join(
                 config["output"]["profiling"],
@@ -280,19 +280,19 @@ if config["params"]["profiling"]["kraken2"]["do"] and \
         output:
             profile = os.path.join(
                 config["output"]["profiling"],
-                "profile/bracken/{sample}/{sample}.bracken.{level}.profile"),
+                "profile/kraken2_bracken/{sample}/{sample}.bracken.{level}.profile"),
             report = os.path.join(
                 config["output"]["profiling"],
-                "profile/bracken/{sample}/{sample}.bracken.{level}.report")
+                "profile/kraken2_bracken/{sample}/{sample}.bracken.{level}.report")
         log:
             os.path.join(config["output"]["profiling"],
-                         "logs/bracken/{sample}.bracken.{level}.log")
+                         "logs/kraken2_bracken/{sample}.bracken.{level}.log")
         benchmark:
             os.path.join(config["output"]["profiling"],
-                         "benchmark/bracken/{sample}.bracken.{level}.benchmark.txt")
+                         "benchmark/kraken2_bracken/{sample}.bracken.{level}.benchmark.txt")
         params:
             database = config["params"]["profiling"]["kraken2"]["database"],
-            reads_len = config["params"]["profiling"]["bracken"]["reads_len"],
+            reads_len = config["params"]["profiling"]["kraken2"]["bracken"]["reads_len"],
             level = "{level}"
         priority:
             20
@@ -339,22 +339,22 @@ if config["params"]["profiling"]["kraken2"]["do"] and \
             '''
 
 
-    rule profiling_bracken_merge:
+    rule profiling_kraken2_bracken_merge:
         input:
             expand(
                 os.path.join(
                     config["output"]["profiling"],
-                    "profile/bracken/{sample}/{sample}.bracken.{{level}}.profile"),
+                    "profile/kraken2_bracken/{sample}/{sample}.bracken.{{level}}.profile"),
                  sample=SAMPLES_ID_LIST)
         output:
             os.path.join(
                 config["output"]["profiling"],
-                "report/bracken/bracken.merged.abundance.profile.{level}.tsv")
+                "report/kraken2_bracken/bracken.merged.abundance.profile.{level}.tsv")
         priority:
             20
         log:
             os.path.join(config["output"]["profiling"],
-                         "logs/bracken/bracken.merged.{level}.log")
+                         "logs/kraken2_bracken/bracken.merged.{level}.log")
         params:
             samples_id_list = ",".join(SAMPLES_ID_LIST)
         conda:
@@ -369,16 +369,16 @@ if config["params"]["profiling"]["kraken2"]["do"] and \
             '''
 
 
-    rule profiling_bracken_all:
+    rule profiling_kraken2_bracken_all:
         input:
             expand(os.path.join(
                 config["output"]["profiling"],
-                "report/bracken/bracken.merged.abundance.profile.{level}.tsv"),
-                   level=config["params"]["profiling"]["bracken"]["level"]),
+                "report/kraken2_bracken/bracken.merged.abundance.profile.{level}.tsv"),
+                   level=config["params"]["profiling"]["kraken2"]["bracken"]["level"]),
 
             #rules.rmhost_all.input,
             rules.qcreport_all.input
 
 else:
-    rule profiling_bracken_all:
+    rule profiling_kraken2_bracken_all:
         input:

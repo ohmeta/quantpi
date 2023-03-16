@@ -176,12 +176,12 @@ profiling_kraken2_combine_kreport_mpa:
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"
 
-profiling_bracken:
+profiling_kraken2_bracken:
   mem: "1G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.level}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.level}.{jobid}.e"
 
-profiling_bracken_merge:
+profiling_kraken2_bracken_merge:
   mem: "512M"
   output: "logs/04.{rule}/{rule}.{wildcards.level}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.level}.{jobid}.e"

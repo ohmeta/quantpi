@@ -117,8 +117,8 @@ params:
     # DNA-to-DNA
     kraken2:
       do: False
-      database: "/home/jiezhu/databases/ecogenomics/Struo2/GTDB_release202/kraken2"
-      taxonomy: "/home/jiezhu/databases/ecogenomics/Struo2/GTDB_release202/kraken2/taxonomy"
+      database: "/home/jiezhu/databases/ecogenomics/Kraken2/refseq_indexes/k2_pluspf_20220908"
+      taxonomy: "/home/jiezhu/databases/ecogenomics/Kraken2/taxonomy/"
       quick: False
       memory_mapping: False
       use_names: True
@@ -132,11 +132,27 @@ params:
       save_table: False
       krona:
         do: False
+      bracken:
+        do: False
+        reads_len: 100
+        level: ["D", "P", "C", "O", "F", "G", "S", "S1"]
 
-    bracken:
+    krakenuniq:
       do: False
-      reads_len: 100
-      level: ["D", "P", "C", "O", "F", "G", "S", "S1"]
+      database: "/home/jiezhu/databases/ecogenomics/KrakenUniq/refseq_indexes/ku_pluspf_20220908"
+      taxonomy: "/home/jiezhu/databases/ecogenomics/KrakenUniq/taxonomy"
+      quick: False
+      hll_precision: 12
+      exact: True
+      unclassified_out: False
+      classified_out: False
+      save_table: False
+      krona:
+        do: False
+      bracken:
+        do: False
+        reads_len: 100
+        level: ["D", "P", "C", "O", "F", "G", "S", "S1"]
 
     # DNA-to-DNA
     kmcp:

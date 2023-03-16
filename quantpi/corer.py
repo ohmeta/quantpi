@@ -38,7 +38,7 @@ WORKFLOWS_PROFILING = [
     "rmhost_all",
     "qcreport_all",
     "profiling_kraken2_all",
-    "profiling_bracken_all",
+    "profiling_kraken2_bracken_all",
     "profiling_kmcp_all",
     "profiling_metaphlan2_all",
     "profiling_metaphlan3_all",
