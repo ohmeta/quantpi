@@ -117,32 +117,32 @@ if config["params"]["profiling"]["kraken2"]["do"]:
 
 
     rule profiling_kraken2_combine_kreport:
-    input:
-        expand(
+        input:
+            expand(
+                os.path.join(
+                    config["output"]["profiling"],
+                    "profile/kraken2/{sample}/{sample}.kraken2.report"),
+                sample=SAMPLES_ID_LIST)
+        output:
             os.path.join(
                 config["output"]["profiling"],
-                "profile/kraken2/{sample}/{sample}.kraken2.report"),
-            sample=SAMPLES_ID_LIST)
-    output:
-        os.path.join(
-            config["output"]["profiling"],
-            "report/kraken2/kraken2_report.all.tsv")
-    params:
-        samples_name = " ".join(list(SAMPLES_ID_LIST))
-    conda:
-        config["envs"]["kraken2"]
-    log:
-        os.path.join(config["output"]["profiling"],
-                        "logs/krakentools/combine_kreports.log")
-    shell:
-        '''
-        combine_kreports.py \
-        --report-file {input} \
-        --sample-names {params.samples_name} \
-        --display-headers \
-        --output {output} \
-        > {log} 2>&1
-        '''
+                "report/kraken2/kraken2_report.all.tsv")
+        params:
+            samples_name = " ".join(list(SAMPLES_ID_LIST))
+        conda:
+            config["envs"]["kraken2"]
+        log:
+            os.path.join(config["output"]["profiling"],
+                            "logs/krakentools/combine_kreports.log")
+        shell:
+            '''
+            combine_kreports.py \
+            --report-file {input} \
+            --sample-names {params.samples_name} \
+            --display-headers \
+            --output {output} \
+            > {log} 2>&1
+            '''
 
 
     rule profiling_kraken2_combine_kreport_mpa:
