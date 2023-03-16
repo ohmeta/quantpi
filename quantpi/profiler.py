@@ -13,6 +13,122 @@ from natsort import index_natsorted
 from pprint import pprint
 
 
+def kmcp_gen_species_tax_profile(df, target, sample_name):
+    df_ = df.loc[:, ["taxpath", target]]
+    if not df_.empty:
+        df_["taxa_name"] = df_.apply(lambda x: ";".join(x["taxpath"].split(";")[0:7]), axis=1)
+        df_ = df_.loc[:, ["taxa_name", target]].groupby("taxa_name").sum(target).rename(columns={target: sample_name})
+    else:
+        df_ = df_.rename(columns={"taxpath": "taxa_name", target: sample_name}).set_index("taxa_name")
+    return df_
+
+
+def kmcp_profile_parse_species(profile_file):
+    sample_name = os.path.basename(profile_file).split(".")[0]
+
+    df = pd.read_csv(profile_file, sep="\t")
+
+    df_percentage_s = kmcp_gen_species_tax_profile(df, "percentage", sample_name)
+    df_coverage_s = kmcp_gen_species_tax_profile(df, "coverage", sample_name)
+    df_reads_s = kmcp_gen_species_tax_profile(df, "reads", sample_name)
+    df_ureads_s = kmcp_gen_species_tax_profile(df, "ureads", sample_name)
+    df_hicureads_s = kmcp_gen_species_tax_profile(df, "hicureads", sample_name)
+
+    return { "percentage_s": df_percentage_s,
+             "coverage_s": df_coverage_s,
+             "reads_s": df_reads_s,
+             "ureads_s": df_ureads_s,
+             "hicureads_s": df_hicureads_s
+             }
+
+
+def kmcp_profile_parse(profile_file):
+    sample_name = os.path.basename(profile_file).split(".")[0]
+    df = pd.read_csv(profile_file, sep="\t")
+
+    df_percentage_t = df.query('rank=="strain"').loc[:, ["taxpath", "percentage"]]\
+                        .set_index("taxpath").rename(columns={"percentage": sample_name})
+    df_percentage_s = df.query('rank=="species"').loc[:, ["taxpath", "percentage"]]\
+                        .set_index("taxpath").rename(columns={"percentage": sample_name})
+
+    df_coverage_t = df.query('rank=="strain"').loc[:, ["taxpath", "coverage"]]\
+                      .set_index("taxpath").rename(columns={"coverage": sample_name})
+    df_coverage_s = df.query('rank=="species"').loc[:, ["taxpath", "coverage"]]\
+                      .set_index("taxpath").rename(columns={"coverage": sample_name})
+
+    df_reads_t = df.query('rank=="strain"').loc[:, ["taxpath", "reads"]]\
+                   .set_index("taxpath").rename(columns={"reads": sample_name})
+    df_reads_s = df.query('rank=="species"').loc[:, ["taxpath", "reads"]]\
+                   .set_index("taxpath").rename(columns={"reads": sample_name})
+
+    df_ureads_t = df.query('rank=="strain"').loc[:, ["taxpath", "ureads"]]\
+                    .set_index("taxpath").rename(columns={"ureads": sample_name})
+    df_ureads_s = df.query('rank=="species"').loc[:, ["taxpath", "ureads"]]\
+                    .set_index("taxpath").rename(columns={"ureads": sample_name})
+
+    df_hicureads_t = df.query('rank=="strain"').loc[:, ["taxpath", "hicureads"]]\
+                       .set_index("taxpath").rename(columns={"hicureads": sample_name})
+    df_hicureads_s = df.query('rank=="species"').loc[:, ["taxpath", "hicureads"]]\
+                       .set_index("taxpath").rename(columns={"hicureads": sample_name})
+
+    return { "percentage_t": df_percentage_t,
+             "percentage_s": df_percentage_s,
+             "coverage_t": df_coverage_t,
+             "coverage_s": df_coverage_s,
+             "reads_t": df_reads_t,
+             "reads_s": df_reads_s,
+             "ureads_t": df_ureads_t,
+             "ureads_s": df_ureads_s,
+             "hicureads_t": df_hicureads_t,
+             "hicureads_s": df_hicureads_s
+             }
+
+
+def kmcp_profile_merge_species(profile_file_list, workers, output_dict):
+    df_dict = {
+        "percentage_s": [],
+        "coverage_s": [],
+        "reads_s": [],
+        "ureads_s": [],
+        "hicureads_s": []
+    }
+
+    with concurrent.futures.ProcessPoolExecutor(max_workers=workers) as executor:
+        for dfs in executor.map(kmcp_profile_parse_species, profile_file_list):
+            for target in df_dict.keys():
+                df_dict[target].append(dfs[target])
+
+    for target in df_dict:
+        df = pd.concat(df_dict[target], axis=1).fillna(0).reset_index()
+        df = df.sort_values(by="taxa_name", key=lambda x: np.argsort(index_natsorted(df["taxa_name"])))
+        df.to_csv(output_dict[target], sep="\t", index=False)
+
+
+def kmcp_profile_merge(profile_file_list, workers, output_dict):
+    df_dict = {
+        "percentage_t": [],
+        "percentage_s": [],
+        "coverage_t": [],
+        "coverage_s": [],
+        "reads_t": [],
+        "reads_s": [],
+        "ureads_t": [],
+        "ureads_s": [],
+        "hicureads_t": [],
+        "hicureads_s": []
+    }
+
+    with concurrent.futures.ProcessPoolExecutor(max_workers=workers) as executor:
+        for dfs in executor.map(kmcp_profile_parse, profile_file_list):
+            for target in df_dict.keys():
+                df_dict[target].append(dfs[target])
+
+    for target in df_dict:
+        df = pd.concat(df_dict[target], axis=1).fillna(0).reset_index()
+        df = df.sort_values(by="taxpath", key=lambda x: np.argsort(index_natsorted(df["taxpath"])))
+        df.to_csv(output_dict[target], sep="\t", index=False)
+
+
 def coverm_parse(table_file):
     sample_name = os.path.basename(table_file).split(".")[0]
     df = pd.read_csv(table_file, sep="\t")

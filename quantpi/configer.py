@@ -75,6 +75,7 @@ class metaconfig:
         "logs/04.profiling_kmcp_search",
         "logs/04.profiling_kmcp_search_merge",
         "logs/04.profiling_kmcp_profile",
+        "logs/04.profiling_kmcp_profile_merge_kmcp",
         "logs/04.profiling_kmcp_profile_merge",
         "logs/04.profiling_metaphlan2",
         "logs/04.profiling_metaphlan2_merge",
