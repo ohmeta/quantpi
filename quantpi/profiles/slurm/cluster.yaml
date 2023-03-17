@@ -202,6 +202,36 @@ profiling_kraken2_bracken_merge:
   output: "logs/04.{rule}/{rule}.{wildcards.level}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.level}.{jobid}.e"
 
+profiling_krakenuniq:
+  mem: "10G"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
+
+profiling_krakenuniq_krona_report:
+  mem: "10G"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
+
+profiling_krakenuniq_combine_kreport:
+  mem: "10G"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
+
+profiling_krakenuniq_combine_kreport_mpa:
+  mem: "10G"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
+
+profiling_krakenuniq_bracken:
+  mem: "1G"
+  output: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.level}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.level}.{jobid}.e"
+
+profiling_krakenuniq_bracken_merge:
+  mem: "512M"
+  output: "logs/04.{rule}/{rule}.{wildcards.level}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.level}.{jobid}.e"
+
 profiling_kmcp_search:
   mem: "80G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{wildcards.kmcp_db}.{jobid}.o"
