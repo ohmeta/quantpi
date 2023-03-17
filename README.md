@@ -170,7 +170,7 @@ The following samples are available in Zenodo:
 ### Step 2: prepare samples sheet
 
 ```bash
-➤ fd -a fq.gz fastq/ | sort | uniq | paste - - | awk -F'[/_]' 'BEGIN{print "sample_id\tfq1\tfq1"};{print $(NF-1) "\t" $0}' > samples.tsv 
+➤ fd -a fq.gz fastq/ | sort | uniq | paste - - | awk -F'[/_]' 'BEGIN{print "sample_id\tfq1\tfq2"};{print $(NF-1) "\t" $0}' > samples.tsv 
 ```
 
 `samples.tsv` looks like below:
