@@ -1,7 +1,7 @@
 rule profiling_all:
     input:
         rules.profiling_kraken2_all.input,
-        rules.profiling_bracken_all.input,
+        rules.profiling_kraken2_bracken_all.input,
         rules.profiling_metaphlan2_all.input,
         rules.profiling_metaphlan3_all.input,
         rules.profiling_metaphlan4_all.input,
@@ -20,7 +20,7 @@ rule profiling_all:
 
 localrules:
     profiling_kraken2_all,
-    profiling_bracken_all,
+    profiling_kraken2_bracken_all,
     profiling_metaphlan2_all,
     profiling_metaphlan3_all,
     profiling_metaphlan4_all,
