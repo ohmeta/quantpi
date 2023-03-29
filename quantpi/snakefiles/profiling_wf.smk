@@ -76,7 +76,8 @@ include: "../rules/trimming.smk"
 include: "../rules/rmhost.smk"
 include: "../rules/qcreport.smk"
 
-include: "../rules/profiling_kraken2_bracken.smk"
+include: "../rules/profiling_kraken2.smk"
+include: "../rules/profiling_krakenuniq.smk"
 
 include: "../rules/profiling_kmcp.smk"
 

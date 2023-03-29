@@ -4,6 +4,7 @@ channels:
   - defaults
 dependencies:
   - kraken2=2.1.2
+  - krakenuniq=1.0.3
   - krakentools=1.2
   - bracken=2.8
   - krona=2.8.1
