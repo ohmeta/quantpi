@@ -74,7 +74,9 @@ if config["params"]["profiling"]["strainphlan"]["do_v3"]:
                     sample=SAMPLES_ID_LIST)
             output:
                 markers_txt = os.path.join(config["output"]["profiling"], "databases/strainphlan3/clade_markers.txt"),
-                markers_dir = os.path.join(config["output"]["profiling"], "databases/strainphlan3/clade_markers")
+                markers_dir = directory(os.path.join(config["output"]["profiling"], "databases/strainphlan3/clade_markers"))
+            log:
+                os.path.join(config["output"]["profiling"], "logs/strainphlan3_print_clades/strainphlan3_print_clades.log")
             params:
                 marker_in_n_samples = config["params"]["profiling"]["strainphlan"]["marker_in_n_samples"]
             conda:
@@ -107,8 +109,7 @@ if config["params"]["profiling"]["strainphlan"]["do_v3"]:
                 clade=list(set([i.split("/")[0] \
                     for i in glob_wildcards(os.path.join(
                         checkpoint_output,
-                        "{{clade}}",
-                        f"{{clade}}.fna")).clade])))
+                        "{clade}")).clade])))
 
 
     rule profiling_strainphlan3_extract_markers:
