@@ -352,6 +352,16 @@ profiling_metaphlan4_merge:
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"
 
+profiling_strainphlan3_prepare_reference_genome:
+  mem: "2G"
+  output: "logs/04.{rule}/{rule}.{wildcards.clade}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.clade}.{jobid}.e"
+
+profiling_strainphlan3_print_clades:
+  mem: "1G"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
+
 profiling_strainphlan3_sample2markers:
   mem: "2G"
   output: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.o"
