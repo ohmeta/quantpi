@@ -12,9 +12,9 @@ __options__:
 __default__:
   queue: "st.q"
   project: "st_m"
-  workdir: "./"
+  #workdir: "./"
   mem: "1G"
-  threads: 1
+  core: 1
 
 
 simulate_short_reads:
