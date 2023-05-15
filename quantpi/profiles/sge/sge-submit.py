@@ -199,7 +199,7 @@ def sge_option_string(key, val):
         return f"-{key}"
     if type(val) == bool:
         return f"-{key} " + ("yes" if val else "no")
-    return format_job_properties(f"-{key} {val}")
+    return f"-{key} {val}"
 
 def sge_resource_string(key, val):
     if val == "":
@@ -232,9 +232,9 @@ job_properties = read_job_properties(jobscript)
 # load the default cluster config
 cluster_config = load_cluster_config(CLUSTER_CONFIG)
 
-add_custom_resources(cluster_config["__resources__"])
+#add_custom_resources(cluster_config["__resources__"])
 
-add_custom_options(cluster_config["__options__"])
+#add_custom_options(cluster_config["__options__"])
 
 # qsub default arguments
 update_double_dict(qsub_settings, parse_qsub_settings(parse_qsub_defaults(QSUB_DEFAULTS)))
@@ -245,7 +245,7 @@ update_double_dict(qsub_settings, parse_qsub_settings(cluster_config["__default_
 # resources defined in the snakemake file (note that these must be integer)
 # we pass an empty dictionary for option_mapping because options should not be
 # specified in the snakemake file
-update_double_dict(qsub_settings, parse_qsub_settings(job_properties.get("resources", {}), option_mapping={}))
+#update_double_dict(qsub_settings, parse_qsub_settings(job_properties.get("resources", {}), option_mapping={}))
 
 # get any rule specific options/resources from the default cluster config
 update_double_dict(qsub_settings, parse_qsub_settings(cluster_config.get(job_properties.get("rule"), {})))
