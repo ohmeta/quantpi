@@ -5,13 +5,13 @@ if config["params"]["profiling"]["krakenuniq"]["do"]:
         output:
             done = os.path.join(config["output"]["profiling"], "config/krakenuniq/db_preload_done")
         log:
-            os.path.join(config["output"]["profiling"],
-                         "logs/krakenuniq/krakenuniq_preload_database.log")
+            os.path.join(
+                config["output"]["profiling"], "logs/krakenuniq/krakenuniq_preload_database.log")
         benchmark:
-            os.path.join(config["output"]["profiling"],
-                         "benchmark/krakenuniq/krakenuniq_preload_database.benchmark.txt")
+            os.path.join(
+                config["output"]["profiling"], "benchmark/krakenuniq/krakenuniq_preload_database.benchmark.txt")
         conda:
-            config["envs"]["kraken"]
+            config["envs"]["krakenuniq"]
         threads:
             config["params"]["profiling"]["threads"]
         shell:
@@ -19,7 +19,7 @@ if config["params"]["profiling"]["krakenuniq"]["do"]:
             krakenuniq --db {input.database} --preload --threads {threads} >{log} 2>&1
             touch {output.done}
             '''
- 
+
 
     rule profiling_krakenuniq:
         input:
@@ -28,19 +28,19 @@ if config["params"]["profiling"]["krakenuniq"]["do"]:
         output:
             report = os.path.join(
                 config["output"]["profiling"],
-                "profile/krakenuniq/{sample}/{sample}.krakenuniq.report")#,
-            #report_mpa_reads_count = os.path.join(
-            #    config["output"]["profiling"],
-            #    "profile/krakenuniq/{sample}/{sample}.krakenuniq.report.mpa.reads_count"),
-            #report_mpa_percentages = os.path.join(
-            #    config["output"]["profiling"],
-            #    "profile/krakenuniq/{sample}/{sample}.krakenuniq.report.mpa.percentages")
+                "profile/krakenuniq/{sample}/{sample}.krakenuniq.report"),
+            report_mpa_reads_count = os.path.join(
+                config["output"]["profiling"],
+                "profile/krakenuniq/{sample}/{sample}.krakenuniq.report.mpa.reads_count"),
+            report_mpa_percentages = os.path.join(
+                config["output"]["profiling"],
+                "profile/krakenuniq/{sample}/{sample}.krakenuniq.report.mpa.percentages")
         log:
-            os.path.join(config["output"]["profiling"],
-                         "logs/krakenuniq/{sample}.krakenuniq.log")
+            os.path.join(
+                config["output"]["profiling"], "logs/krakenuniq/{sample}.krakenuniq.log")
         benchmark:
-            os.path.join(config["output"]["profiling"],
-                         "benchmark/krakenuniq/{sample}.krakenuniq.benchmark.txt")
+            os.path.join(
+                config["output"]["profiling"], "benchmark/krakenuniq/{sample}.krakenuniq.benchmark.txt")
         params:
             save_table = config["params"]["profiling"]["krakenuniq"]["save_table"],
             paired = "--paired" if IS_PE else "",
@@ -50,31 +50,31 @@ if config["params"]["profiling"]["krakenuniq"]["do"]:
             exact = "--exact" if config["params"]["profiling"]["krakenuniq"]["exact"] else "",
             quick = "--quick" \
                 if config["params"]["profiling"]["krakenuniq"]["quick"] \
-                   else "",
+                else "",
             unclassified_out = "--unclassified-out %s" % \
                 os.path.join(
                     config["output"]["profiling"],
                     "profile/krakenuniq/{sample}/{sample}.krakenuniq.unclassified%s.fq" \
                     % "#" if IS_PE else "") \
                     if config["params"]["profiling"]["krakenuniq"]["unclassified_out"] \
-                       else "",
+                    else "",
             classified_out = "--classified-out %s" % \
                 os.path.join(
                     config["output"]["profiling"],
                     "profile/krakenuniq/{sample}/{sample}.krakenuniq.classified%s.fq" \
                     % "#" if IS_PE else "") \
                     if config["params"]["profiling"]["krakenuniq"]["classified_out"] \
-                       else "",
+                    else "",
             table = "--output %s" % \
                 os.path.join(
                     config["output"]["profiling"],
                     "profile/krakenuniq/{sample}/{sample}.krakenuniq.table") \
                 if config["params"]["profiling"]["krakenuniq"]["save_table"] \
-                    else ""
+                    else "--output /dev/null"
         threads:
             config["params"]["profiling"]["threads"]
         conda:
-            config["envs"]["kraken"]
+            config["envs"]["krakenuniq"]
         shell:
             '''
             krakenuniq \
@@ -92,26 +92,25 @@ if config["params"]["profiling"]["krakenuniq"]["do"]:
             {input.reads} \
             2> {log}
 
+            kreport2mpa.py \
+            --report-file {output.report} \
+            --display-header \
+            --no-intermediate-ranks \
+            --read_count \
+            --output {output.report_mpa_reads_count}
+
+            kreport2mpa.py \
+            --report {output.report} \
+            --no-intermediate-ranks \
+            --percentages \
+            --output {output.report_mpa_percentages}
+
             if [ "{params.save_table}" == "True" ];
             then
                 tablef=`awk '{{print $2}}' {params.table}`
                 pigz $tablef
             fi
             '''
-
-
-            #kreport2mpa.py \
-            #--report-file {output.report} \
-            #--display-header \
-            #--no-intermediate-ranks \
-            #--read_count \
-            #--output {output.report_mpa_reads_count}
-
-            #kreport2mpa.py \
-            #--report {output.report} \
-            #--no-intermediate-ranks \
-            #--percentages \
-            #--output {output.report_mpa_percentages}
 
 
     rule profiling_krakenuniq_combine_kreport:
@@ -128,7 +127,7 @@ if config["params"]["profiling"]["krakenuniq"]["do"]:
         params:
             samples_name = " ".join(list(SAMPLES_ID_LIST))
         conda:
-            config["envs"]["kraken"]
+            config["envs"]["krakenuniq"]
         log:
             os.path.join(config["output"]["profiling"],
                             "logs/krakentools/combine_kreports.log")
@@ -161,10 +160,10 @@ if config["params"]["profiling"]["krakenuniq"]["do"]:
                 config["output"]["profiling"],
                 "report/krakenuniq/krakenuniq_report.mpa.percentages.tsv")
         conda:
-            config["envs"]["kraken"]
+            config["envs"]["krakenuniq"]
         log:
-            os.path.join(config["output"]["profiling"],
-                         "logs/krakentools/combine_kreports_mpa.log")
+            os.path.join(
+                config["output"]["profiling"], "logs/krakentools/combine_kreports_mpa.log")
         shell:
             '''
             echo "process 1:" > {log} 2>&1
@@ -195,7 +194,7 @@ if config["params"]["profiling"]["krakenuniq"]["do"]:
                     config["output"]["profiling"],
                     "report/krakenuniq/krakenuniq_krona.all.html")
             conda:
-                config["envs"]["kraken"]
+                config["envs"]["krakenuniq"]
             log:
                 os.path.join(config["output"]["profiling"],
                             "logs/krona/krona_report.log")
@@ -241,9 +240,9 @@ if config["params"]["profiling"]["krakenuniq"]["do"]:
                     os.path.join(
                         config["output"]["profiling"],
                         "report/krakenuniq/krakenuniq_krona.all.html")],
- 
-                        suffix=[""], #".mpa.reads_count", ".mpa.percentages"],
-                        report=["all"], #"mpa.reads_count", "mpa.percentages"],
+
+                        suffix=["", ".mpa.reads_count", ".mpa.percentages"],
+                        report=["all", "mpa.reads_count", "mpa.percentages"],
                         sample=SAMPLES_ID_LIST),
                 rules.qcreport_all.input
 
@@ -257,8 +256,8 @@ if config["params"]["profiling"]["krakenuniq"]["do"]:
                     os.path.join(
                         config["output"]["profiling"],
                         "report/krakenuniq/krakenuniq_report.{report}.tsv")],
-                        suffix=[""], #".mpa.reads_count", ".mpa.percentages"],
-                        report=["all"], #"mpa.reads_count", "mpa.percentages"],
+                        suffix=["", ".mpa.reads_count", ".mpa.percentages"],
+                        report=["all", "mpa.reads_count", "mpa.percentages"],
                         sample=SAMPLES_ID_LIST),
                 rules.qcreport_all.input
 
@@ -268,8 +267,7 @@ else:
         input:
 
 
-if config["params"]["profiling"]["krakenuniq"]["do"] and \
-   config["params"]["profiling"]["krakenuniq"]["bracken"]["do"]:
+if config["params"]["profiling"]["krakenuniq"]["do"] and config["params"]["profiling"]["krakenuniq"]["bracken"]["do"]:
     rule profiling_krakenuniq_bracken:
         input:
             os.path.join(
@@ -283,11 +281,11 @@ if config["params"]["profiling"]["krakenuniq"]["do"] and \
                 config["output"]["profiling"],
                 "profile/krakenuniq_bracken/{sample}/{sample}.bracken.{level}.report")
         log:
-            os.path.join(config["output"]["profiling"],
-                         "logs/krakenuniq_bracken/{sample}.bracken.{level}.log")
+            os.path.join(
+                config["output"]["profiling"], "logs/krakenuniq_bracken/{sample}.bracken.{level}.log")
         benchmark:
-            os.path.join(config["output"]["profiling"],
-                         "benchmark/krakenuniq_bracken/{sample}.bracken.{level}.benchmark.txt")
+            os.path.join(
+                config["output"]["profiling"], "benchmark/krakenuniq_bracken/{sample}.bracken.{level}.benchmark.txt")
         params:
             database = config["params"]["profiling"]["krakenuniq"]["database"],
             reads_len = config["params"]["profiling"]["krakenuniq"]["bracken"]["reads_len"],
@@ -297,12 +295,12 @@ if config["params"]["profiling"]["krakenuniq"]["do"] and \
         threads:
             config["params"]["profiling"]["threads"]
         conda:
-            config["envs"]["kraken"]
+            config["envs"]["krakenuniq"]
         shell:
             '''
             set +e
 
-            /home/jiezhu/toolkit/Bracken/bracken \
+            bracken \
             -d {params.database} \
             -i {input} \
             -o {output.profile} \
@@ -339,11 +337,10 @@ if config["params"]["profiling"]["krakenuniq"]["do"] and \
 
     rule profiling_krakenuniq_bracken_merge:
         input:
-            expand(
-                os.path.join(
-                    config["output"]["profiling"],
-                    "profile/krakenuniq_bracken/{sample}/{sample}.bracken.{{level}}.profile"),
-                 sample=SAMPLES_ID_LIST)
+            expand(os.path.join(
+                config["output"]["profiling"],
+                "profile/krakenuniq_bracken/{sample}/{sample}.bracken.{{level}}.profile"),
+                sample=SAMPLES_ID_LIST)
         output:
             os.path.join(
                 config["output"]["profiling"],
@@ -351,12 +348,12 @@ if config["params"]["profiling"]["krakenuniq"]["do"] and \
         priority:
             20
         log:
-            os.path.join(config["output"]["profiling"],
-                         "logs/krakenuniq_bracken/bracken.merged.{level}.log")
+            os.path.join(
+                config["output"]["profiling"], "logs/krakenuniq_bracken/bracken.merged.{level}.log")
         params:
             samples_id_list = ",".join(SAMPLES_ID_LIST)
         conda:
-            config["envs"]["kraken"]
+            config["envs"]["krakenuniq"]
         shell:
             '''
             combine_bracken_outputs.py \
@@ -372,7 +369,7 @@ if config["params"]["profiling"]["krakenuniq"]["do"] and \
             expand(os.path.join(
                 config["output"]["profiling"],
                 "report/krakenuniq_bracken/bracken.merged.abundance.profile.{level}.tsv"),
-                   level=config["params"]["profiling"]["krakenuniq"]["bracken"]["level"]),
+                level=config["params"]["profiling"]["krakenuniq"]["bracken"]["level"]),
 
             #rules.rmhost_all.input,
             rules.qcreport_all.input
