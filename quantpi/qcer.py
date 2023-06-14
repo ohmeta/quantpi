@@ -190,7 +190,7 @@ def compute_host_rate(df, steps, samples_id_list, allow_miss_samples=True, **kwa
         if not allow_miss_samples:
             print("Please check stats report again for each sample")
             sys.exit(1)
-    
+
     for sample_id in df.index.unique():
         if not pd.isnull(sample_id):
             if sample_id in sample_reads:
@@ -227,15 +227,16 @@ def compute_host_rate(df, steps, samples_id_list, allow_miss_samples=True, **kwa
 def qc_summary_merge(df, **kwargs):
     df_host_rate = df.loc[:, ["id", "format", "type", "fq_type", "host_rate"]].drop_duplicates()
 
-    df_l = df.loc[:, ["id", "format", "type", "step", "fq_type",
-                     "num_seqs", "sum_len", "min_len", "avg_len", "max_len",
-                     "Q1", "Q2", "Q3", "sum_gap", "Q20(%)", "Q30(%)"]]
+    df_l = df.loc[:, [
+        "id", "format", "type", "step", "fq_type",
+        "num_seqs", "sum_len", "min_len", "avg_len", "max_len",
+        "Q1", "Q2", "Q3", "sum_gap", "Q20(%)", "Q30(%)"]]
 
     df_w = df_l.groupby(["id", "format", "type", "step", "fq_type"])\
             .agg(
                 num_seqs=("num_seqs", "sum"),
                 sum_len=("sum_len", "sum"),
-                min_len=("min_len", "sum"),
+                min_len=("min_len", "min"),
                 avg_len=("avg_len", "mean"),
                 max_len=("max_len", "max"),
                 Q1=("Q1", "mean"),
