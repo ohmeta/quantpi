@@ -127,14 +127,13 @@ if config["params"]["profiling"]["metaphlan"]["do_v4"] and \
             config["params"]["profiling"]["threads"]
         shell:
             '''
+            rm -rf {params.output_dir}
             mkdir -p {params.output_dir}
 
             python {params.wrapper_dir}/misc.py \
             --basename {params.basename} \
             --input-file {input.reads} \
             --output-dir {params.output_dir}
-
-            rm -rf {params.output_dir}/{params.basename}_humann_temp_*
 
             humann \
             --threads {threads} \
