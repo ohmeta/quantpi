@@ -207,7 +207,8 @@ params:
       bowtie2db: "/home/jiezhu/databases/ecogenomics/MetaPhlAn"   # common
       index_v2: "v20_m200"                                        # metaphlan2
       index_v3: "mpa_v30_CHOCOPhlAn_201901"                       # metaphlan3
-      index_v4: "mpa_vJan21_CHOCOPhlAnSGB_202103"                 # metaphlan4
+      #index_v4: "mpa_vJan21_CHOCOPhlAnSGB_202103"                 # metaphlan4 v4.0.3
+      index_v4: "mpa_vOct22_CHOCOPhlAnSGB_202212"                 # metaphlan4 v4.0.6
       bowtie2_presets: "very-sensitive"                           # common
       taxonomic_level: "a"                                        # common
       min_cu_len: 2000                                            # common

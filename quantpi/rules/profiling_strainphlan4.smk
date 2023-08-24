@@ -60,7 +60,7 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
                 "databases/strainphlan4/clade_markers/{clade}/{clade}.fna")
         log:
             os.path.join(
-                config["output"]["profiling"], 
+                config["output"]["profiling"],
                 "logs/strainphlan4_extract_markers/{clade}.strainphlan4_extract_markers.log")
         benchmark:
             os.path.join(
