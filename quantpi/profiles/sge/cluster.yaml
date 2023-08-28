@@ -322,7 +322,7 @@ profiling_metaphlan3:
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_metaphlan3_merge:
-  mem: "1G"
+  mem: "5G"
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"
 
@@ -332,7 +332,7 @@ profiling_metaphlan4:
   error: "logs/04.{rule}/{rule}.{wildcards.sample}.{jobid}.e"
 
 profiling_metaphlan4_merge:
-  mem: "1G"
+  mem: "5G"
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"
 
@@ -342,7 +342,7 @@ profiling_strainphlan3_prepare_reference_genome:
   error: "logs/04.{rule}/{rule}.{wildcards.clade}.{jobid}.e"
 
 profiling_strainphlan3_print_clades:
-  mem: "1G"
+  mem: "10G"
   output: "logs/04.{rule}/{rule}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{jobid}.e"
 
@@ -360,6 +360,16 @@ profiling_strainphlan3:
   mem: "5G"
   output: "logs/04.{rule}/{rule}.{wildcards.clade}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.clade}{jobid}.e"
+
+profiling_strainphlan4_prepare_reference_genome:
+  mem: "2G"
+  output: "logs/04.{rule}/{rule}.{wildcards.clade}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{wildcards.clade}.{jobid}.e"
+
+profiling_strainphlan4_print_clades:
+  mem: "10G"
+  output: "logs/04.{rule}/{rule}.{jobid}.o"
+  error: "logs/04.{rule}/{rule}.{jobid}.e"
 
 profiling_strainphlan4_sample2markers:
   mem: "2G"
