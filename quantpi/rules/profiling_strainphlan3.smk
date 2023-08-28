@@ -123,7 +123,7 @@ if config["params"]["profiling"]["strainphlan"]["do_v3"]:
                 "databases/strainphlan3/clade_markers/{clade}/{clade}.fna")
         log:
             os.path.join(
-                config["output"]["profiling"], 
+                config["output"]["profiling"],
                 "logs/strainphlan3_extract_markers/{clade}.strainphlan3_extract_markers.log")
         benchmark:
             os.path.join(

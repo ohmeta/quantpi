@@ -220,12 +220,19 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
             '''
 
 
-    rule profiling_strainphlan4_all:
-        input:
-            expand(os.path.join(
-                config["output"]["profiling"],
-                "profile/strainphlan4/clade_markers/{clade}/done"),
-                clade=STRAINPHLAN_CLADES_LIST_V4)
+    if config["params"]["profiling"]["strainphlan"]["reference_genome"]["use"]:
+        rule profiling_strainphlan4_all:
+            input:
+                expand(os.path.join(
+                    config["output"]["profiling"],
+                    "profile/strainphlan4/clade_markers/{clade}/done"),
+                    clade=STRAINPHLAN_CLADES_LIST_V4)
+
+    else:
+        rule profiling_strainphlan4_all:
+            input:
+                aggregate_profiling_strainphlan4_extract_markers
+
 
 else:
     rule profiling_strainphlan4_all:

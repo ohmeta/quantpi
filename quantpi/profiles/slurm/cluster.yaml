@@ -388,7 +388,7 @@ profiling_strainphlan4_extract_markers:
   error: "logs/04.{rule}/{rule}.{wildcards.clade}.{jobid}.e"
 
 profiling_strainphlan4:
-  mem: "5G"
+  mem: "10G"
   output: "logs/04.{rule}/{rule}.{wildcards.clade}.{jobid}.o"
   error: "logs/04.{rule}/{rule}.{wildcards.clade}.{jobid}.e"
 
