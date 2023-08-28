@@ -43,10 +43,78 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
             '''
 
 
-    STRAINPHLAN_CLADES_V4 = \
-        pd.read_csv(config["params"]["profiling"]["strainphlan"]["clades_tsv_v4"], sep="\t")\
-          .set_index("clade")
-    STRAINPHLAN_CLADES_LIST_V4 = STRAINPHLAN_CLADES_V4.index.unique()
+
+    if config["params"]["profiling"]["strainphlan"]["reference_genome"]["use"]:
+
+        STRAINPHLAN_CLADES_V4 = \
+            pd.read_csv(config["params"]["profiling"]["strainphlan"]["clades_tsv_v4"], sep="\t")\
+            .set_index("clade")
+        STRAINPHLAN_CLADES_LIST_V4 = STRAINPHLAN_CLADES_V4.index.unique()
+
+
+        rule profiling_strainphlan3_prepare_reference_genome:
+            input:
+                reference_genome = lambda wildcards: STRAINPHLAN_CLADES_V4.loc[wildcards.clade, "fna_path"]
+            output:
+                reference_genome = os.path.join(
+                    config["output"]["profiling"],
+                    "databases/strainphlan4/reference_genomes/{clade}.fna")
+            run:
+                if input.reference_genome.endswith(".gz"):
+                    shell(f'''pigz -fkdc {input.reference_genome} > {output.reference_genome}''')
+                else:
+                    fna_path = os.path.realpath(input.reference_genome)
+                    fna_path_ = os.path.realpath(output.reference_genome)
+                    shellf('''ln -s {fna_path} {fna_path_}''')
+
+    else:
+        checkpoint profiling_strainphlan4_print_clades:
+            input:
+                database_pkl = expand(os.path.join(
+                    config["params"]["profiling"]["metaphlan"]["bowtie2db"], "{index}.pkl"),
+                    index = config["params"]["profiling"]["metaphlan"]["index_v4"]),
+                consensus_markers = expand(os.path.join(
+                    config["output"]["profiling"],
+                    "profile/strainphlan4/consensus_markers/{sample}.pkl"),
+                    sample=SAMPLES_ID_LIST)
+            output:
+                markers_txt = os.path.join(config["output"]["profiling"], "databases/strainphlan4/clade_markers.txt"),
+                markers_dir = directory(os.path.join(config["output"]["profiling"], "databases/strainphlan4/clade_markers"))
+            log:
+                os.path.join(config["output"]["profiling"], "logs/strainphlan4_print_clades/strainphlan4_print_clades.log")
+            params:
+                marker_in_n_samples = config["params"]["profiling"]["strainphlan"]["marker_in_n_samples"]
+            conda:
+                config["envs"]["biobakery4"]
+            shell:
+                '''
+                strainphlan \
+                --database {input.database_pkl} \
+                --samples {input.consensus_markers} \
+                --marker_in_n_samples {params.marker_in_n_samples} \
+                -o /dev/null \
+                --print_clades_only \
+                >{output.markers_txt} 2>{log}
+
+                mkdir -p {output.markers_dir}
+
+                cat {output.markers_txt} | \
+                grep "s__" | \
+                awk -F'[\t:]' '{{print $5}}' | \
+                xargs -I XXX mkdir -p {output.markers_dir}/XXX
+                '''
+
+
+        def aggregate_profiling_strainphlan4_extract_markers(wildcards):
+            checkpoint_output = checkpoints.profiling_strainphlan4_print_clades.get(**wildcards).output.markers_dir
+
+            return expand(os.path.join(
+                config["output"]["profiling"],
+                "profile/strainphlan4/clade_markers/{clade}/done"),
+                clade=list(set([i.split("/")[0] \
+                    for i in glob_wildcards(os.path.join(
+                        checkpoint_output,
+                        "{clade}")).clade])))
 
 
     rule profiling_strainphlan4_extract_markers:
@@ -87,26 +155,6 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
             '''
 
 
-    rule profiling_strainphlan4_prepare_reference_genome:
-        input:
-            reference_genome = lambda wildcards: STRAINPHLAN_CLADES_V4.loc[wildcards.clade, "fna_path"]
-        output:
-            reference_genome = os.path.join(
-                config["output"]["profiling"],
-                "databases/strainphlan4/reference_genomes/{clade}.fna")
-        run:
-            if input.reference_genome.endswith(".gz"):
-                shell(f'''pigz -fkdc {input.reference_genome} > {output.reference_genome}''')
-            else:
-                fna_path = os.path.realpath(input.reference_genome)
-                fna_path_ = os.path.realpath(output.reference_genome)
-                shellf('''ln -s {fna_path} {fna_path_}''')
-
-
-    localrules:
-        profiling_strainphlan4_prepare_reference_genome
-
-
     rule profiling_strainphlan4:
         input:
             database_pkl = expand(os.path.join(
@@ -118,23 +166,8 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
             consensus_markers = expand(os.path.join(
                 config["output"]["profiling"],
                 "profile/strainphlan4/consensus_markers/{sample}.pkl"),
-                sample=SAMPLES_ID_LIST),
-            reference_genome = os.path.join(
-                config["output"]["profiling"],
-                "databases/strainphlan4/reference_genomes/{clade}.fna")
+                sample=SAMPLES_ID_LIST)
         output:
-            #expand(os.path.join(
-            #    config["output"]["profiling"],
-            #    "profile/strainphlan4/clade_markers/{{clade}}/RAxML_{prefix}.{{clade}}.StrainPhlAn4.tre"),
-            #    prefix=["bestTree", "info", "log", "parsimonyTree", "result"]),
-            #expand(os.path.join(
-            #    config["output"]["profiling"],
-            #    "profile/strainphlan4/clade_markers/{{clade}}/{{clade}}{suffix}"),
-            #    suffix=[".info", ".mutation", ".polymorphic",
-            #            ".StrainPhlAn4_concatenated.aln"]),
-            #directory(os.path.join(
-            #    config["output"]["profiling"],
-            #    "profile/strainphlan4/clade_markers/{clade}/{clade}_mutation_rates"))
             done = os.path.join(config["output"]["profiling"], "profile/strainphlan4/clade_markers/{clade}/done")
         log:
             os.path.join(
@@ -149,13 +182,14 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
         params:
             clade = "{clade}",
             outdir = os.path.join(config["output"]["profiling"], "profile/strainphlan4/clade_markers/{clade}"),
-            trim_sequences = config["params"]["profiling"]["strainphlan"]["trim_sequences"],
             marker_in_n_samples = config["params"]["profiling"]["strainphlan"]["marker_in_n_samples"],
             sample_with_n_markers = config["params"]["profiling"]["strainphlan"]["sample_with_n_markers"],
-            secondary_sample_with_n_markers = config["params"]["profiling"]["strainphlan"]["secondary_sample_with_n_markers"],
-            #sample_with_n_markers_after_filt = config["params"]["profiling"]["strainphlan"]["sample_with_n_markers_after_filt"],
             breadth_thres = config["params"]["profiling"]["strainphlan"]["breadth_thres"],
             phylophlan_mode = config["params"]["profiling"]["strainphlan"]["phylophlan_mode"],
+            reference_opts = "--references %s" % \
+            os.path.join(config["output"]["profiling"], "databases/strainphlan4/reference_genomes/{clade}.fna") \
+            if config["params"]["profiling"]["strainphlan"]["reference_genome"]["use"] \
+            else "",
             opts = config["params"]["profiling"]["strainphlan"]["external_opts_v4"]
         priority:
             20
@@ -170,14 +204,12 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
             --database {input.database_pkl} \
             --samples {input.consensus_markers} \
             --clade_markers {input.clade_marker} \
-            --references {input.reference_genome} \
+            {params.reference_opts} \
             --output_dir {params.outdir}/ \
             --nprocs {threads} \
             --clade {params.clade} \
-            --trim_sequences {params.trim_sequences} \
             --marker_in_n_samples {params.marker_in_n_samples} \
             --sample_with_n_markers {params.sample_with_n_markers} \
-            --secondary_sample_with_n_markers {params.secondary_sample_with_n_markers} \
             --breadth_thres {params.breadth_thres} \
             --phylophlan_mode {params.phylophlan_mode} \
             --mutation_rates \
@@ -190,17 +222,6 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
 
     rule profiling_strainphlan4_all:
         input:
-            #expand(os.path.join(
-            #    config["output"]["profiling"],
-            #    "profile/strainphlan4/clade_markers/{clade}/RAxML_{prefix}.{clade}.StrainPhlAn4.tre"),
-            #    prefix=["bestTree", "info", "log", "parsimonyTree", "result"],
-            #    clade=STRAINPHLAN_CLADES_LIST_V4),
-            #expand(os.path.join(
-            #    config["output"]["profiling"],
-            #    "profile/strainphlan4/clade_markers/{clade}/{clade}{suffix}"),
-            #    suffix=["_mutation_rates", ".info", ".mutation", ".polymorphic",
-            #            ".StrainPhlAn4_concatenated.aln"],
-            #    clade=STRAINPHLAN_CLADES_LIST_V4)
             expand(os.path.join(
                 config["output"]["profiling"],
                 "profile/strainphlan4/clade_markers/{clade}/done"),
