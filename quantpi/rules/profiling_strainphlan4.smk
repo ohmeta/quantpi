@@ -86,9 +86,12 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
                 marker_in_n_samples = config["params"]["profiling"]["strainphlan"]["marker_in_n_samples"]
             conda:
                 config["envs"]["biobakery4"]
+            threads:
+                32
             shell:
                 '''
                 strainphlan \
+                --nprocs {threads} \
                 --database {input.database_pkl} \
                 --samples {input.consensus_markers} \
                 --marker_in_n_samples {params.marker_in_n_samples} \
