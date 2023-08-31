@@ -54,7 +54,7 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
         STRAINPHLAN_CLADES_LIST_V4 = STRAINPHLAN_CLADES_V4.index.unique()
 
 
-        rule profiling_strainphlan3_prepare_reference_genome:
+        rule profiling_strainphlan4_prepare_reference_genome:
             input:
                 reference_genome = lambda wildcards: STRAINPHLAN_CLADES_V4.loc[wildcards.clade, "fna_path"]
             output:
