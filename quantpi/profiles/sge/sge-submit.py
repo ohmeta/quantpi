@@ -155,7 +155,7 @@ def parse_qsub_settings(source, resource_mapping=RESOURCE_MAPPING, option_mappin
                 # plain integers for memory as bytes. This hack means we interpret memory
                 # requests as gigabytes
                 if (rkey == 's_vmem') or (rkey == 'h_vmem'):
-                    job_options["resources"].update({rkey : str(sval) + 'G'})
+                    job_options["resources"].update({rkey : str(sval)})
                 else:
                     job_options["resources"].update({rkey : sval})
                 break
