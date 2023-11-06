@@ -36,7 +36,7 @@ __default__:
   mem: "512M"
   nodes: 1 # one rule run on one node, unless rule support MPI/openmp
   #threads: 1
-  #time: 24:00:00 # one day, PriorityTimelimit
+  time: 6-23:59:59 # one day, PriorityTimelimit
 
 simulate_short_reads:
   mem: "2G"
