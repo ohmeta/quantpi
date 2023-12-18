@@ -8,10 +8,12 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
             database_pkl = expand(os.path.join(
                 config["params"]["profiling"]["metaphlan"]["bowtie2db"], "{index}.pkl"),
                 index = config["params"]["profiling"]["metaphlan"]["index_v4"]),
-            sam = os.path.join(config["output"]["profiling"],
-                               "profile/metaphlan4/{sample}/{sample}.sam.bz2"),
-            aln = os.path.join(config["output"]["profiling"],
-                               "profile/metaphlan4/{sample}/{sample}.bowtie2.bz2")
+            sam = os.path.join(
+                config["output"]["profiling"],
+                "profile/metaphlan4/{sample}/{sample}.sam.bz2"),
+            aln = os.path.join(
+                config["output"]["profiling"],
+                "profile/metaphlan4/{sample}/{sample}.bowtie2.bz2")
         output:
             os.path.join(
                 config["output"]["profiling"],
@@ -52,7 +54,7 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
         STRAINPHLAN_CLADES_LIST_V4 = STRAINPHLAN_CLADES_V4.index.unique()
 
 
-        rule profiling_strainphlan3_prepare_reference_genome:
+        rule profiling_strainphlan4_prepare_reference_genome:
             input:
                 reference_genome = lambda wildcards: STRAINPHLAN_CLADES_V4.loc[wildcards.clade, "fna_path"]
             output:
@@ -87,22 +89,26 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
             conda:
                 config["envs"]["biobakery4"]
             threads:
-                32
+                config["params"]["profiling"]["threads"]
             shell:
                 '''
+                OUTDIR=$(dirname {output.markers_txt})
+                rm -rf $OUTDIR
+                mkdir -p $OUTDIR
+
                 strainphlan \
                 --nprocs {threads} \
                 --database {input.database_pkl} \
                 --samples {input.consensus_markers} \
                 --marker_in_n_samples {params.marker_in_n_samples} \
-                -o /dev/null \
+                --output_dir $OUTDIR \
                 --print_clades_only \
                 >{output.markers_txt} 2>{log}
 
                 mkdir -p {output.markers_dir}
 
                 cat {output.markers_txt} | \
-                grep "s__" | \
+                grep "t__" | \
                 awk -F'[\t:]' '{{print $5}}' | \
                 xargs -I XXX mkdir -p {output.markers_dir}/XXX
                 '''
