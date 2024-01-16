@@ -87,7 +87,6 @@ def run_snakemake(args, unknown, snakefile, workflow):
             "--rerun-incomplete",
             "--keep-going",
             "--printshellcmds",
-            "--reason",
             "--until",
             args.task
         ]
