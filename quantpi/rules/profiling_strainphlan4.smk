@@ -117,13 +117,21 @@ if config["params"]["profiling"]["strainphlan"]["do_v4"]:
         def aggregate_profiling_strainphlan4_extract_markers(wildcards):
             checkpoint_output = checkpoints.profiling_strainphlan4_print_clades.get(**wildcards).output.markers_dir
 
-            return expand(os.path.join(
+            clades = []
+            for i in glob_wildcards(os.path.join(checkpoint_output, "{clade}")).clade:
+                if "t__SGB" in i:
+                    clades.append(i.split("/")[0])
+            clades = list(set(clades))
+            
+            from pprint import pprint
+            pprint(clades)
+
+            clades_done = expand(os.path.join(
                 config["output"]["profiling"],
                 "profile/strainphlan4/clade_markers/{clade}/done"),
-                clade=list(set([i.split("/")[0] \
-                    for i in glob_wildcards(os.path.join(
-                        checkpoint_output,
-                        "{clade}")).clade])))
+                clade = clades)
+
+            return clades_done
 
 
     rule profiling_strainphlan4_extract_markers:
