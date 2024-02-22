@@ -103,13 +103,21 @@ if config["params"]["profiling"]["strainphlan"]["do_v3"]:
         def aggregate_profiling_strainphlan3_extract_markers(wildcards):
             checkpoint_output = checkpoints.profiling_strainphlan3_print_clades.get(**wildcards).output.markers_dir
 
-            return expand(os.path.join(
+            clades = []
+            for i in glob_wildcards(os.path.join(checkpoint_output, "{clade}")).clade:
+                if "s__" in i:
+                    clades.append(i.split("/")[0])
+            clades = list(set(clades))
+            
+            from pprint import pprint
+            pprint(clades)
+
+            clades_done = expand(os.path.join(
                 config["output"]["profiling"],
                 "profile/strainphlan3/clade_markers/{clade}/done"),
-                clade=list(set([i.split("/")[0] \
-                    for i in glob_wildcards(os.path.join(
-                        checkpoint_output,
-                        "{clade}")).clade])))
+                clade = clades)
+
+            return clades_done
 
 
     rule profiling_strainphlan3_extract_markers:
