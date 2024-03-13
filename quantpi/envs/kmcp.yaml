@@ -3,4 +3,5 @@ channels:
   - bioconda
   - defaults
 dependencies:
+  - python
   - kmcp=0.9.0
