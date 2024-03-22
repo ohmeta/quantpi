@@ -129,18 +129,26 @@ def compute_host_rate(df, steps, samples_id_list, allow_miss_samples=True, **kwa
                 if "rmhost" in steps:
                     if "trimming" in steps:
                         if ("trimming" in sample_reads[sample_id]) and ("rmhost" in sample_reads[sample_id]):
-                            host_rate[sample_id] = (
-                                sample_reads[sample_id]["trimming"]
-                                - sample_reads[sample_id]["rmhost"]
-                                ) / sample_reads[sample_id]["trimming"]
+                            if sample_reads[sample_id]["trimming"] > 0:
+                                host_rate[sample_id] = (
+                                    sample_reads[sample_id]["trimming"]
+                                    - sample_reads[sample_id]["rmhost"]
+                                    ) / sample_reads[sample_id]["trimming"]
+                            else:
+                                print(f"No reads found for {sample_id} at trimming step, please check!")
+                                sys.exit(1)
                         else:
                             host_rate[sample_id] = np.nan
                     elif "raw" in steps:
                         if ("raw" in sample_reads[sample_id]) and ("rmhost" in sample_reads[sample_id]):
-                            host_rate[sample_id] = (
-                                sample_reads[sample_id]["raw"]
-                                - sample_reads[sample_id]["rmhost"]
-                                ) / sample_reads[sample_id]["raw"]
+                            if sample_reads[sample_id]["raw"] > 0:
+                                host_rate[sample_id] = (
+                                    sample_reads[sample_id]["raw"]
+                                    - sample_reads[sample_id]["rmhost"]
+                                    ) / sample_reads[sample_id]["raw"]
+                            else:
+                                print(f"No reads found for {sample_id} at raw step, please check!")
+                                sys.exit(1)
                         else:
                             host_rate[sample_id] = np.nan
                 else:
