@@ -369,10 +369,7 @@ if config["params"]["profiling"]["krakenuniq"]["do"] and config["params"]["profi
             expand(os.path.join(
                 config["output"]["profiling"],
                 "report/krakenuniq_bracken/bracken.merged.abundance.profile.{level}.tsv"),
-                level=config["params"]["profiling"]["krakenuniq"]["bracken"]["level"]),
-
-            #rules.rmhost_all.input,
-            rules.qcreport_all.input
+                level=config["params"]["profiling"]["krakenuniq"]["bracken"]["level"])
 
 else:
     rule profiling_krakenuniq_bracken_all:

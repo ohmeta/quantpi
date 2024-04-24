@@ -386,10 +386,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v3"] and \
                    target=["genefamilies", "pathabundance", "pathcoverage"],
                    norm = config["params"]["profiling"]["humann"]["normalize_method"],
                    group=config["params"]["profiling"]["humann"]["map_database"],
-                   suffix=["stratified", "unstratified"]),
-
-            #rules.rmhost_all.input,
-            rules.qcreport_all.input
+                   suffix=["stratified", "unstratified"])
 
 else:
     rule profiling_humann3_all:

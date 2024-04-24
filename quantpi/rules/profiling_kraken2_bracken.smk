@@ -375,10 +375,7 @@ if config["params"]["profiling"]["kraken2"]["do"] and config["params"]["profilin
             expand(os.path.join(
                 config["output"]["profiling"],
                 "report/kraken2_bracken/bracken.merged.abundance.profile.{level}.tsv"),
-                level=config["params"]["profiling"]["kraken2"]["bracken"]["level"]),
-
-            #rules.rmhost_all.input,
-            rules.qcreport_all.input
+                level=config["params"]["profiling"]["kraken2"]["bracken"]["level"])
 
 else:
     rule profiling_kraken2_bracken_all:

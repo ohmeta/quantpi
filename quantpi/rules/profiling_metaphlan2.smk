@@ -138,10 +138,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"]:
                     config["output"]["profiling"],
                     "report/metaphlan2/metaphlan2.merged.abundance.profile.{level}.tsv"),
                 level=["all", "superkingdom", "phylum", "class",
-                       "order", "family", "genus", "species", "strain"]),
-
-            #rules.rmhost_all.input,
-            rules.qcreport_all.input
+                       "order", "family", "genus", "species", "strain"])
 
 else:
     rule profiling_metaphlan2_all:
