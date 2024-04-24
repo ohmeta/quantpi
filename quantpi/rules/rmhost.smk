@@ -85,7 +85,7 @@ if config["params"]["rmhost"]["bwa"]["do"]:
         shell:
             '''
             READSIN=({input.reads})
-            READSOUT({output.reads})
+            READSOUT=({output.reads})
 
             if [ "{params.pe}" == "pe" ];
             then
@@ -251,7 +251,7 @@ if config["params"]["rmhost"]["bowtie2"]["do"]:
         shell:
             '''
             READSIN=({input.reads})
-            READSOUT({output.reads})
+            READSOUT=({output.reads})
 
             if [ "{params.pe}" == "pe" ];
             then
@@ -413,7 +413,7 @@ if config["params"]["rmhost"]["minimap2"]["do"]:
         shell:
             '''
             READSIN=({input.reads})
-            READSOUT({output.reads})
+            READSOUT=({output.reads})
 
             if [ "{params.pe}" == "pe" ];
             then
@@ -557,7 +557,7 @@ if config["params"]["rmhost"]["kraken2"]["do"]:
         shell:
             '''
             READSIN=({input.reads})
-            READSOUT({output.reads})
+            READSOUT=({output.reads})
 
             if [ "{params.pe}" == "pe" ];
             then
@@ -676,7 +676,7 @@ if config["params"]["rmhost"]["kneaddata"]["do"]:
             rm -rf {params.output_dir}
 
             READSIN=({input.reads})
-            READSOUT({output.reads})
+            READSOUT=({output.reads})
 
             input_reads=""
             if [ "{params.pe}" == "pe" ];

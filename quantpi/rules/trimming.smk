@@ -34,7 +34,7 @@ if config["params"]["trimming"]["sickle"]["do"]:
         shell:
             '''
             READSIN=({input.reads})
-            READSOUT({output.reads})
+            READSOUT=({output.reads})
 
             if [ "{params.pe}" == "pe" ];
             then
@@ -138,7 +138,7 @@ if config["params"]["trimming"]["fastp"]["do"]:
         shell:
             '''
             READSIN=({input.reads})
-            READSOUT({output.reads})
+            READSOUT=({output.reads})
 
             if [ "{params.pe}" == "pe" ];
                 if [ "{params.use_slide_window}" == "yes" ]; then
@@ -309,7 +309,7 @@ if config["params"]["trimming"]["trimmomatic"]["do"]:
         shell:
             '''
             READSIN=({input.reads})
-            READSOUT({output.reads})
+            READSOUT=({output.reads})
 
             if [ "{params.pe}" == "pe" ];
             then
