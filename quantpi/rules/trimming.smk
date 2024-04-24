@@ -36,8 +36,7 @@ if config["params"]["trimming"]["sickle"]["do"]:
             READSIN=({input.reads})
             READSOUT=({output.reads})
 
-            if [ "{params.pe}" == "pe" ];
-            then
+            if [ "{params.pe}" == "pe" ]; then
                 sickle pe \
                 --pe-file1 ${{READSIN[0]}} \
                 --pe-file2 ${{READSIN[1]}} \
@@ -140,7 +139,7 @@ if config["params"]["trimming"]["fastp"]["do"]:
             READSIN=({input.reads})
             READSOUT=({output.reads})
 
-            if [ "{params.pe}" == "pe" ];
+            if [ "{params.pe}" == "pe" ]; then
                 if [ "{params.use_slide_window}" == "yes" ]; then
                     fastp \
                     --in1 ${{READSIN[0]}} \
@@ -311,8 +310,7 @@ if config["params"]["trimming"]["trimmomatic"]["do"]:
             READSIN=({input.reads})
             READSOUT=({output.reads})
 
-            if [ "{params.pe}" == "pe" ];
-            then
+            if [ "{params.pe}" == "pe" ]; then
                 trimmomatic \
                 PE \
                 {params.phred} \
@@ -324,8 +322,7 @@ if config["params"]["trimming"]["trimmomatic"]["do"]:
                 {params.trimmomatic_options} \
                 >{output.log} 2>&1
 
-                if [ "{params.save_unpaired}" == "false" ];
-                then
+                if [ "{params.save_unpaired}" == "false" ]; then
                     rm -rf ${{READSOUT[0]}}.unpaired.gz
                     rm -rf ${{READSOUT[1]}}.unpaired.gz
                 fi

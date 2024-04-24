@@ -87,10 +87,8 @@ if config["params"]["rmhost"]["bwa"]["do"]:
             READSIN=({input.reads})
             READSOUT=({output.reads})
 
-            if [ "{params.pe}" == "pe" ];
-            then
-                if [ "{params.save_bam}" == "yes" ];
-                then
+            if [ "{params.pe}" == "pe" ]; then
+                if [ "{params.save_bam}" == "yes" ]; then
                     mkdir -p {params.bam_dir}
 
                     {params.bwa} mem \
@@ -131,8 +129,7 @@ if config["params"]["rmhost"]["bwa"]["do"]:
                     2> {log}
                 fi
             else
-                if [ "{params.save_bam}" == "yes" ];
-                then
+                if [ "{params.save_bam}" == "yes" ]; then
                     mkdir -p {params.bam_dir}
 
                     {params.bwa} mem \
@@ -253,10 +250,8 @@ if config["params"]["rmhost"]["bowtie2"]["do"]:
             READSIN=({input.reads})
             READSOUT=({output.reads})
 
-            if [ "{params.pe}" == "pe" ];
-            then
-                if [ "{params.save_bam}" == "yes" ];
-                then
+            if [ "{params.pe}" == "pe" ]; then
+                if [ "{params.save_bam}" == "yes" ]; then
                     mkdir -p {params.bam_dir}
 
                     bowtie2 \
@@ -299,8 +294,7 @@ if config["params"]["rmhost"]["bowtie2"]["do"]:
                     -2 ${{READSOUT[1]}} -
                 fi
             else
-                if [ "{params.save_bam}" == "yes" ];
-                then
+                if [ "{params.save_bam}" == "yes" ]; then
                     mkdir -p {params.bam_dir}
 
                     bowtie2 \
@@ -415,10 +409,8 @@ if config["params"]["rmhost"]["minimap2"]["do"]:
             READSIN=({input.reads})
             READSOUT=({output.reads})
 
-            if [ "{params.pe}" == "pe" ];
-            then
-                if [ "{params.save_bam}" == "yes" ];
-                then
+            if [ "{params.pe}" == "pe" ]; then
+                if [ "{params.save_bam}" == "yes" ]; then
                     mkdir -p {params.bam_dir}
 
                     minimap2 \
@@ -459,8 +451,7 @@ if config["params"]["rmhost"]["minimap2"]["do"]:
                     2> {log}
                 fi
             else
-                if [ "{params.save_bam}" == "yes" ];
-                then
+                if [ "{params.save_bam}" == "yes" ]; then
                     mkdir -p {params.bam_dir}
 
                     minimap2 \
@@ -559,8 +550,7 @@ if config["params"]["rmhost"]["kraken2"]["do"]:
             READSIN=({input.reads})
             READSOUT=({output.reads})
 
-            if [ "{params.pe}" == "pe" ];
-            then
+            if [ "{params.pe}" == "pe" ]; then
                 kraken2 \
                 --threads {threads} \
                 --db {input.database} \
@@ -679,17 +669,14 @@ if config["params"]["rmhost"]["kneaddata"]["do"]:
             READSOUT=({output.reads})
 
             input_reads=""
-            if [ "{params.pe}" == "pe" ];
-            then
+            if [ "{params.pe}" == "pe" ]; then
                 input_reads="-i ${{READSIN[0]}} -i ${{READSIN[1]}}"
             else
                 input_reads="-i ${{READSIN[0]}}"
             fi
 
-            if [ "{params.do_bowtie2}" == "yes" ];
-            then
-                if [ "{params.do_trimmomatic}" == "yes" ];
-                then
+            if [ "{params.do_bowtie2}" == "yes" ]; then
+                if [ "{params.do_trimmomatic}" == "yes" ]; then
                     trimpath=$(which trimmomatic)
                     trimpathreal=$(realpath $trimpath)
                     trimdir=$(dirname $trimpathreal)
@@ -723,10 +710,8 @@ if config["params"]["rmhost"]["kneaddata"]["do"]:
                     --log {log}
                 fi
             else
-                if [ "{params.do_bmtagger}" == "yes" ];
-                then
-                    if [ "{params.do_trimmomatic}" == "yes" ];
-                    then
+                if [ "{params.do_bmtagger}" == "yes" ]; then
+                    if [ "{params.do_trimmomatic}" == "yes" ]; then
                         trimpath=$(which trimmomatic)
                         trimpathreal=$(realpath $trimpath)
                         trimdir=$(dirname $trimpathreal)
