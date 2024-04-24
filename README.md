@@ -14,17 +14,18 @@
 ➤ mkdir -p ~/.conda/envs
 ➤ wget https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh
 ➤ bash Mambaforge-Linux-x86_64.sh
-# set the install path to ~/.conda/envs/mambaforge
+# set the install path to ~/.conda/envs/quantpi-env
 # init shell, then relogin
-➤ conda config --add channels defaults
+➤ conda config --add channels nodefaults
 ➤ conda config --add channels bioconda
 ➤ conda config --add channels conda-forge
 ➤ conda config --set channel_priority strict
+
 # then activate mambaforge
-➤ conda activate mambaforge
+➤ conda activate quantpi-env
 
 # install snakemake
-➤ conda install snakemake fd-find seqkit ruamel.yaml pandas numpy natsort openpyxl biopython seaborn matplotlib
+➤ mamba install snakemake fd-find seqkit ruamel.yaml pandas numpy natsort openpyxl biopython seaborn matplotlib executor
 ```
 
 ## Installation
@@ -44,18 +45,18 @@
 ## Help
 
 ```bash
-➤ conda activate mambaforge
+➤ conda activate quantpi-env
 
 ➤ quantpi --help
 # or
 ➤ python /path/to/quantpi/run_quantpi.py --help
 
-    ██████  ██    ██  █████  ███    ██ ████████ ██████  ██ 
-   ██    ██ ██    ██ ██   ██ ████   ██    ██    ██   ██ ██ 
-   ██    ██ ██    ██ ███████ ██ ██  ██    ██    ██████  ██ 
-   ██ ▄▄ ██ ██    ██ ██   ██ ██  ██ ██    ██    ██      ██ 
-    ██████   ██████  ██   ██ ██   ████    ██    ██      ██ 
-       ▀▀                                                  
+    ██████  ██    ██  █████  ███    ██ ████████ ██████  ██
+   ██    ██ ██    ██ ██   ██ ████   ██    ██    ██   ██ ██
+   ██    ██ ██    ██ ███████ ██ ██  ██    ██    ██████  ██
+   ██ ▄▄ ██ ██    ██ ██   ██ ██  ██ ██    ██    ██      ██
+    ██████   ██████  ██   ██ ██   ████    ██    ██      ██
+       ▀▀
 
            Omics for All, Open Source for All
 
@@ -66,7 +67,7 @@ optional arguments:
   -v, --version  print software version and exit
 
 available subcommands:
-  
+
     init         init project
     simulate_wf  simulate reads
     profiling_wf metagenome-profiling pipeline
@@ -147,7 +148,7 @@ The following samples are available in Zenodo:
 
 ```bash
 ➤ mkdir -p test
-➤ mkdir -p test/fastq 
+➤ mkdir -p test/fastq
 ➤ cd test
 #  - mock even distributed data no error
 ➤ wget -c https://zenodo.org/record/5579145/files/ENN_1.fq.gz -P ./fastq/
@@ -209,30 +210,34 @@ profiling_all
 profiling_bracken_all
 profiling_genome_coverm_all
 profiling_genomecov_all
-profiling_humann2_all
-profiling_humann3
-profiling_humann3_all
-profiling_humann3_config
-profiling_humann3_join
-profiling_humann3_postprocess
-profiling_humann3_split_stratified
-profiling_humann4
-profiling_humann4_all
-profiling_humann4_config
-profiling_humann4_join
-profiling_humann4_postprocess
-profiling_humann4_split_stratified
+profiling_humann28_all
+profiling_humann35
+profiling_humann35_all
+profiling_humann35_config
+profiling_humann35_join
+profiling_humann35_postprocess
+profiling_humann35_split_stratified
+profiling_humann39
+profiling_humann39_all
+profiling_humann39_config
+profiling_humann39_join
+profiling_humann39_postprocess
+profiling_humann39_split_stratified
 profiling_kmcp_all
 profiling_kraken2_all
 profiling_metaphlan2_all
 profiling_metaphlan3
 profiling_metaphlan3_all
 profiling_metaphlan3_merge
-profiling_metaphlan4
-profiling_metaphlan4_all
-profiling_metaphlan4_merge
+profiling_metaphlan40
+profiling_metaphlan40_all
+profiling_metaphlan40_merge
+profiling_metaphlan41
+profiling_metaphlan41_all
+profiling_metaphlan41_merge
 profiling_strainphlan3_all
-profiling_strainphlan4_all
+profiling_strainphlan40_all
+profiling_strainphlan41_all
 qcreport_all
 qcreport_plot
 qcreport_summary
@@ -460,73 +465,62 @@ params:
 
     # DNA-to-marker
     metaphlan:
-      do_v2: false                                                # metaphlan2
-      do_v3: true                                                 # metaphlan3
-      do_v4: true                                                 # metaphlan4
-      # please put metaphlan{2,3,4} bowtie2 index on one folder
-      bowtie2db: /home/jiezhu/databases/ecogenomics/MetaPhlAn     # common
-      index_v2: v20_m200                                          # metaphlan2
-      index_v3: mpa_v30_CHOCOPhlAn_201901                         # metaphlan3
-      index_v4: mpa_vJan21_CHOCOPhlAnSGB_202103                   # metaphlan4
-      bowtie2_presets: very-sensitive                             # common
-      taxonomic_level: a                                          # common
-      min_cu_len: 2000                                            # common
-      read_min_len: 70                                            # common
-      ignore_markers: /path/to/ignore_markers.txt                 # common
-      avoid_disqm: true # recommended                             # common
-      analysis_type: rel_ab_w_read_stats                          # common
-      #  [
-      #    "rel_ab",
-      #    "rel_ab_w_read_stats",
-      #    "reads_map",
-      #    "clade_profiles",
-      #    "marker_ab_table",
-      #    "marker_counts",
-      #    "marker_pres_table",
-      #  ]
-      stat: tavg_g                                                # common
-      stat_q_v2: '0.1'                                            # metaphlan2
-      stat_q_v3: '0.2'                                            # metaphlan3
-      stat_q_v4: '0.2'                                            # metaphlan4
-      unknown_estimation: true                                    # metaphlan3 or metaphlan4
-      add_viruses: true                                           # metaphlan2 or metaphlan3
-      ignore_eukaryotes: false                                    # common
-      ignore_bacteria: false                                      # common
-      ignore_archaea: false                                       # common
-      ignore_ksgbs: false                                         # metaphlan4
-      ignore_usgbs: false                                         # metaphlan4
-      legacy_output: false                                        # common
-      cami_format_output: false                                   # metaphlan3 or metaphlan4
-      no_sam: false                                               # keep it to False when want to run strainphlan, common
-      no_map: false                                               # keep it to False when want to run strainphlan, common
-      biom: false                                                 # common
-      external_opts_v2: ''
-      external_opts_v3: ''
-      external_opts_v4: ''
+      do_v2: False   # metaphlan2
+      do_v3: False   # metaphlan3
+      do_v40: True   # metaphlan v4.0.*
+      do_v41: True   # metaphlan v4.1.*
+      bowtie2db_v2: "/home/jiezhu/databases/ecogenomics/MetaPhlAn/mpa_v20/bowtie2_index"
+      bowtie2db_v3: "/home/jiezhu/databases/ecogenomics/MetaPhlAn/mpa_v30/bowtie2_index"
+      bowtie2db_v40: "/home/jiezhu/databases/ecogenomics/MetaPhlAn/mpa_vOct22/bowtie2_index"
+      bowtie2db_v41: "/home/jiezhu/databases/ecogenomics/MetaPhlAn/mpa_vJun23/bowtie2_index"
+      index_prefix_v2: "v20_m200"
+      index_prefix_v3: "mpa_v30_CHOCOPhlAn_201901"
+      index_prefix_v40: "mpa_vOct22_CHOCOPhlAnSGB_202212"
+      index_prefix_v41: "mpa_vJun23_CHOCOPhlAnSGB_202403"
+      bowtie2_presets: "very-sensitive"
+      taxonomic_level: "a"
+      min_cu_len: 2000
+      read_min_len: 70
+      analysis_type: "rel_ab_w_read_stats" #[ "rel_ab", "rel_ab_w_read_stats", "reads_map", "clade_profiles", "marker_ab_table", "marker_counts", "marker_pres_table" ]
+      stat: "tavg_g"
+      external_opts_v2: ""
+      external_opts_v3: "--unknown_estimation"
+      external_opts_v40: "--unclassified_estimation"
+      external_opts_v41: "--unclassified_estimation"
 
     strainphlan:
-      do_v3: false                                                # metaphlan3
-      do_v4: false                                                 # metaphlan4
-      clades_tsv_v3: /path/to/clades_v3.tsv                       # extrct clade markes from specific clades, two column, [clade\tfna_path]
-      clades_tsv_v4: /path/to/clades_v4.tsv                       # extrct clade markes from specific clades, two column, [clade\tfna_path]
-      trim_sequences: '50'
-      marker_in_n_samples: '80'                                   # reduce it if meet: Phylogeny can not be inferred. Too many markers were discarded
-      sample_with_n_markers: '80'
-      secondary_sample_with_n_markers: '80'
-      #sample_with_n_markers_after_filt: "80"
-      phylophlan_mode: accurate
-      breadth_thres: '80'                                         # strainphlan4
-      external_opts_v3: ''
-      external_opts_v4: ''
-
+      do_v3: False                                                # metaphlan3
+      do_v40: False                                               # metaphlan4
+      do_v41: False                                               # metaphlan4
+      reference_genome:
+        use: False
+        clades_tsv_v3: "/path/to/clades_v3.tsv"                   # extrct clade markes from specific clades, two column, [clade\tfna_path]
+        clades_tsv_v40: "/path/to/clades_v40.tsv"                 # extrct clade markes from specific clades, two column, [clade\tfna_path]
+        clades_tsv_v41: "/path/to/clades_v41.tsv"                 # extrct clade markes from specific clades, two column, [clade\tfna_path]
+      marker_in_n_samples: "1"                                    # reduce it if meet: Phylogeny can not be inferred. Too many markers were discarded
+      sample_with_n_markers: "10"
+      phylophlan_mode: "accurate"
+      breadth_thres: "80"
+      external_opts_v3: ""
+      external_opts_v40: ""
+      external_opts_v41: ""
 
     # Functional profiling
     humann:
-      do_v2: false
-      do_v3: true
-      do_v4: true
-      evalue: 1.0
-      prescreen_threshold: 0.01
+      do_v28: False  # reply on metaphlan 2+
+      do_v35: True # reply on metaphlan 3+
+      do_v39: True # reply on metaphlan 4+ # choose metaphlan v4.0 or v4.1 ?
+      do_v39_used_metaphlan: "metaphlan41"
+      database_utility_mapping_v28: "/home/jiezhu/databases/funcgenomics/humann2/utility_mapping"
+      database_utility_mapping_v35: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/utility_mapping"
+      database_utility_mapping_v39: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/utility_mapping"
+      database_protein_v28: "/home/jiezhu/databases/funcgenomics/humann2/uniref"
+      database_protein_v35: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/uniref"
+      database_protein_v39: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/uniref"
+      database_nucleotide_v28: "/home/jiezhu/databases/funcgenomics/humann2/chocophlan"
+      database_nucleotide_v35: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/chocophlan"
+      database_nucleotide_v39: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/chocophlan"
+      prescreen_threshold: 0.005 # minimum percentage of reads matching a species, default: 0.01
       identity_threshold: 50.0
       nucleotide_identity_threshold: 0.0 # nucleotide: 0
       translated_identity_threshold: 80.0 # uniref90: 80.0; uniref50: 50.0
@@ -534,30 +528,14 @@ params:
       translated_subject_coverage_threshold: 50.0
       nucleotide_query_coverage_threshold: 90.0
       translated_query_coverage_threshold: 90.0
-      translated-alignment: diamond   # ["diamond", "usearch", "rapsearch"]
-      xipe: false
-      minpath: true
-      pick_frames: false
-      gap_fill: true
-      pathways: metacyc   # ["metacyc", "unipathway"]
-      remove_temp_output: true
-      memory_use: minimum
-      normalize_method: relab
-      regroup_method: sum
-      map_database: [uniref90_go, uniref90_ko, uniref90_eggnog, uniref90_pfam]
-      #  "uniref90_level4ec",
-      #  "uniref90_infogo1000",
-      #  "uniref90_rxn",
-      update_config: true # humann save config to humann install dir
-      database_utility_mapping: /home/jiezhu/databases/funcgenomics/humann2/utility_mapping
-      database_utility_mapping_v3: /home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/utility_mapping
-      database_utility_mapping_v4: /home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/utility_mapping
-      database_protein: /home/jiezhu/databases/funcgenomics/humann2/uniref
-      database_protein_v3: /home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/uniref
-      database_protein_v4: /home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/uniref
-      database_nucleotide: /home/jiezhu/databases/funcgenomics/humann2/chocophlan
-      database_nucleotide_v3: /home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/chocophlan
-      database_nucleotide_v4: /home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/chocophlan
+      translated-alignment: "diamond" # ["diamond", "usearch", "rapsearch"]
+      pathways: "metacyc" # ["metacyc", "unipathway"]
+      normalize_method: "relab"
+      regroup_method: "sum"
+      map_database: ["uniref90_go", "uniref90_ko", "uniref90_eggnog", "uniref90_pfam"] # ["uniref90_level4ec", "uniref90_infogo1000", "uniref90_rxn" ]
+      external_opts_v28: ""
+      external_opts_v35: ""
+      external_opts_v39: ""
 
     # alignment method
     genomecov:
@@ -605,7 +583,6 @@ params:
       memory_limit: 8G
       compression_level: 6
 
-
 output:
   simulate: results/00.simulate
   raw: results/00.raw
@@ -613,7 +590,6 @@ output:
   rmhost: results/02.rmhost
   qcreport: results/03.qcreport
   profiling: results/04.profiling
-
 
 envs:
   simulate: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/simulate.yaml
@@ -628,7 +604,8 @@ envs:
   kmcp: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/kmcp.yaml
   biobakery2: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/biobakery2.yaml
   biobakery3: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/biobakery3.yaml
-  biobakery4: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/biobakery4.yaml
+  biobakery40: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/biobakery40.yaml
+  biobakery41: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/biobakery41.yaml
 ```
 
 ### Step 5: Dry run profiling_wf
@@ -647,20 +624,13 @@ job                                   count    min threads    max threads
 ----------------------------------  -------  -------------  -------------
 all                                       1              1              1
 prepare_short_reads                       4              8              8
-profiling_humann3                         4              8              8
-profiling_humann3_config                  1              1              1
-profiling_humann3_join                    1              1              1
-profiling_humann3_postprocess             4              1              1
-profiling_humann3_split_stratified        1              1              1
-profiling_humann4                         4              8              8
-profiling_humann4_config                  1              1              1
-profiling_humann4_join                    1              1              1
-profiling_humann4_postprocess             4              1              1
-profiling_humann4_split_stratified        1              1              1
-profiling_metaphlan3                      4              8              8
-profiling_metaphlan3_merge                1              8              8
-profiling_metaphlan4                      4              8              8
-profiling_metaphlan4_merge                1              8              8
+profiling_humann39                        4              8              8
+profiling_humann39_config                 1              1              1
+profiling_humann39_join                   1              1              1
+profiling_humann39_postprocess            4              1              1
+profiling_humann39_split_stratified       1              1              1
+profiling_metaphlan41                     4              8              8
+profiling_metaphlan41_merge               1              8              8
 qcreport_plot                             1              1              1
 qcreport_summary                          1              4              4
 raw_report                                4              4              4
@@ -675,7 +645,6 @@ trimming_fastp_multiqc                    1              1              1
 trimming_report                           4              4              4
 trimming_report_merge                     1              4              4
 trimming_report_refine                    4              1              1
-total                                    75              1              8
 
 ```
 

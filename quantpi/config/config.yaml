@@ -203,7 +203,7 @@ params:
     metaphlan:
       do_v2: False   # metaphlan2
       do_v3: False   # metaphlan3
-      do_v40: True   # metaphlan v4.0.*
+      do_v40: False   # metaphlan v4.0.*
       do_v41: True   # metaphlan v4.1.*
       bowtie2db_v2: "/home/jiezhu/databases/ecogenomics/MetaPhlAn/mpa_v20/bowtie2_index"
       bowtie2db_v3: "/home/jiezhu/databases/ecogenomics/MetaPhlAn/mpa_v30/bowtie2_index"
@@ -245,7 +245,7 @@ params:
     # Functional profiling
     humann:
       do_v28: False  # reply on metaphlan 2+
-      do_v35: True # reply on metaphlan 3+
+      do_v35: False # reply on metaphlan 3+
       do_v39: True # reply on metaphlan 4+ # choose metaphlan v4.0 or v4.1 ?
       do_v39_used_metaphlan: "metaphlan41"
       database_utility_mapping_v28: "/home/jiezhu/databases/funcgenomics/humann2/utility_mapping"

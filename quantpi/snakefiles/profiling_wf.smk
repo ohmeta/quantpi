@@ -18,7 +18,7 @@ WRAPPER_DIR = os.path.join(QUANTPI_DIR, "wrappers")
 
 IS_PE = True \
     if config["params"]["reads_layout"] == "pe" \
-       else False
+        else False
 
 
 IS_INTERLEAVED = True \
@@ -56,7 +56,7 @@ SAMPLES_ID_LIST = SAMPLES.index.unique()
 
 READS_FORMAT = "sra" \
     if "sra" in SAMPLES.columns \
-       else "fastq"
+        else "fastq"
 
 
 KMCP_DBS = []
@@ -82,20 +82,13 @@ include: "../rules/profiling_krakenuniq_bracken.smk"
 
 include: "../rules/profiling_kmcp.smk"
 
-include: "../rules/profiling_metaphlan2.smk"
-include: "../rules/profiling_metaphlan3.smk"
-include: "../rules/profiling_metaphlan4.smk"
-
-include: "../rules/profiling_strainphlan3.smk"
-include: "../rules/profiling_strainphlan4.smk"
+include: "../rules/profiling_metaphlan.smk"
+include: "../rules/profiling_strainphlan.smk"
+include: "../rules/profiling_humann.smk"
 
 include: "../rules/profiling_genomecov.smk"
 include: "../rules/profiling_coverm.smk"
 #include: "../rules/profiling_custom.smk"
-
-include: "../rules/profiling_humann2.smk"
-include: "../rules/profiling_humann3.smk"
-include: "../rules/profiling_humann4.smk"
 
 include: "../rules/profiling_all.smk"
 
