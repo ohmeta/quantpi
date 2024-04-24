@@ -2,14 +2,14 @@ rule profiling_metaphlan2:
     input:
         reads = profiling_input_with_short_reads,
         index = expand(os.path.join(
-            config["params"]["profiling"]["metaphlan"]["bowtie2db"], "{index}.{suffix}"),
+            config["params"]["profiling"]["metaphlan"]["bowtie2db_v2"], "{index}.{suffix}"),
             index = config["params"]["profiling"]["metaphlan"]["index_prefix_v2"],
             suffix = ["1.bt2", "2.bt2", "3.bt2", "4.bt2", "rev.1.bt2", "rev.2.bt2", "pkl"])
     output:
         profile = os.path.join(
             config["output"]["profiling"],
             "profile/metaphlan2/{sample}/{sample}.metaphlan2.abundance.profile.tsv"),
-        samout = os.path.join(config["output"]["profiling"], "profile/metaphlan2/{sample}/{sample}.sam.bz2")
+        samout = os.path.join(config["output"]["profiling"], "profile/metaphlan2/{sample}/{sample}.sam.bz2"),
         mapout = os.path.join(config["output"]["profiling"], "profile/metaphlan2/{sample}/{sample}.bowtie2.bz2")
     log:
         os.path.join(config["output"]["profiling"], "logs/metaphlan2/{sample}.metaphlan2.log")
@@ -103,7 +103,7 @@ rule profiling_metaphlan3:
     input:
         reads = profiling_input_with_short_reads,
         index = expand(os.path.join(
-            config["params"]["profiling"]["metaphlan"]["bowtie2db"],
+            config["params"]["profiling"]["metaphlan"]["bowtie2db_v3"],
             "{index}.{suffix}"),
             index = config["params"]["profiling"]["metaphlan"]["index_prefix_v3"],
             suffix = ["1.bt2", "2.bt2", "3.bt2", "4.bt2", "rev.1.bt2", "rev.2.bt2", "pkl"])
@@ -111,7 +111,7 @@ rule profiling_metaphlan3:
         profile = os.path.join(
             config["output"]["profiling"],
             "profile/metaphlan3/{sample}/{sample}.metaphlan3.abundance.profile.tsv"),
-        samout = os.path.join(config["output"]["profiling"], "profile/metaphlan3/{sample}/{sample}.sam.bz2")
+        samout = os.path.join(config["output"]["profiling"], "profile/metaphlan3/{sample}/{sample}.sam.bz2"),
         mapout = os.path.join(config["output"]["profiling"], "profile/metaphlan3/{sample}/{sample}.bowtie2.bz2")
     log:
         os.path.join(config["output"]["profiling"], "logs/metaphlan3/{sample}.metaphlan3.log")
@@ -205,7 +205,7 @@ rule profiling_metaphlan40:
     input:
         reads = profiling_input_with_short_reads,
         index = expand(os.path.join(
-            config["params"]["profiling"]["metaphlan"]["bowtie2db"],
+            config["params"]["profiling"]["metaphlan"]["bowtie2db_v40"],
             "{index}.{suffix}"),
             index = config["params"]["profiling"]["metaphlan"]["index_prefix_v40"],
             suffix = ["1.bt2l", "2.bt2l", "3.bt2l", "4.bt2l", "rev.1.bt2l", "rev.2.bt2l", "pkl"])
@@ -309,7 +309,7 @@ rule profiling_metaphlan41:
     input:
         reads = profiling_input_with_short_reads,
         index = expand(os.path.join(
-            config["params"]["profiling"]["metaphlan"]["bowtie2db"], "{index}.{suffix}"),
+            config["params"]["profiling"]["metaphlan"]["bowtie2db_v41"], "{index}.{suffix}"),
             index = config["params"]["profiling"]["metaphlan"]["index_prefix_v41"],
             suffix = ["1.bt2l", "2.bt2l", "3.bt2l", "4.bt2l", "rev.1.bt2l", "rev.2.bt2l", "pkl"])
     output:
@@ -403,7 +403,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v41"]:
         input:
             expand(os.path.join(
                 config["output"]["profiling"],
-                "report/metaphlan4/metaphlan41.merged.abundance.profile.{level}.tsv"),
+                "report/metaphlan41/metaphlan41.merged.abundance.profile.{level}.tsv"),
                 level=["all", "superkingdom", "phylum", "class",
                        "order", "family", "genus", "species", "strain"])
 else:

@@ -57,7 +57,7 @@ else:
     checkpoint profiling_strainphlan3_print_clades:
         input:
             database_pkl = expand(os.path.join(
-                config["params"]["profiling"]["metaphlan"]["bowtie2db"], "{index}.pkl"),
+                config["params"]["profiling"]["metaphlan"]["bowtie2db_v3"], "{index}.pkl"),
                 index = config["params"]["profiling"]["metaphlan"]["index_prefix_v3"]),
             consensus_markers = expand(os.path.join(
                 config["output"]["profiling"],
@@ -114,7 +114,7 @@ else:
 rule profiling_strainphlan3_extract_markers:
     input:
         database_pkl = expand(os.path.join(
-            config["params"]["profiling"]["metaphlan"]["bowtie2db"], "{index}.pkl"),
+            config["params"]["profiling"]["metaphlan"]["bowtie2db_v3"], "{index}.pkl"),
             index = config["params"]["profiling"]["metaphlan"]["index_prefix_v3"])
     output:
         clade_marker = os.path.join(
@@ -152,7 +152,7 @@ rule profiling_strainphlan3_extract_markers:
 rule profiling_strainphlan3:
     input:
         database_pkl = expand(os.path.join(
-            config["params"]["profiling"]["metaphlan"]["bowtie2db"], "{index}.pkl"),
+            config["params"]["profiling"]["metaphlan"]["bowtie2db_v3"], "{index}.pkl"),
             index = config["params"]["profiling"]["metaphlan"]["index_prefix_v3"]),
         clade_marker = os.path.join(
             config["output"]["profiling"],
@@ -233,7 +233,7 @@ else:
 rule profiling_strainphlan40_sample2markers:
     input:
         database_pkl = expand(os.path.join(
-            config["params"]["profiling"]["metaphlan"]["bowtie2db"], "{index}.pkl"),
+            config["params"]["profiling"]["metaphlan"]["bowtie2db_v40"], "{index}.pkl"),
             index = config["params"]["profiling"]["metaphlan"]["index_prefix_v40"]),
         sam = os.path.join(
             config["output"]["profiling"],
@@ -299,7 +299,7 @@ else:
     checkpoint profiling_strainphlan40_print_clades:
         input:
             database_pkl = expand(os.path.join(
-                config["params"]["profiling"]["metaphlan"]["bowtie2db"], "{index}.pkl"),
+                config["params"]["profiling"]["metaphlan"]["bowtie2db_v40"], "{index}.pkl"),
                 index = config["params"]["profiling"]["metaphlan"]["index_prefix_v40"]),
             consensus_markers = expand(os.path.join(
                 config["output"]["profiling"],
@@ -363,7 +363,7 @@ else:
 rule profiling_strainphlan40_extract_markers:
     input:
         database_pkl = expand(os.path.join(
-            config["params"]["profiling"]["metaphlan"]["bowtie2db"], "{index}.pkl"),
+            config["params"]["profiling"]["metaphlan"]["bowtie2db_v40"], "{index}.pkl"),
             index = config["params"]["profiling"]["metaphlan"]["index_prefix_v40"])
     output:
         clade_marker = os.path.join(
@@ -401,7 +401,7 @@ rule profiling_strainphlan40_extract_markers:
 rule profiling_strainphlan40:
     input:
         database_pkl = expand(os.path.join(
-            config["params"]["profiling"]["metaphlan"]["bowtie2db"], "{index}.pkl"),
+            config["params"]["profiling"]["metaphlan"]["bowtie2db_v40"], "{index}.pkl"),
             index = config["params"]["profiling"]["metaphlan"]["index_prefix_v40"]),
         clade_marker = os.path.join(
             config["output"]["profiling"],
@@ -484,7 +484,7 @@ else:
 rule profiling_strainphlan41_sample2markers:
     input:
         database_pkl = expand(os.path.join(
-            config["params"]["profiling"]["metaphlan"]["bowtie2db"], "{index}.pkl"),
+            config["params"]["profiling"]["metaphlan"]["bowtie2db_v41"], "{index}.pkl"),
             index = config["params"]["profiling"]["metaphlan"]["index_prefix_v41"]),
         sam = os.path.join(
             config["output"]["profiling"],
@@ -550,7 +550,7 @@ else:
     checkpoint profiling_strainphlan41_print_clades:
         input:
             database_pkl = expand(os.path.join(
-                config["params"]["profiling"]["metaphlan"]["bowtie2db"], "{index}.pkl"),
+                config["params"]["profiling"]["metaphlan"]["bowtie2db_v41"], "{index}.pkl"),
                 index = config["params"]["profiling"]["metaphlan"]["index_prefix_v41"]),
             consensus_markers = expand(os.path.join(
                 config["output"]["profiling"],
@@ -614,7 +614,7 @@ else:
 rule profiling_strainphlan41_extract_markers:
     input:
         database_pkl = expand(os.path.join(
-            config["params"]["profiling"]["metaphlan"]["bowtie2db"], "{index}.pkl"),
+            config["params"]["profiling"]["metaphlan"]["bowtie2db_v41"], "{index}.pkl"),
             index = config["params"]["profiling"]["metaphlan"]["index_prefix_v41"])
     output:
         clade_marker = os.path.join(
@@ -652,7 +652,7 @@ rule profiling_strainphlan41_extract_markers:
 rule profiling_strainphlan41:
     input:
         database_pkl = expand(os.path.join(
-            config["params"]["profiling"]["metaphlan"]["bowtie2db"], "{index}.pkl"),
+            config["params"]["profiling"]["metaphlan"]["bowtie2db_v41"], "{index}.pkl"),
             index = config["params"]["profiling"]["metaphlan"]["index_prefix_v41"]),
         clade_marker = os.path.join(
             config["output"]["profiling"],
