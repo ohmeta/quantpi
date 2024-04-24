@@ -41,7 +41,7 @@ rule profiling_humann28_build_chocophlan_pangenome_db:
     conda:
         config["envs"]["biobakery2"]
     log:
-        os.path.join(config["output"]["profiling"], "logs/humann28/{sample}.humann2.build_pandb.log")
+        os.path.join(config["output"]["profiling"], "logs/humann28/{sample}.humann28.build_pandb.log")
     benchmark:
         os.path.join(config["output"]["profiling"], "benchmark/humann28/{sample}.bowtie2_index.benchmark.txt")
     params:
@@ -322,7 +322,7 @@ rule profiling_humann28_split_stratified:
 
 if config["params"]["profiling"]["metaphlan"]["do_v2"] and \
    config["params"]["profiling"]["humann"]["do_v28"]:
-    rule profiling_humann2_all:
+    rule profiling_humann28_all:
         input:
             expand([
                 os.path.join(
@@ -349,7 +349,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"] and \
                    suffix=["stratified", "unstratified"])
 
 else:
-    rule profiling_humann2_all:
+    rule profiling_humann28_all:
         input:
 
 
