@@ -201,73 +201,63 @@ params:
 
     # DNA-to-marker
     metaphlan:
-      do_v2: False                                                # metaphlan2
-      do_v3: True                                                 # metaphlan3
-      do_v4: True                                                 # metaphlan4
-      # please put metaphlan{2,3,4} bowtie2 index on one folder
-      bowtie2db: "/home/jiezhu/databases/ecogenomics/MetaPhlAn"   # common
-      index_v2: "v20_m200"                                        # metaphlan2
-      index_v3: "mpa_v30_CHOCOPhlAn_201901"                       # metaphlan3
-      #index_v4: "mpa_vJan21_CHOCOPhlAnSGB_202103"                 # metaphlan4 v4.0.3
-      index_v4: "mpa_vOct22_CHOCOPhlAnSGB_202212"                 # metaphlan4 v4.0.6
-      bowtie2_presets: "very-sensitive"                           # common
-      taxonomic_level: "a"                                        # common
-      min_cu_len: 2000                                            # common
-      read_min_len: 70                                            # common
-      ignore_markers: "/path/to/ignore_markers.txt"               # common
-      avoid_disqm: True # recommended                             # common
-      analysis_type: "rel_ab_w_read_stats"                        # common
-      #  [
-      #    "rel_ab",
-      #    "rel_ab_w_read_stats",
-      #    "reads_map",
-      #    "clade_profiles",
-      #    "marker_ab_table",
-      #    "marker_counts",
-      #    "marker_pres_table",
-      #  ]
-      stat: "tavg_g"                                              # common
-      stat_q_v2: "0.1"                                            # metaphlan2
-      stat_q_v3: "0.2"                                            # metaphlan3
-      stat_q_v4: "0.2"                                            # metaphlan4
-      unknown_estimation: True                                    # metaphlan3 or metaphlan4
-      add_viruses: True                                           # metaphlan2 or metaphlan3
-      ignore_eukaryotes: False                                    # common
-      ignore_bacteria: False                                      # common
-      ignore_archaea: False                                       # common
-      ignore_ksgbs: False                                         # metaphlan4
-      ignore_usgbs: False                                         # metaphlan4
-      legacy_output: False                                        # common
-      cami_format_output: False                                   # metaphlan3 or metaphlan4
-      no_sam: False                                               # keep it to False when want to run strainphlan, common
-      no_map: False                                               # keep it to False when want to run strainphlan, common
-      biom: False                                                 # common
+      do_v2: False   # metaphlan2
+      do_v3: False   # metaphlan3
+      do_v40: True   # metaphlan v4.0.*
+      do_v41: True   # metaphlan v4.1.*
+      bowtie2db_v2: "/home/jiezhu/databases/ecogenomics/MetaPhlAn/mpa_v20/bowtie2_index"
+      bowtie2db_v3: "/home/jiezhu/databases/ecogenomics/MetaPhlAn/mpa_v30/bowtie2_index"
+      bowtie2db_v40: "/home/jiezhu/databases/ecogenomics/MetaPhlAn/mpa_vOct22/bowtie2_index"
+      bowtie2db_v41: "/home/jiezhu/databases/ecogenomics/MetaPhlAn/mpa_vJun23/bowtie2_index"
+      index_prefix_v2: "v20_m200"
+      index_prefix_v3: "mpa_v30_CHOCOPhlAn_201901"
+      index_prefix_v40: "mpa_vOct22_CHOCOPhlAnSGB_202212"
+      index_prefix_v41: "mpa_vJun23_CHOCOPhlAnSGB_202403"
+      bowtie2_presets: "very-sensitive"
+      taxonomic_level: "a"
+      min_cu_len: 2000
+      read_min_len: 70
+      analysis_type: "rel_ab_w_read_stats" #[ "rel_ab", "rel_ab_w_read_stats", "reads_map", "clade_profiles", "marker_ab_table", "marker_counts", "marker_pres_table" ]
+      stat: "tavg_g"
       external_opts_v2: ""
-      external_opts_v3: ""
-      external_opts_v4: ""
+      external_opts_v3: "--unknown_estimation"
+      external_opts_v40: "--unclassified_estimation"
+      external_opts_v41: "--unclassified_estimation"
 
     strainphlan:
       do_v3: False                                                # metaphlan3
-      do_v4: False                                                 # metaphlan4
+      do_v40: False                                               # metaphlan4
+      do_v41: False                                               # metaphlan4
       reference_genome:
         use: False
-        clades_tsv_v3: "/path/to/clades_v3.tsv"                     # extrct clade markes from specific clades, two column, [clade\tfna_path]
-        clades_tsv_v4: "/path/to/clades_v4.tsv"                     # extrct clade markes from specific clades, two column, [clade\tfna_path]
-      marker_in_n_samples: "1"                                   # reduce it if meet: Phylogeny can not be inferred. Too many markers were discarded
+        clades_tsv_v3: "/path/to/clades_v3.tsv"                   # extrct clade markes from specific clades, two column, [clade\tfna_path]
+        clades_tsv_v40: "/path/to/clades_v40.tsv"                 # extrct clade markes from specific clades, two column, [clade\tfna_path]
+        clades_tsv_v41: "/path/to/clades_v41.tsv"                 # extrct clade markes from specific clades, two column, [clade\tfna_path]
+      marker_in_n_samples: "1"                                    # reduce it if meet: Phylogeny can not be inferred. Too many markers were discarded
       sample_with_n_markers: "10"
       phylophlan_mode: "accurate"
-      breadth_thres: "80"                                         # strainphlan4
+      breadth_thres: "80"
       external_opts_v3: ""
-      external_opts_v4: ""
+      external_opts_v40: ""
+      external_opts_v41: ""
 
 
     # Functional profiling
     humann:
-      do_v2: False
-      do_v3: True
-      do_v4: True
-      evalue: 1.0
-      prescreen_threshold: 0.01
+      do_v28: False  # reply on metaphlan 2+
+      do_v35: True # reply on metaphlan 3+
+      do_v39: True # reply on metaphlan 4+ # choose metaphlan v4.0 or v4.1 ?
+      do_v39_used_metaphlan: "metaphlan41"
+      database_utility_mapping_v28: "/home/jiezhu/databases/funcgenomics/humann2/utility_mapping"
+      database_utility_mapping_v35: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/utility_mapping"
+      database_utility_mapping_v39: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/utility_mapping"
+      database_protein_v28: "/home/jiezhu/databases/funcgenomics/humann2/uniref"
+      database_protein_v35: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/uniref"
+      database_protein_v39: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/uniref"
+      database_nucleotide_v28: "/home/jiezhu/databases/funcgenomics/humann2/chocophlan"
+      database_nucleotide_v35: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/chocophlan"
+      database_nucleotide_v39: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/chocophlan"
+      prescreen_threshold: 0.005 # minimum percentage of reads matching a species, default: 0.01
       identity_threshold: 50.0
       nucleotide_identity_threshold: 0.0 # nucleotide: 0
       translated_identity_threshold: 80.0 # uniref90: 80.0; uniref50: 50.0
@@ -276,30 +266,14 @@ params:
       nucleotide_query_coverage_threshold: 90.0
       translated_query_coverage_threshold: 90.0
       translated-alignment: "diamond" # ["diamond", "usearch", "rapsearch"]
-      xipe: False
-      minpath: True
-      pick_frames: False
-      gap_fill: True
       pathways: "metacyc" # ["metacyc", "unipathway"]
-      remove_temp_output: True
-      memory_use: "minimum"
       normalize_method: "relab"
       regroup_method: "sum"
-      map_database:
-        ["uniref90_go", "uniref90_ko", "uniref90_eggnog", "uniref90_pfam"]
-      #  "uniref90_level4ec",
-      #  "uniref90_infogo1000",
-      #  "uniref90_rxn",
-      update_config: True # humann save config to humann install dir
-      database_utility_mapping: "/home/jiezhu/databases/funcgenomics/humann2/utility_mapping"
-      database_utility_mapping_v3: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/utility_mapping"
-      database_utility_mapping_v4: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/utility_mapping"
-      database_protein: "/home/jiezhu/databases/funcgenomics/humann2/uniref"
-      database_protein_v3: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/uniref"
-      database_protein_v4: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/uniref"
-      database_nucleotide: "/home/jiezhu/databases/funcgenomics/humann2/chocophlan"
-      database_nucleotide_v3: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/chocophlan"
-      database_nucleotide_v4: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/chocophlan"
+      map_database: ["uniref90_go", "uniref90_ko", "uniref90_eggnog", "uniref90_pfam"] # ["uniref90_level4ec", "uniref90_infogo1000", "uniref90_rxn" ]
+      external_opts_v28: ""
+      external_opts_v35: ""
+      external_opts_v39: ""
+
 
     # alignment method
     genomecov:
@@ -370,4 +344,5 @@ envs:
   kmcp: "envs/kmcp.yaml"
   biobakery2: "envs/biobakery2.yaml"
   biobakery3: "envs/biobakery3.yaml"
-  biobakery4: "envs/biobakery4.yaml"
+  biobakery40: "envs/biobakery40.yaml"
+  biobakery41: "envs/biobakery41.yaml"

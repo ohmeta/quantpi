@@ -93,7 +93,8 @@ rule profiling_humann28:
         prescreen_threshold = config["params"]["profiling"]["humann"]["prescreen_threshold"],
         identity_threshold = config["params"]["profiling"]["humann"]["identity_threshold"],
         translated_subject_coverage_threshold = config["params"]["profiling"]["humann"]["translated_subject_coverage_threshold"],
-        translated_query_coverage_threshold = config["params"]["profiling"]["humann"]["translated_query_coverage_threshold"]
+        translated_query_coverage_threshold = config["params"]["profiling"]["humann"]["translated_query_coverage_threshold"],
+        external_opts = config["params"]["profiling"]["humann"]["external_opts_v28"]
     priority:
         20
     threads:
@@ -116,6 +117,7 @@ rule profiling_humann28:
         --output-basename {params.basename} \
         --output {params.output_dir} \
         --remove-temp-output \
+        {params.external_otps} \
         --o-log {log}
         '''
 
@@ -417,7 +419,8 @@ rule profiling_humann35:
         translated_subject_coverage_threshold = config["params"]["profiling"]["humann"]["translated_subject_coverage_threshold"],
         translated_query_coverage_threshold = config["params"]["profiling"]["humann"]["translated_query_coverage_threshold"],
         nucleotide_subject_coverage_threshold = config["params"]["profiling"]["humann"]["nucleotide_subject_coverage_threshold"],
-        nucleotide_query_coverage_threshold = config["params"]["profiling"]["humann"]["nucleotide_query_coverage_threshold"]
+        nucleotide_query_coverage_threshold = config["params"]["profiling"]["humann"]["nucleotide_query_coverage_threshold"],
+        external_opts = config["params"]["profiling"]["humann"]["external_opts_v35"]
     threads:
         config["params"]["profiling"]["threads"]
     shell:
@@ -445,6 +448,7 @@ rule profiling_humann35:
         --output-basename {params.basename} \
         --output {params.output_dir} \
         --remove-temp-output \
+        {params.external_opts} \
         --o-log {log}
 
         rm -rf {params.output_dir}/{params.basename}.fq.gz
@@ -746,7 +750,8 @@ rule profiling_humann39:
         translated_subject_coverage_threshold = config["params"]["profiling"]["humann"]["translated_subject_coverage_threshold"],
         translated_query_coverage_threshold = config["params"]["profiling"]["humann"]["translated_query_coverage_threshold"],
         nucleotide_subject_coverage_threshold = config["params"]["profiling"]["humann"]["nucleotide_subject_coverage_threshold"],
-        nucleotide_query_coverage_threshold = config["params"]["profiling"]["humann"]["nucleotide_query_coverage_threshold"]
+        nucleotide_query_coverage_threshold = config["params"]["profiling"]["humann"]["nucleotide_query_coverage_threshold"],
+        external_opts = config["params"]["profiling"]["humann"]["external_opts_v39"]
     threads:
         config["params"]["profiling"]["threads"]
     shell:
@@ -774,6 +779,7 @@ rule profiling_humann39:
         --output-basename {params.basename} \
         --output {params.output_dir} \
         --remove-temp-output \
+        {params.external_opts} \
         --o-log {log}
 
         rm -rf {params.output_dir}/{params.basename}.fq.gz
