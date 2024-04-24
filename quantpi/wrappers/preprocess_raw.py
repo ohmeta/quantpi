@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import os
+import sys
 import filecmp
 import gzip
 import subprocess as sp
@@ -123,64 +124,90 @@ if reads_format == "fastq":
             sp.run(f'''cat {fq_str} > {fq_} 2>> {log}''', shell=True)
 
 elif reads_format == "sra":
-    r1 = output_fq_list[0]
-    r2 = output_fq_list[1]
+    # https://github.com/ncbi/sra-tools/wiki/HowTo:-fasterq-dump
+    # https://github.com/ncbi/sra-tools/wiki/08.-prefetch-and-fasterq-dump
 
     if reads_num == 1:
-        fq = input_fq_list[0]
-        sra_file = os.path.basename(fq)
-        sp.run(f'''rm -rf {output_dir}/{sra_file}* 2>> {log}''', shell=True)
-        sp.run(f'''rm -rf {output_dir}.{sra_file}.temp 2>> {log}''', shell=True)
+        sra = input_fq_list[0]
+        sra_acc = os.path.basename(sra)
+
+        sp.run(f'''rm -rf {output_dir}/{sra_acc}* 2>> {log}''', shell=True)
+        sp.run(f'''rm -rf {output_dir}.{sra_acc}.temp 2>> {log}''', shell=True)
 
         sp.run(
             f'''
             fasterq-dump \
             --threads {threads} \
             --split-3 \
-            --temp {output_dir}.{sra_file}.temp \
+            --skip-technical \
+            --temp {output_dir}.{sra_acc}.temp \
             --outdir {output_dir} \
-            {fq} 2>>{log}
+            {sra} 2>>{log}
             ''', shell=True)
 
-        sp.run(f'''rm -rf {output_dir}.{sra_file}.temp 2>> {log}''', shell=True)
-        sp.run(f'''pigz -f -p {threads} {output_dir}/{sra_file}_1.fastq 2>> {log}''', shell=True)
-        sp.run(f'''pigz -f -p {threads} {output_dir}/{sra_file}_2.fastq 2>> {log}''', shell=True)
-        sp.run(f'''rm -rf {output_dir}/{sra_file}._*.fastq 2>> {log}''', shell=True)
+        sp.run(f'''rm -rf {output_dir}.{sra_acc}.temp 2>> {log}''', shell=True)
 
-        sp.run(f'''mv {output_dir}/{sra_file}_1.fastq.gz {r1} 2>> {log}''', shell=True)
-        sp.run(f'''mv {output_dir}/{sra_file}_2.fastq.gz {r2} 2>> {log}''', shell=True)
-
+        if is_pe:
+            r1 = output_fq_list[0]
+            r2 = output_fq_list[1]
+            sp.run(f'''pigz -f -p {threads} {output_dir}/{sra_acc}_1.fastq 2>> {log}''', shell=True)
+            sp.run(f'''pigz -f -p {threads} {output_dir}/{sra_acc}_2.fastq 2>> {log}''', shell=True)
+            sp.run(f'''rm -rf {output_dir}/{sra_acc}*.fastq 2>> {log}''', shell=True)
+            sp.run(f'''mv {output_dir}/{sra_acc}_1.fastq.gz {r1} 2>> {log}''', shell=True)
+            sp.run(f'''mv {output_dir}/{sra_acc}_2.fastq.gz {r2} 2>> {log}''', shell=True)
+        else:
+            rs = output_fq_list[0]
+            sp.run(f'''pigz -f -p {threads} {output_dir}/{sra_acc}.fastq 2>> {log}''', shell=True)
+            sp.run(f'''rm -rf {output_dir}/{sra_acc}*.fastq 2>> {log}''', shell=True)
+            sp.run(f'''mv {output_dir}/{sra_acc}.fastq.gz {rs} 2>> {log}''', shell=True)
     else:
         r1_list = []
         r2_list = []
+        rs_list = []
         for sra in input:
-            sra_file = os.path.basename(sra)
-            sra_1 = os.path.join(output_dir, sra_file + "_1.fastq.gz")
-            sra_2 = os.path.join(output_dir, sra_file + "_2.fastq.gz")
+            sra_acc = os.path.basename(sra)
+            sra_1 = os.path.join(output_dir, sra_acc + "_1.fastq.gz")
+            sra_2 = os.path.join(output_dir, sra_acc + "_2.fastq.gz")
+            sra_s = os.path.join(output_dir, sra_acc + ".fastq.gz")
             r1_list.append(sra_1)
             r2_list.append(sra_2)
+            rs_list.append(sra_s)
 
-            sp.run(f'''rm -rf {output_dir}/{sra_file}* 2>> {log}''', shell=True)
-            sp.run(f'''rm -rf {output_dir}.{sra_file}.temp 2>> {log}''', shell=True)
+            sp.run(f'''rm -rf {output_dir}/{sra_acc}* 2>> {log}''', shell=True)
+            sp.run(f'''rm -rf {output_dir}.{sra_acc}.temp 2>> {log}''', shell=True)
 
             sp.run(
                 f'''
                 fasterq-dump \
                 --threads {threads} \
                 --split-3 \
-                --temp {output_dir}.{sra_file}.temp \
+                --skip-technical \
+                --temp {output_dir}.{sra_acc}.temp \
                 --outdir {output_dir} \
                 {sra} 2>> {log}
                 ''', shell=True)
 
-            sp.run(f'''rm -rf {output_dir}.{sra_file}.temp 2>> {log}''', shell=True)
-            sp.run(f'''pigz -f -p {threads} {output_dir}/{sra_file}_1.fastq 2>> {log}''', shell=True)
-            sp.run(f'''pigz -f -p {threads} {output_dir}/{sra_file}_2.fastq 2>> {log}''', shell=True)
-            sp.run(f'''rm -rf {output_dir}/{sra_file}._*.fastq 2>> {log}''', shell=True)
+            sp.run(f'''rm -rf {output_dir}.{sra_acc}.temp 2>> {log}''', shell=True)
 
-        r1_str = " ".join(r1_list)
-        r2_str = " ".join(r2_list)
-        sp.run(f'''cat {r1_str} > {r1} 2>> {log}''', shell=True)
-        sp.run(f'''cat {r2_str} > {r2} 2>> {log}''', shell=True)
-        sp.run(f'''rm -rf {r1_str} 2>> {log}''', shell=True)
-        sp.run(f'''rm -rf {r2_str} 2>> {log}''', shell=True)
+            if is_pe:
+                sp.run(f'''pigz -f -p {threads} {output_dir}/{sra_acc}_1.fastq 2>> {log}''', shell=True)
+                sp.run(f'''pigz -f -p {threads} {output_dir}/{sra_acc}_2.fastq 2>> {log}''', shell=True)
+                sp.run(f'''rm -rf {output_dir}/{sra_acc}*.fastq 2>> {log}''', shell=True)
+            else:
+                sp.run(f'''pigz -f -p {threads} {output_dir}/{sra_acc}.fastq 2>> {log}''', shell=True)
+                sp.run(f'''rm -rf {output_dir}/{sra_acc}*.fastq 2>> {log}''', shell=True)
+
+        if is_pe:
+            r1 = output_fq_list[0]
+            r2 = output_fq_list[1]
+            r1_str = " ".join(r1_list)
+            r2_str = " ".join(r2_list)
+            sp.run(f'''cat {r1_str} > {r1} 2>> {log}''', shell=True)
+            sp.run(f'''cat {r2_str} > {r2} 2>> {log}''', shell=True)
+            sp.run(f'''rm -rf {r1_str} 2>> {log}''', shell=True)
+            sp.run(f'''rm -rf {r2_str} 2>> {log}''', shell=True)
+        else:
+            rs = output_fq_list[0]
+            rs_str = " ".join(rs_list)
+            sp.run(f'''cat {rs_str} > {rs} 2>> {log}''', shell=True)
+            sp.run(f'''rm -rf {rs_str} 2>> {log}''', shell=True)
