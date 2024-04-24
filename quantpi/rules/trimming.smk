@@ -1,7 +1,7 @@
 if config["params"]["trimming"]["sickle"]["do"]:
     rule trimming_sickle:
         input:
-            lambda wildcards: get_reads(wildcards, "raw", False)
+            reads = lambda wildcards: get_reads(wildcards, "raw", False)
         output:
             done = touch(os.path.join(config["output"]["trimming"],
                                       "short_reads/{sample}/{sample}.sickle.done")),
@@ -33,22 +33,25 @@ if config["params"]["trimming"]["sickle"]["do"]:
             10
         shell:
             '''
+            READSIN=({input.reads})
+            READSOUT({output.reads})
+
             if [ "{params.pe}" == "pe" ];
             then
                 sickle pe \
-                --pe-file1 {input[0]} \
-                --pe-file2 {input[1]} \
-                --output-pe1 {output.reads[0]} \
-                --output-pe2 {output.reads[1]} \
-                --output-single {output.reads[2]} \
+                --pe-file1 ${{READSIN[0]}} \
+                --pe-file2 ${{READSIN[1]}} \
+                --output-pe1 ${{READSOUT[0]}} \
+                --output-pe2 ${{READSOUT[1]}} \
+                --output-single ${{READSOUT[2]}} \
                 --qual-type {params.quality_type} \
                 --qual-threshold {params.quality_cutoff} \
                 --length-threshold {params.length_cutoff} \
                 --gzip-output 2> {log}
             else
                 sickle se \
-                --fastq-file {input[0]} \
-                --output-file {output.reads[0]} \
+                --fastq-file ${{READSIN[0]}} \
+                --output-file ${{READSOUT[0]}} \
                 --qual-type {params.quality_type} \
                 --qual-threshold {params.quality_cutoff} \
                 --length-threshold {params.length_cutoff} \
@@ -91,7 +94,7 @@ else:
 if config["params"]["trimming"]["fastp"]["do"]:
     rule trimming_fastp:
         input:
-            lambda wildcards: get_reads(wildcards, "raw")
+            reads = lambda wildcards: get_reads(wildcards, "raw")
         output:
             html = os.path.join(config["output"]["trimming"],
                                 "short_reads/{sample}/{sample}.fastp.html"),
@@ -108,8 +111,7 @@ if config["params"]["trimming"]["fastp"]["do"]:
                        "short_reads/{{sample}}/{{sample}}.trimming{read}.fq.gz"),
                                read=[".1", ".2"] if IS_PE else ""))
         params:
-            output_prefix = os.path.join(config["output"]["trimming"],
-                                         "short_reads/{sample}/{sample}"),
+            output_prefix = os.path.join(config["output"]["trimming"], "short_reads/{sample}/{sample}"),
             compression = config["params"]["trimming"]["fastp"]["compression"],
             cut_front_window_size = config["params"]["trimming"]["fastp"]["cut_front_window_size"],
             cut_front_mean_quality = config["params"]["trimming"]["fastp"]["cut_front_mean_quality"],
@@ -126,8 +128,7 @@ if config["params"]["trimming"]["fastp"]["do"]:
         log:
             os.path.join(config["output"]["trimming"], "logs/{sample}.fastp.log")
         benchmark:
-            os.path.join(config["output"]["trimming"],
-                         "benchmark/fastp/{sample}.fastp.benchmark.txt")
+            os.path.join(config["output"]["trimming"], "benchmark/fastp/{sample}.fastp.benchmark.txt")
         conda:
             config["envs"]["trimming"]
         threads:
@@ -136,15 +137,16 @@ if config["params"]["trimming"]["fastp"]["do"]:
             10
         shell:
             '''
+            READSIN=({input.reads})
+            READSOUT({output.reads})
+
             if [ "{params.pe}" == "pe" ];
-            then
-                if [ "{params.use_slide_window}" == "yes" ];
-                then
+                if [ "{params.use_slide_window}" == "yes" ]; then
                     fastp \
-                    --in1 {input[0]} \
-                    --in2 {input[1]} \
-                    --out1 {output.reads[0]} \
-                    --out2 {output.reads[1]} \
+                    --in1 ${{READSIN[0]}} \
+                    --in2 ${{READSIN[1]}} \
+                    --out1 ${{READSOUT[0]}} \
+                    --out2 ${{READSOUT[1]}} \
                     --compression {params.compression} \
                     {ADAPTER_OPERATION} \
                     {params.dedup} \
@@ -161,10 +163,10 @@ if config["params"]["trimming"]["fastp"]["do"]:
                     --json {output.json} 2> {log}
                 else
                     fastp \
-                    --in1 {input[0]} \
-                    --in2 {input[1]} \
-                    --out1 {output.reads[0]} \
-                    --out2 {output.reads[1]} \
+                    --in1 ${{READSIN[0]}} \
+                    --in2 ${{READSIN[1]}} \
+                    --out1 ${{READSOUT[0]}} \
+                    --out2 ${{READSOUT[1]}} \
                     --compression {params.compression} \
                     {ADAPTER_OPERATION} \
                     {params.dedup} \
@@ -181,11 +183,10 @@ if config["params"]["trimming"]["fastp"]["do"]:
                     --json {output.json} 2> {log}
                 fi
             else
-                if [ "{params.use_slide_window}" == "yes" ];
-                then
+                if [ "{params.use_slide_window}" == "yes" ]; then
                     fastp \
-                    --in1 {input[0]} \
-                    --out1 {output.reads[0]} \
+                    --in1 ${{READSIN[0]}} \
+                    --out1 ${{READSOUT[0]}} \
                     --compression {params.compression} \
                     {ADAPTER_OPERATION} \
                     {params.dedup} \
@@ -202,8 +203,8 @@ if config["params"]["trimming"]["fastp"]["do"]:
                     --json {output.json} 2> {log}
                 else
                     fastp \
-                    --in1 {input[0]} \
-                    --out1 {output.reads[0]} \
+                    --in1 ${{READSIN[0]}} \
+                    --out1 ${{READSOUT[0]}} \
                     --compression {params.compression} \
                     {ADAPTER_OPERATION} \
                     {params.dedup} \
@@ -252,7 +253,7 @@ if config["params"]["trimming"]["fastp"]["do"]:
             2> {log}
             '''
 
-           
+
     rule trimming_fastp_all:
         input:
             expand([
@@ -275,12 +276,10 @@ else:
 if config["params"]["trimming"]["trimmomatic"]["do"]:
     rule trimming_trimmomatic:
         input:
-            lambda wildcards: get_reads(wildcards, "raw")
+            reads = lambda wildcards: get_reads(wildcards, "raw")
         output:
-            summary = os.path.join(config["output"]["trimming"],
-                                   "short_reads/{sample}/{sample}.trimmomatic.summary.txt"),
-            log = os.path.join(config["output"]["trimming"],
-                                   "short_reads/{sample}/{sample}.trimmomatic.log"),
+            summary = os.path.join(config["output"]["trimming"], "short_reads/{sample}/{sample}.trimmomatic.summary.txt"),
+            log = os.path.join(config["output"]["trimming"], "short_reads/{sample}/{sample}.trimmomatic.log"),
             reads = expand(
                 os.path.join(
                     config["output"]["trimming"],
@@ -309,6 +308,9 @@ if config["params"]["trimming"]["trimmomatic"]["do"]:
             10
         shell:
             '''
+            READSIN=({input.reads})
+            READSOUT({output.reads})
+
             if [ "{params.pe}" == "pe" ];
             then
                 trimmomatic \
@@ -316,16 +318,16 @@ if config["params"]["trimming"]["trimmomatic"]["do"]:
                 {params.phred} \
                 -threads {threads} \
                 -summary {output.summary} \
-                {input} \
-                {output.reads[0]} {output.reads[0]}.unpaired.gz \
-                {output.reads[1]} {output.reads[1]}.unpaired.gz \
+                ${{READSIN[0]}} ${{READSIN[1]}} \
+                ${{READSOUT[0]}} ${{READSOUT[0]}}.unpaired.gz \
+                ${{READSOUT[1]}} ${{READSOUT[1]}}.unpaired.gz \
                 {params.trimmomatic_options} \
                 >{output.log} 2>&1
 
                 if [ "{params.save_unpaired}" == "false" ];
                 then
-                    rm -rf {output.reads[0]}.unpaired.gz
-                    rm -rf {output.reads[1]}.unpaired.gz
+                    rm -rf ${{READSOUT[0]}}.unpaired.gz
+                    rm -rf ${{READSOUT[1]}}.unpaired.gz
                 fi
             else
                 trimmomatic \
@@ -333,8 +335,8 @@ if config["params"]["trimming"]["trimmomatic"]["do"]:
                 {params.phred} \
                 -threads {threads} \
                 -summary {output.summary} \
-                {input} \
-                {output.reads} \
+                ${{READSIN[0]}} \
+                ${{READSOUT[0]}} \
                 {params.trimmomatic_options} \
                 >{output.log} 2>&1
             fi
@@ -350,10 +352,7 @@ if config["params"]["trimming"]["trimmomatic"]["do"]:
                              "short_reads/{sample}/{sample}.trimmomatic.log"),
                 sample=SAMPLES_ID_LIST)
         output:
-            html = os.path.join(config["output"]["trimming"],
-                                "report/trimmomatic_multiqc_report.html")#,
-            #data_dir = directory(os.path.join(config["output"]["trimming"],
-            #                                  "report/trimmomatic_multiqc_report_data"))
+            html = os.path.join(config["output"]["trimming"], "report/trimmomatic_multiqc_report.html")
         log:
             os.path.join(config["output"]["trimming"], "logs/multiqc.trimmomatic.log")
         params:
@@ -372,7 +371,7 @@ if config["params"]["trimming"]["trimmomatic"]["do"]:
             2> {log}
             '''
 
-           
+
     rule trimming_trimmomatic_all:
         input:
             expand([
@@ -381,11 +380,9 @@ if config["params"]["trimming"]["trimmomatic"]["do"]:
                 os.path.join(config["output"]["trimming"],
                              "short_reads/{sample}/{sample}.trimmomatic.log"),
                 os.path.join(config["output"]["trimming"],
-                             "report/trimmomatic_multiqc_report.html"),
-                #os.path.join(config["output"]["trimming"],
-                #             "report/trimmomatic_multiqc_report_data")
+                             "report/trimmomatic_multiqc_report.html")
                 ],
-                   sample=SAMPLES_ID_LIST)
+                sample=SAMPLES_ID_LIST)
 
 else:
     rule trimming_trimmomatic_all:
@@ -421,7 +418,7 @@ if TRIMMING_DO and config["params"]["qcreport"]["do"]:
             --threads {threads} \
             {input} 2> {log}
             '''
-        
+
 
     rule trimming_report_refine:
         input:
@@ -473,9 +470,7 @@ rule trimming_all:
         rules.trimming_sickle_all.input,
         rules.trimming_fastp_all.input,
         rules.trimming_trimmomatic_all.input,
-        rules.trimming_report_all.input#,
-
-        #rules.raw_all.input
+        rules.trimming_report_all.input
 
 
 localrules:
