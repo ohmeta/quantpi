@@ -141,6 +141,8 @@ elif reads_format == "sra":
             --threads {threads} \
             --split-3 \
             --skip-technical \
+            --seq-defline '@$sn' \
+            --qual-defline '+$sn' \
             --temp {output_dir}.{sra_acc}.temp \
             --outdir {output_dir} \
             {sra} 2>>{log}
@@ -183,6 +185,8 @@ elif reads_format == "sra":
                 --threads {threads} \
                 --split-3 \
                 --skip-technical \
+                --seq-defline '@$sn' \
+                --qual-defline '+$sn' \
                 --temp {output_dir}.{sra_acc}.temp \
                 --outdir {output_dir} \
                 {sra} 2>> {log}
