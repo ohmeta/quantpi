@@ -670,9 +670,9 @@ if config["params"]["rmhost"]["kneaddata"]["do"]:
 
             input_reads=""
             if [ "{params.pe}" == "pe" ]; then
-                input_reads="-i ${{READSIN[0]}} -i ${{READSIN[1]}}"
+                input_reads="--input1 ${{READSIN[0]}} --input2 ${{READSIN[1]}}"
             else
-                input_reads="-i ${{READSIN[0]}}"
+                input_reads="--unpaired ${{READSIN[0]}}"
             fi
 
             if [ "{params.do_bowtie2}" == "yes" ]; then
