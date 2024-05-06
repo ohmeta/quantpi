@@ -412,7 +412,7 @@ rule profiling_humann35:
     params:
         wrapper_dir = WRAPPER_DIR,
         basename = "{sample}",
-        output_dir = os.path.join(config["output"]["profiling"], "profile/humann3/{sample}"),
+        output_dir = os.path.join(config["output"]["profiling"], "profile/humann35/{sample}"),
         prescreen_threshold = config["params"]["profiling"]["humann"]["prescreen_threshold"],
         nucleotide_identity_threshold = config["params"]["profiling"]["humann"]["nucleotide_identity_threshold"],
         translated_identity_threshold = config["params"]["profiling"]["humann"]["translated_identity_threshold"],
