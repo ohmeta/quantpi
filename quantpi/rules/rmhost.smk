@@ -670,7 +670,12 @@ if config["params"]["rmhost"]["kneaddata"]["do"]:
 
             input_reads=""
             if [ "{params.pe}" == "pe" ]; then
-                input_reads="--input1 ${{READSIN[0]}} --input2 ${{READSIN[1]}}"
+                grepout=`kneaddata --help | grep -o "input1" || echo "input"`
+                if [ $grepout != "input" ]; then
+                    input_reads="--input1 ${{READSIN[0]}} --input2 ${{READSIN[1]}}"
+                else
+                    input_reads="--input ${{READSIN[0]}} --input ${{READSIN[1]}}"
+                fi
             else
                 input_reads="--unpaired ${{READSIN[0]}}"
             fi
