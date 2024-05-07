@@ -70,6 +70,8 @@ else:
             markers_dir = directory(os.path.join(config["output"]["profiling"], "databases/strainphlan3/clade_markers"))
         log:
             os.path.join(config["output"]["profiling"], "logs/strainphlan3_print_clades/strainphlan3_print_clades.log")
+        benchmark:
+            os.path.join(config["output"]["profiling"], "benchmark/strainphlan3_print_clades.txt")
         params:
             marker_in_n_samples = config["params"]["profiling"]["strainphlan"]["marker_in_n_samples"]
         conda:
@@ -317,6 +319,8 @@ else:
             markers_dir = directory(os.path.join(config["output"]["profiling"], "databases/strainphlan40/clade_markers"))
         log:
             os.path.join(config["output"]["profiling"], "logs/strainphlan40_print_clades/strainphlan40_print_clades.log")
+        benchmark:
+            os.path.join(config["output"]["profiling"], "benchmark/strainphlan40_print_clades.txt")
         params:
             marker_in_n_samples = config["params"]["profiling"]["strainphlan"]["marker_in_n_samples"]
         conda:
@@ -570,6 +574,8 @@ else:
             markers_dir = directory(os.path.join(config["output"]["profiling"], "databases/strainphlan41/clade_markers"))
         log:
             os.path.join(config["output"]["profiling"], "logs/strainphlan41_print_clades/strainphlan41_print_clades.log")
+        benchmark:
+            os.path.join(config["output"]["profiling"], "benchmark/strainphlan41_print_clades.txt")
         params:
             marker_in_n_samples = config["params"]["profiling"]["strainphlan"]["marker_in_n_samples"]
         conda:
