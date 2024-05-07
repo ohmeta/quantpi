@@ -45,6 +45,8 @@ if config["params"]["profiling"]["strainphlan"]["reference_genome"]["use"]:
             reference_genome = lambda wildcards: STRAINPHLAN_CLADES_V3.loc[wildcards.clade, "fna_path"]
         output:
             reference_genome = os.path.join(config["output"]["profiling"], "databases/strainphlan3/reference_genomes/{clade}.fna")
+        threads:
+            1
         run:
             if input.reference_genome.endswith(".gz"):
                 shell(f'''pigz -fkdc {input.reference_genome} > {output.reference_genome}''')
@@ -72,9 +74,12 @@ else:
             marker_in_n_samples = config["params"]["profiling"]["strainphlan"]["marker_in_n_samples"]
         conda:
             config["envs"]["biobakery3"]
+        threads:
+            config["params"]["profiling"]["threads"]
         shell:
             '''
             strainphlan \
+            --nprocs {threads} \
             --database {input.database_pkl} \
             --samples {input.consensus_markers} \
             --marker_in_n_samples {params.marker_in_n_samples} \
@@ -136,7 +141,7 @@ rule profiling_strainphlan3_extract_markers:
     priority:
         20
     threads:
-        config["params"]["profiling"]["threads"]
+        1
     shell:
         '''
         mkdir -p {params.outdir}
@@ -287,6 +292,8 @@ if config["params"]["profiling"]["strainphlan"]["reference_genome"]["use"]:
             reference_genome = os.path.join(
                 config["output"]["profiling"],
                 "databases/strainphlan40/reference_genomes/{clade}.fna")
+        threads:
+            1
         run:
             if input.reference_genome.endswith(".gz"):
                 shell(f'''pigz -fkdc {input.reference_genome} > {output.reference_genome}''')
@@ -385,7 +392,7 @@ rule profiling_strainphlan40_extract_markers:
     priority:
         20
     threads:
-        config["params"]["profiling"]["threads"]
+        1
     shell:
         '''
         mkdir -p {params.outdir}
@@ -538,6 +545,8 @@ if config["params"]["profiling"]["strainphlan"]["reference_genome"]["use"]:
             reference_genome = os.path.join(
                 config["output"]["profiling"],
                 "databases/strainphlan41/reference_genomes/{clade}.fna")
+        threads:
+            1
         run:
             if input.reference_genome.endswith(".gz"):
                 shell(f'''pigz -fkdc {input.reference_genome} > {output.reference_genome}''')
@@ -636,7 +645,7 @@ rule profiling_strainphlan41_extract_markers:
     priority:
         20
     threads:
-        config["params"]["profiling"]["threads"]
+        1
     shell:
         '''
         mkdir -p {params.outdir}
