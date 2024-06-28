@@ -237,21 +237,21 @@ def merge_metaphlan_tables(table_files, workers, **kwargs):
     for i in ["t", "s", "g", "f", "o", "c", "p", "k"]:
         profile_df = pd.DataFrame()
         if METAPHLAN_VERSION == 2:
-            regex_pattern = f"\|{i}__[^\|]*$"
+            regex_pattern = rf"\|{i}__[^\|]*$"
             if i == "k":
-                regex_pattern = f"k__[^\|]*$"
+                regex_pattern = rf"k__[^\|]*$"
             profile_df = abun_df_.filter(regex=regex_pattern, axis=0).reset_index() 
 
         elif METAPHLAN_VERSION == 3:
-            regex_pattern = f"UNKNOWN|\|{i}__[^\|]*$"
+            regex_pattern = rf"UNKNOWN|\|{i}__[^\|]*$"
             if i == "k":
-                regex_pattern = f"UNKNOWN|k__[^\|]*$"
+                regex_pattern = rf"UNKNOWN|k__[^\|]*$"
             profile_df = abun_df_.filter(regex=regex_pattern, axis=0).reset_index()
 
         elif METAPHLAN_VERSION == 4:
-            regex_pattern = f"UNCLASSIFIED|\|{i}__[^\|]*$"
+            regex_pattern = rf"UNCLASSIFIED|\|{i}__[^\|]*$"
             if i == "k":
-                regex_pattern = f"UNCLASSIFIED|k__[^\|]*$"
+                regex_pattern = rf"UNCLASSIFIED|k__[^\|]*$"
             profile_df = abun_df_.filter(regex=regex_pattern, axis=0).reset_index()
 
         df_list.append(profile_df)
@@ -372,39 +372,37 @@ def get_abun_df_bgi_soap(soap_file):
     return count_df, abun_df
 
 
-'''
-def get_abun_df_bowtie2(bam):
-    sample_id = os.path.basename(bam).split(".")[0]
-
-    reads_count_dict = {}
-    sam = pysam.AlignmentFile(bam, "rb")
-    for record in sam:
-        if not record.is_unmapped:
-            tmp_nm = record.get_tag("NM:i")
-            tmp_len = sum([int(i) for i in re.findall(
-                r"(\d+)(?:M|I|D)", record.cigarstring)])
-
-            if ((1 - tmp_nm / tmp_len)) >= 0.95:
-                if record.reference_name in reads_count_dict:
-                    reads_count_dict[record.reference_name] += 1
-                else:
-                    reads_count_dict[record.reference_name] = 1
-
-    reads_count_df = pd.DataFrame(list(reads_count_dict.items()), columns=[
-                                  "reference_name", "reads_count"])
-    abun = reads_count_df.merge(INDEX_METADATA__)
-
-    abun_count = abun.groupby("lineages_full").agg(
-        {"reads_count": "sum"})
-    abun_count["count_rate"] = abun_count["reads_count"] / \
-        sum(abun_count["reads_count"])
-
-    abun_df = abun_count.loc[:, ["count_rate"]].rename(
-        columns={"count_rate": sample_id})
-    count_df = abun_count.loc[:, ["reads_count"]].rename(
-        columns={"reads_count": sample_id})
-    return count_df, abun_df
-'''
+#def get_abun_df_bowtie2(bam):
+#    sample_id = os.path.basename(bam).split(".")[0]
+#
+#    reads_count_dict = {}
+#    sam = pysam.AlignmentFile(bam, "rb")
+#    for record in sam:
+#        if not record.is_unmapped:
+#            tmp_nm = record.get_tag("NM:i")
+#            tmp_len = sum([int(i) for i in re.findall(
+#                r"(\d+)(?:M|I|D)", record.cigarstring)])
+#
+#            if ((1 - tmp_nm / tmp_len)) >= 0.95:
+#                if record.reference_name in reads_count_dict:
+#                    reads_count_dict[record.reference_name] += 1
+#                else:
+#                    reads_count_dict[record.reference_name] = 1
+#
+#    reads_count_df = pd.DataFrame(list(reads_count_dict.items()), columns=[
+#                                  "reference_name", "reads_count"])
+#    abun = reads_count_df.merge(INDEX_METADATA__)
+#
+#    abun_count = abun.groupby("lineages_full").agg(
+#        {"reads_count": "sum"})
+#    abun_count["count_rate"] = abun_count["reads_count"] / \
+#        sum(abun_count["reads_count"])
+#
+#    abun_df = abun_count.loc[:, ["count_rate"]].rename(
+#        columns={"count_rate": sample_id})
+#    count_df = abun_count.loc[:, ["reads_count"]].rename(
+#        columns={"reads_count": sample_id})
+#    return count_df, abun_df
 
 
 def get_abun_df_hsx(abun_file):
