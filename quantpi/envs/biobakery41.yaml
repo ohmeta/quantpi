@@ -3,5 +3,5 @@ channels:
   - bioconda
   - defaults
 dependencies:
-  - metaphlan=4.1.0
-  - humann=3.9
+  - metaphlan=4.1.1 # 2024-05-27
+  - humann=3.9      # 2024-06-13
