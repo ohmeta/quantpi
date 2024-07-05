@@ -67,13 +67,17 @@ else:
                 sample=SAMPLES_ID_LIST)
         output:
             markers_txt = os.path.join(config["output"]["profiling"], "databases/strainphlan3/clade_markers.txt"),
+            markers_txt_gt = expand(
+                os.path.join(config["output"]["profiling"], "databases/strainphlan3/clade_markers.txt.gt{num}"),
+                num=config["params"]["profiling"]["strainphlan"]["clade_detected_in_min_samples_num"]),
             markers_dir = directory(os.path.join(config["output"]["profiling"], "databases/strainphlan3/clade_markers"))
         log:
             os.path.join(config["output"]["profiling"], "logs/strainphlan3_print_clades/strainphlan3_print_clades.log")
         benchmark:
             os.path.join(config["output"]["profiling"], "benchmark/strainphlan3_print_clades.txt")
         params:
-            marker_in_n_samples = config["params"]["profiling"]["strainphlan"]["marker_in_n_samples"]
+            marker_in_n_samples = config["params"]["profiling"]["strainphlan"]["marker_in_n_samples"],
+            clade_detected_in_min_samples_num = config["params"]["profiling"]["strainphlan"]["clade_detected_in_min_samples_num"]
         conda:
             config["envs"]["biobakery3"]
         threads:
@@ -89,11 +93,16 @@ else:
             --print_clades_only \
             >{output.markers_txt} 2>{log}
 
-            mkdir -p {output.markers_dir}
-
             cat {output.markers_txt} | \
             grep "s__" | \
-            awk -F'[\t:]' '{{print $5}}' | \
+            awk -F'[\t]' '{{print $2}}' | \
+            awk -F'[: ]' '{{print $1  "\t" $4}}' \
+            awk -v samnum={params.clade_detected_in_min_samples_num} '$2>=samnum{{print $1}}' \
+            > {output.markers_txt_gt}
+
+            mkdir -p {output.markers_dir}
+
+            cat {output.markers_txt_gt} | \
             xargs -I XXX mkdir -p {output.markers_dir}/XXX
             '''
 
@@ -316,13 +325,17 @@ else:
                 sample=SAMPLES_ID_LIST)
         output:
             markers_txt = os.path.join(config["output"]["profiling"], "databases/strainphlan40/clade_markers.txt"),
+            markers_txt_gt = expand(
+                os.path.join(config["output"]["profiling"], "databases/strainphlan40/clade_markers.txt.gt{num}"),
+                num=config["params"]["profiling"]["strainphlan"]["clade_detected_in_min_samples_num"]),
             markers_dir = directory(os.path.join(config["output"]["profiling"], "databases/strainphlan40/clade_markers"))
         log:
             os.path.join(config["output"]["profiling"], "logs/strainphlan40_print_clades/strainphlan40_print_clades.log")
         benchmark:
             os.path.join(config["output"]["profiling"], "benchmark/strainphlan40_print_clades.txt")
         params:
-            marker_in_n_samples = config["params"]["profiling"]["strainphlan"]["marker_in_n_samples"]
+            marker_in_n_samples = config["params"]["profiling"]["strainphlan"]["marker_in_n_samples"],
+            clade_detected_in_min_samples_num = config["params"]["profiling"]["strainphlan"]["clade_detected_in_min_samples_num"]
         conda:
             config["envs"]["biobakery40"]
         threads:
@@ -342,11 +355,16 @@ else:
             --print_clades_only \
             >{output.markers_txt} 2>{log}
 
-            mkdir -p {output.markers_dir}
-
             cat {output.markers_txt} | \
             grep "t__" | \
-            awk -F'[\t:]' '{{print $5}}' | \
+            awk -F'[\t]' '{{print $2}}' | \
+            awk -F'[: ]' '{{print $1  "\t" $4}}' \
+            awk -v samnum={params.clade_detected_in_min_samples_num} '$2>=samnum{{print $1}}' \
+            > {output.markers_txt_gt}
+
+            mkdir -p {output.markers_dir}
+
+            cat {output.markers_txt_gt} | \
             xargs -I XXX mkdir -p {output.markers_dir}/XXX
             '''
 
@@ -571,13 +589,17 @@ else:
                 sample=SAMPLES_ID_LIST)
         output:
             markers_txt = os.path.join(config["output"]["profiling"], "databases/strainphlan41/clade_markers.txt"),
+            markers_txt_gt = expand(
+                os.path.join(config["output"]["profiling"], "databases/strainphlan41/clade_markers.txt.gt{num}"),
+                num=config["params"]["profiling"]["strainphlan"]["clade_detected_in_min_samples_num"]),
             markers_dir = directory(os.path.join(config["output"]["profiling"], "databases/strainphlan41/clade_markers"))
         log:
             os.path.join(config["output"]["profiling"], "logs/strainphlan41_print_clades/strainphlan41_print_clades.log")
         benchmark:
             os.path.join(config["output"]["profiling"], "benchmark/strainphlan41_print_clades.txt")
         params:
-            marker_in_n_samples = config["params"]["profiling"]["strainphlan"]["marker_in_n_samples"]
+            marker_in_n_samples = config["params"]["profiling"]["strainphlan"]["marker_in_n_samples"],
+            clade_detected_in_min_samples_num = config["params"]["profiling"]["strainphlan"]["clade_detected_in_min_samples_num"]
         conda:
             config["envs"]["biobakery41"]
         threads:
@@ -597,11 +619,16 @@ else:
             --print_clades_only \
             >{output.markers_txt} 2>{log}
 
-            mkdir -p {output.markers_dir}
-
             cat {output.markers_txt} | \
             grep "t__" | \
-            awk -F'[\t:]' '{{print $5}}' | \
+            awk -F'[\t]' '{{print $2}}' | \
+            awk -F'[: ]' '{{print $1  "\t" $4}}' \
+            awk -v samnum={params.clade_detected_in_min_samples_num} '$2>=samnum{{print $1}}' \
+            > {output.markers_txt_gt}
+
+            mkdir -p {output.markers_dir}
+
+            cat {output.markers_txt_gt} | \
             xargs -I XXX mkdir -p {output.markers_dir}/XXX
             '''
 

@@ -240,6 +240,7 @@ params:
       external_opts_v3: ""
       external_opts_v40: ""
       external_opts_v41: ""
+      clade_detected_in_min_samples_num: "50" # how many samples one clade should appear in, filter some clades before running strainphaln
 
 
     # Functional profiling
