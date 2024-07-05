@@ -704,7 +704,7 @@ else:
         input:
 
 
-rule profiling_humannv38_config:
+rule profiling_humann38_config:
     output:
         touch(os.path.join(config["output"]["profiling"], "config/humann38.config.done"))
     log:
