@@ -5,6 +5,7 @@ from pprint import pprint
 
 import pandas as pd
 
+sys.path.insert(0, "/home/alienzj/toolkits/ohmeta/quantpi")
 import quantpi
 
 from snakemake.utils import min_version

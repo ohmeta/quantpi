@@ -16,13 +16,13 @@
 ➤ bash Mambaforge-Linux-x86_64.sh
 # set the install path to ~/.conda/envs/quantpi-env
 # init shell, then relogin
-➤ conda config --add channels nodefaults
-➤ conda config --add channels bioconda
-➤ conda config --add channels conda-forge
-➤ conda config --set channel_priority strict
+➤ mamba config --add channels nodefaults
+➤ mamba config --add channels bioconda
+➤ mamba config --add channels conda-forge
+➤ mamba config --set channel_priority strict
 
 # then activate mambaforge
-➤ conda activate quantpi-env
+➤ mamba activate quantpi-env
 
 # install snakemake
 ➤ mamba install snakemake fd-find seqkit ruamel.yaml pandas numpy natsort openpyxl biopython seaborn matplotlib executor
@@ -45,7 +45,7 @@
 ## Help
 
 ```bash
-➤ conda activate quantpi-env
+➤ mamba activate quantpi-env
 
 ➤ quantpi --help
 # or
@@ -198,7 +198,7 @@ The following samples are available in Zenodo:
 # or
 ➤ python /path/to/quantpi/run_quantpi.py profiling_wf --list
 Running quantpi profiling_wf:
-snakemake --snakefile /home/jiezhu/toolkit/quantpi/quantpi/snakefiles/profiling_wf.smk --configfile ./config.yaml --cores 240 --keep-going --printshellcmds --reason --until all --list
+snakemake --snakefile /path/to/quantpi/quantpi/snakefiles/profiling_wf.smk --configfile ./config.yaml --cores 240 --keep-going --printshellcmds --reason --until all --list
 all
 prepare_long_reads_all
 prepare_reads_all
@@ -210,13 +210,19 @@ profiling_all
 profiling_bracken_all
 profiling_genome_coverm_all
 profiling_genomecov_all
-profiling_humann28_all
+profiling_humann2_all
 profiling_humann35
 profiling_humann35_all
 profiling_humann35_config
 profiling_humann35_join
 profiling_humann35_postprocess
 profiling_humann35_split_stratified
+profiling_humann38
+profiling_humann38_all
+profiling_humann38_config
+profiling_humann38_join
+profiling_humann38_postprocess
+profiling_humann38_split_stratified
 profiling_humann39
 profiling_humann39_all
 profiling_humann39_config
@@ -272,7 +278,7 @@ trimming_sickle_all
 trimming_trimmomatic_all
 
 Real running cmd:
-snakemake --snakefile /home/jiezhu/toolkit/quantpi/quantpi/snakefiles/profiling_wf.smk --configfile ./config.yaml --cores 240 --keep-going --printshellcmds --reason --until all --list
+snakemake --snakefile /path/to/quantpi/quantpi/snakefiles/profiling_wf.smk --configfile ./config.yaml --cores 240 --keep-going --printshellcmds --reason --until all --list
 ```
 
 ### Step 4: update config.yaml
@@ -505,21 +511,20 @@ params:
       external_opts_v40: ""
       external_opts_v41: ""
 
+
     # Functional profiling
     humann:
-      do_v28: False  # reply on metaphlan 2+
-      do_v35: True # reply on metaphlan 3+
-      do_v39: True # reply on metaphlan 4+ # choose metaphlan v4.0 or v4.1 ?
-      do_v39_used_metaphlan: "metaphlan41"
-      database_utility_mapping_v28: "/home/jiezhu/databases/funcgenomics/humann2/utility_mapping"
-      database_utility_mapping_v35: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/utility_mapping"
-      database_utility_mapping_v39: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/utility_mapping"
-      database_protein_v28: "/home/jiezhu/databases/funcgenomics/humann2/uniref"
-      database_protein_v35: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/uniref"
-      database_protein_v39: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/uniref"
-      database_nucleotide_v28: "/home/jiezhu/databases/funcgenomics/humann2/chocophlan"
-      database_nucleotide_v35: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/chocophlan"
-      database_nucleotide_v39: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/chocophlan"
+      do_v2: False   # reply on metaphlan2 v2*
+      do_v35: False  # reply on metaphlan  v3*
+      do_v38: True   # reply on metaphlan  v4.0.*
+      do_v39: True   # reply on metaphlan  v4.1.*
+      # humann v3.5, v3.6, v3.7, v3.8, v3.9 used same database v31
+      database_nucleotide_v2: "/home/jiezhu/databases/funcgenomics/HUMAnN/v2/chocophlan"
+      database_nucleotide_v31: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.1/chocophlan"
+      database_protein_v2: "/home/jiezhu/databases/funcgenomics/HUMAnN/v2/uniref"
+      database_protein_v31: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.1/uniref"
+      database_utility_mapping_v2: "/home/jiezhu/databases/funcgenomics/HUMAnN/v2/utility_mapping"
+      database_utility_mapping_v31: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.1/utility_mapping"
       prescreen_threshold: 0.005 # minimum percentage of reads matching a species, default: 0.01
       identity_threshold: 50.0
       nucleotide_identity_threshold: 0.0 # nucleotide: 0
@@ -533,9 +538,11 @@ params:
       normalize_method: "relab"
       regroup_method: "sum"
       map_database: ["uniref90_go", "uniref90_ko", "uniref90_eggnog", "uniref90_pfam"] # ["uniref90_level4ec", "uniref90_infogo1000", "uniref90_rxn" ]
-      external_opts_v28: ""
+      external_opts_v2: ""
       external_opts_v35: ""
+      external_opts_v38: ""
       external_opts_v39: ""
+
 
     # alignment method
     genomecov:

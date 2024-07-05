@@ -201,10 +201,10 @@ params:
 
     # DNA-to-marker
     metaphlan:
-      do_v2: False   # metaphlan2
-      do_v3: False   # metaphlan3
-      do_v40: False   # metaphlan v4.0.*
-      do_v41: True   # metaphlan v4.1.*
+      do_v2: False    # metaphlan2 v2*
+      do_v3: False    # metaphlan  v3*
+      do_v40: False   # metaphlan  v4.0.*
+      do_v41: True    # metaphlan  v4.1.*
       bowtie2db_v2: "/home/jiezhu/databases/ecogenomics/MetaPhlAn/mpa_v20/bowtie2_index"
       bowtie2db_v3: "/home/jiezhu/databases/ecogenomics/MetaPhlAn/mpa_v30/bowtie2_index"
       bowtie2db_v40: "/home/jiezhu/databases/ecogenomics/MetaPhlAn/mpa_vOct22/bowtie2_index"
@@ -225,9 +225,9 @@ params:
       external_opts_v41: "--unclassified_estimation"
 
     strainphlan:
-      do_v3: False                                                # metaphlan3
-      do_v40: False                                               # metaphlan4
-      do_v41: False                                               # metaphlan4
+      do_v3: False                                                # metaphlan v3*
+      do_v40: False                                               # metaphlan v4.0.*
+      do_v41: False                                               # metaphlan v4.1.*
       reference_genome:
         use: False
         clades_tsv_v3: "/path/to/clades_v3.tsv"                   # extrct clade markes from specific clades, two column, [clade\tfna_path]
@@ -244,19 +244,17 @@ params:
 
     # Functional profiling
     humann:
-      do_v28: False  # reply on metaphlan 2+
-      do_v35: False # reply on metaphlan 3+
-      do_v39: True # reply on metaphlan 4+ # choose metaphlan v4.0 or v4.1 ?
-      do_v39_used_metaphlan: "metaphlan41"
-      database_utility_mapping_v28: "/home/jiezhu/databases/funcgenomics/humann2/utility_mapping"
-      database_utility_mapping_v35: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/utility_mapping"
-      database_utility_mapping_v39: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/utility_mapping"
-      database_protein_v28: "/home/jiezhu/databases/funcgenomics/humann2/uniref"
-      database_protein_v35: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/uniref"
-      database_protein_v39: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/uniref"
-      database_nucleotide_v28: "/home/jiezhu/databases/funcgenomics/humann2/chocophlan"
-      database_nucleotide_v35: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.0/chocophlan"
-      database_nucleotide_v39: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.6/chocophlan"
+      do_v2: False   # reply on metaphlan2 v2*
+      do_v35: False  # reply on metaphlan  v3*
+      do_v38: True   # reply on metaphlan  v4.0.*
+      do_v39: True   # reply on metaphlan  v4.1.*
+      # humann v3.5, v3.6, v3.7, v3.8, v3.9 used same database v31
+      database_nucleotide_v2: "/home/jiezhu/databases/funcgenomics/HUMAnN/v2/chocophlan"
+      database_nucleotide_v31: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.1/chocophlan"
+      database_protein_v2: "/home/jiezhu/databases/funcgenomics/HUMAnN/v2/uniref"
+      database_protein_v31: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.1/uniref"
+      database_utility_mapping_v2: "/home/jiezhu/databases/funcgenomics/HUMAnN/v2/utility_mapping"
+      database_utility_mapping_v31: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.1/utility_mapping"
       prescreen_threshold: 0.005 # minimum percentage of reads matching a species, default: 0.01
       identity_threshold: 50.0
       nucleotide_identity_threshold: 0.0 # nucleotide: 0
@@ -270,8 +268,9 @@ params:
       normalize_method: "relab"
       regroup_method: "sum"
       map_database: ["uniref90_go", "uniref90_ko", "uniref90_eggnog", "uniref90_pfam"] # ["uniref90_level4ec", "uniref90_infogo1000", "uniref90_rxn" ]
-      external_opts_v28: ""
+      external_opts_v2: ""
       external_opts_v35: ""
+      external_opts_v38: ""
       external_opts_v39: ""
 
 
