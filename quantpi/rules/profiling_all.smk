@@ -19,6 +19,7 @@ rule profiling_all:
         rules.profiling_genome_coverm_all.input,
         rules.profiling_humann2_all.input,
         rules.profiling_humann35_all.input,
+        rules.profiling_humann38_all.input,
         rules.profiling_humann39_all.input
 
 
@@ -42,5 +43,6 @@ localrules:
     #profiling_custom_jgi_all,
     profiling_humann2_all,
     profiling_humann35_all,
+    profiling_humann38_all,
     profiling_humann39_all,
     profiling_all
