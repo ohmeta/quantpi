@@ -12,8 +12,8 @@
 
 ```bash
 ➤ mkdir -p ~/.conda/envs
-➤ wget https://github.com/conda-forge/miniforge/releases/latest/download/Mambaforge-Linux-x86_64.sh
-➤ bash Mambaforge-Linux-x86_64.sh
+➤ wget -c https://github.com/conda-forge/miniforge/releases/latest/download/Miniforge3-Linux-x86_64.sh
+➤ bash Miniforge3-Linux-x86_64.sh
 # set the install path to ~/.conda/envs/quantpi-env
 # init shell, then relogin
 ➤ mamba config --add channels nodefaults
