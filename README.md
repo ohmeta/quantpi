@@ -16,13 +16,14 @@
 ➤ bash Miniforge3-Linux-x86_64.sh
 # set the install path to ~/.conda/envs/quantpi-env
 # init shell, then relogin
-➤ mamba config --add channels nodefaults
-➤ mamba config --add channels bioconda
-➤ mamba config --add channels conda-forge
-➤ mamba config --set channel_priority strict
+➤ conda config --add channels nodefaults
+➤ conda config --add channels bioconda
+➤ conda config --add channels conda-forge
+➤ conda config --set channel_priority strict
+➤ conda init bash # conda init zsh
 
-# then activate mambaforge
-➤ mamba activate quantpi-env
+# ssh relogin, then activate quantpi-env
+➤ conda activate quantpi-env
 
 # install snakemake
 ➤ mamba install snakemake fd-find seqkit ruamel.yaml pandas numpy natsort openpyxl biopython seaborn matplotlib executor
@@ -30,16 +31,23 @@
 
 ## Installation
 
+### Latest version (**Recommended**)
+
 ```bash
-➤ mamba install quantpi=0.2.0
-
-# or
-➤ pip install quantpi=0.2.0
-
-# or latest version
 ➤ git clone https://github.com/ohmeta/quantpi
 ➤ echo "export PYTHONPATH=/path/to/quantpi:$PYTHONPATH" >> ~/.bashrc
-# relogin
+```
+
+### From Bioconda
+
+```bash
+➤ mamba install quantpi=0.2.0
+```
+
+### From PYPI
+
+```bash
+➤ pip install quantpi=0.2.0
 ```
 
 ## Help
