@@ -41,13 +41,13 @@
 ### From Bioconda
 
 ```bash
-➤ mamba install quantpi=0.2.0
+➤ mamba install quantpi=1.0.0
 ```
 
 ### From PYPI
 
 ```bash
-➤ pip install quantpi=0.2.0
+➤ pip install quantpi=1.0.0
 ```
 
 ## Help
