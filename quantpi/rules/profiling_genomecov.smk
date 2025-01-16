@@ -11,6 +11,8 @@ if IS_PE:
             os.path.join(config["output"]["profiling"], "benchmark/bowtie2_samtools/{sample}.bowtie2.txt")
         threads:
             config["params"]["profiling"]["threads"]
+        resources:
+            mem_mb=config["params"]["profiling"]["genomecov"]["mem_mb"]
         params:
             bowtie2_db_prefix = config["params"]["profiling"]["genomecov"]["bowtie2_db_prefix"],
             tmp_bam = os.path.join(config["output"]["profiling"], "align/bowtie2/{sample}/{sample}.bam.tmp")
@@ -46,6 +48,8 @@ else:
             os.path.join(config["output"]["profiling"], "benchmark/bowtie2_samtools/{sample}.bowtie2.txt")
         threads:
             config["params"]["profiling"]["threads"]
+        resources:
+            mem_mb=config["params"]["profiling"]["genomecov"]["mem_mb"]
         params:
             bowtie2_db_prefix = config["params"]["profiling"]["genomecov"]["bowtie2_db_prefix"],
             tmp_bam = os.path.join(config["output"]["profiling"], "align/bowtie2/{sample}/{sample}.bam.tmp")
@@ -62,8 +66,8 @@ else:
             -U {input.reads} \
             2> {log} | \
             tee >(samtools flagstat \
-                 -@{threads} - \
-                 > {output.flagstat}) | \
+                    -@{threads} - \
+                    > {output.flagstat}) | \
             samtools sort -T {params.tmp_bam} -@1 -m 8G -O BAM -o {output.bam} >{log} 2>&1
             '''
 
@@ -81,6 +85,8 @@ rule profiling_alignment_bam_postprocess:
         os.path.join(config["output"]["profiling"], "benchmark/sambamba/{sample}.sambamba.txt")
     conda:
         config["envs"]["align"]
+    threads:
+        1
     shell:
         '''
         sambamba view \
@@ -104,6 +110,8 @@ if config["params"]["profiling"]["genomecov"]["do"]:
             bed = os.path.join(config["output"]["profiling"], "profile/genomecov/{sample}/{sample}.coverage.bed")
         threads:
             1
+        resources:
+            mem_mb=config["params"]["profiling"]["genomecov"]["mem_mb"]
         conda:
             config["envs"]["align"]
         shell:
@@ -127,6 +135,8 @@ if config["params"]["profiling"]["genomecov"]["do"]:
             os.path.join(config["output"]["profiling"], "benchmark/gen_contig_cov/{sample}.gen_contig_cov.txt")
         threads:
             1
+        resources:
+            mem_mb=config["params"]["profiling"]["genomecov"]["mem_mb"]
         shell:
             '''
             python {params.gen_contig_cov_script} \
@@ -139,23 +149,27 @@ if config["params"]["profiling"]["genomecov"]["do"]:
 
     rule profiling_genomecov_gen_cov_merge:
         input:
-            expand(os.path.join(config["output"]["profiling"],
-                                "profile/genomecov/{sample}/{sample}.coverage.tsv.gz"),
-                                sample=SAMPLES_ID_LIST)
+            expand(os.path.join(
+                config["output"]["profiling"],
+                "profile/genomecov/{sample}/{sample}.coverage.tsv.gz"),
+                sample=SAMPLES_ID_LIST)
         output:
             report_cov = os.path.join(config["output"]["profiling"], "report/genomecov/contigs_coverage.cov.tsv.gz"), 
             report_per = os.path.join(config["output"]["profiling"], "report/genomecov/contigs_coverage.per.tsv.gz")
         threads:
             config["params"]["profiling"]["threads"]
+        resources:
+            mem_mb=config["params"]["profiling"]["genomecov"]["mem_mb"]
         run:
             quantpi.genomecov_merge(input, threads, output_cov=output.report_cov, output_per=output.report_per)
 
 
     rule profiling_genomecov_all:
         input:
-            expand(os.path.join(config["output"]["profiling"],
-                                "report/genomecov/contigs_coverage.{suffix}.tsv.gz"),
-                                suffix=["cov", "per"])
+            expand(os.path.join(
+                config["output"]["profiling"],
+                "report/genomecov/contigs_coverage.{suffix}.tsv.gz"),
+                suffix=["cov", "per"])
 
 else:
     rule profiling_genomecov_all:

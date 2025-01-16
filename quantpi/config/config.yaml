@@ -312,36 +312,6 @@ params:
       trim_min: 5
       trim_max: 95
 
-    # custom method
-    bgi_soap: # for learning and test
-      do: False
-      mem_mb: 5000
-      taxonomy: "/path/to/mag_taxonomy"
-      index_prefix: "/path/to/mag_soap_index"
-      minimal_insert_size: 0
-      maximal_insert_size: 1000
-      report_repeat_hits: 1
-      match_model: 4
-      align_seed: 30
-      max_mismatch_num: 5
-      identity: 0.95
-
-    bowtie2: # for learning and test
-      do: False
-      mem_mb: 5000
-      taxonomy: "/path/to/mag_taxonomy"
-      index_prefix: "/path/to/mag_bowtie2_index"
-
-    jgi: # for learning and test
-      do: false
-      mem_mb: 2000
-      metadata: "/path/to/mag_metadata"
-      taxonomy: "/path/to/mag_taxonomy"
-      index_prefix: "/path/to/mag_bowtie2_index"
-      fragment: 1200
-      memory_limit: "8G"
-      compression_level: 6
-
 
 output:
   simulate: "results/00.simulate"

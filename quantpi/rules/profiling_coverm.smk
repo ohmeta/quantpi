@@ -20,6 +20,8 @@ if config["params"]["profiling"]["coverm"]["do"]:
             trim_max = config["params"]["profiling"]["coverm"]["trim_max"]
         threads:
             config["params"]["profiling"]["threads"]
+        resources:
+            mem_mb=config["params"]["profiling"]["coverm"]["mem_mb"]
         conda:
             config["envs"]["align"]
         shell:
@@ -46,13 +48,17 @@ if config["params"]["profiling"]["coverm"]["do"]:
 
     rule profiling_genome_coverm_merge:
         input:
-            expand(os.path.join(config["output"]["profiling"], "profile/coverm/{sample}/{sample}.coverm.tsv.gz"),
-                   sample=SAMPLES_ID_LIST)
+            expand(
+                os.path.join(config["output"]["profiling"], "profile/coverm/{sample}/{sample}.coverm.tsv.gz"),
+                sample=SAMPLES_ID_LIST)
         output:
-            expand(os.path.join(config["output"]["profiling"], "report/coverm/coverm.{method}.tsv.gz"),
-                   method=config["params"]["profiling"]["coverm"]["methods"])
+            expand(
+                os.path.join(config["output"]["profiling"], "report/coverm/coverm.{method}.tsv.gz"),
+                method=config["params"]["profiling"]["coverm"]["methods"])
         threads:
             config["params"]["profiling"]["threads"]
+        resources:
+            mem_mb=config["params"]["profiling"]["coverm"]["mem_mb"]
         params:
             methods = config["params"]["profiling"]["coverm"]["methods"],
         run:
@@ -61,10 +67,11 @@ if config["params"]["profiling"]["coverm"]["do"]:
 
     rule profiling_genome_coverm_all:
         input:
-           expand(os.path.join(config["output"]["profiling"], "report/coverm/coverm.{method}.tsv.gz"),
-                  method=config["params"]["profiling"]["coverm"]["methods"])
-  
- 
+            expand(
+                os.path.join(config["output"]["profiling"], "report/coverm/coverm.{method}.tsv.gz"),
+                method=config["params"]["profiling"]["coverm"]["methods"])
+
+
 else:
     rule profiling_genome_coverm_all:
         input:
