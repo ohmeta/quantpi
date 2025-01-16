@@ -29,6 +29,8 @@ if config["params"]["trimming"]["sickle"]["do"]:
             quality_cutoff = config["params"]["trimming"]["sickle"]["quality_cutoff"],
             length_cutoff = config["params"]["trimming"]["sickle"]["length_cutoff"],
             pe = "pe" if IS_PE else "se"
+        resources:
+            mem_mb=config["params"]["trimming"]["sickle"]["mem_mb"]
         priority:
             10
         shell:
@@ -132,6 +134,8 @@ if config["params"]["trimming"]["fastp"]["do"]:
             config["envs"]["trimming"]
         threads:
             config["params"]["trimming"]["threads"]
+        resources:
+            mem_mb=config["params"]["trimming"]["fastp"]["mem_mb"]
         priority:
             10
         shell:
@@ -240,6 +244,10 @@ if config["params"]["trimming"]["fastp"]["do"]:
             outdir = os.path.join(config["output"]["trimming"], "report")
         conda:
             config["envs"]["multiqc"]
+        threads:
+            1
+        resources:
+            mem_mb=config["params"]["qcreport"]["mem_mb"]
         priority:
             10
         shell:
@@ -303,6 +311,8 @@ if config["params"]["trimming"]["trimmomatic"]["do"]:
             config["envs"]["trimming"]
         threads:
             config["params"]["trimming"]["threads"]
+        resources:
+            mem_mb=config["params"]["trimming"]["trimmomatic"]["mem_mb"]
         priority:
             10
         shell:
@@ -356,6 +366,10 @@ if config["params"]["trimming"]["trimmomatic"]["do"]:
             outdir = os.path.join(config["output"]["trimming"], "report")
         conda:
             config["envs"]["multiqc"]
+        threads:
+            1
+        resources:
+            mem_mb=config["params"]["qcreport"]["mem_mb"]
         priority:
             10
         shell:
@@ -402,6 +416,8 @@ if TRIMMING_DO and config["params"]["qcreport"]["do"]:
             config["envs"]["report"]
         threads:
             config["params"]["qcreport"]["seqkit"]["threads"]
+        resources:
+            mem_mb=config["params"]["qcreport"]["mem_mb"]
         priority:
             10
         shell:
@@ -428,6 +444,8 @@ if TRIMMING_DO and config["params"]["qcreport"]["do"]:
             sample_id = "{sample}"
         threads:
             1
+        resources:
+            mem_mb=config["params"]["qcreport"]["mem_mb"]
         priority:
             10
         run:
@@ -449,6 +467,8 @@ if TRIMMING_DO and config["params"]["qcreport"]["do"]:
             os.path.join(config["output"]["qcreport"], "trimming_stats.tsv")
         threads:
             config["params"]["qcreport"]["seqkit"]["threads"]
+        resources:
+            mem_mb=config["params"]["qcreport"]["mem_mb"] * 5
         run:
             quantpi.merge(input, quantpi.parse, threads, output=output[0])
 

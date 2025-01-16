@@ -9,6 +9,7 @@ params:
   simulate:
     do: False
     threads: 8
+    mem_mb: 1000
 
   raw:
     do: True
@@ -18,6 +19,7 @@ params:
 
     fastqc:
       do: False
+      mem_mb: 1000
 
   trimming:
     save_reads: False
@@ -25,6 +27,7 @@ params:
 
     sickle:
       do: False
+      mem_mb: 1000
       quality_type: "sanger"
       sickle_pe: ""
       length_cutoff: 51
@@ -32,6 +35,7 @@ params:
 
     fastp: # recommand
       do: True
+      mem_mb: 2000
       use_slide_window: False # strict when using slide window
       disable_adapter_trimming: False
       detect_adapter_for_se: True # If activated, adapter_sequence will not used
@@ -54,6 +58,7 @@ params:
 
     trimmomatic:
       do: False
+      mem_mb: 2000
       phred: "-phred33"
       save_unpaired: False
       trimmomatic_options: 'MINLEN:50 ILLUMINACLIP:/path/to/adapters.fa:2:40:15 SLIDINGWINDOW:4:20' # eg: adapters: /path/to/TruSeq3-PE-2.fa
@@ -68,23 +73,27 @@ params:
 
     bwa:
       do: False
+      mem_mb: 3000
       algorithms: "mem" # "mem2"
       index_prefix: "/home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/bwa_index/chm13v2.0.fa"
       minimum_seed_length: 23
 
     bowtie2: # recommand
       do: True
+      mem_mb: 3000
       index_prefix: "/home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
       presets: "--very-sensitive"
 
     minimap2:
       do: False
+      mem_mb: 4000
       split_size: "4G"
       preset: "sr"
       index: "/home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/minimap_index/chm13v2.0.fa"
 
     kraken2:
       do: False
+      mem_mb: 10000
       database: "/home/jiezhu/databases/kraken/minikraken2_v2_8GB_201904_UPDATE"
       host_taxid: 9606
       # must include human reference genome
@@ -96,6 +105,7 @@ params:
       do: False
       do_trf: False
       do_trimmomatic: False
+      mem_mb: 3000
       trimmomatic_options: 'MINLEN:50 ILLUMINACLIP:/path/to/adapters.fa:2:40:15 SLIDINGWINDOW:4:20' # eg: adapters: /path/to/TruSeq3-PE-2.fa
       sequencer_source: "TruSeq3" # ["NexteraPE", "TruSeq2", "TruSeq3", "none"]
       do_bmtagger: False
@@ -109,6 +119,7 @@ params:
     do: True
     seqkit:
       threads: 4
+      mem_mb: 500
 
 
   profiling:
@@ -117,6 +128,7 @@ params:
     # DNA-to-DNA
     kraken2:
       do: False
+      mem_mb: 10000
       database: "/home/jiezhu/databases/ecogenomics/Kraken2/refseq_indexes/k2_pluspf_20220908"
       taxonomy: "/home/jiezhu/databases/ecogenomics/Kraken2/taxonomy/"
       quick: False
@@ -139,6 +151,7 @@ params:
 
     krakenuniq:
       do: False
+      mem_mb: 10000
       database: "/home/jiezhu/databases/ecogenomics/KrakenUniq/refseq_indexes/ku_pluspf_20220908"
       taxonomy: "/home/jiezhu/databases/ecogenomics/KrakenUniq/taxonomy"
       quick: False
@@ -160,6 +173,7 @@ params:
         bacteriome: False
         mycobiome: False
         virome: False
+      mem_mb: 10000
       database:
         bacteriome: /home/jiezhu/databases/ecogenomics/KMCP/bacteriome/GTDB_r202/gtdb.kmcp
         mycobiome: /home/jiezhu/databases/ecogenomics/KMCP/mycobiome/RefSeq_r208/refseq-fungi.kmcp
@@ -205,6 +219,7 @@ params:
       do_v3: False    # metaphlan  v3*
       do_v40: False   # metaphlan  v4.0.*
       do_v41: True    # metaphlan  v4.1.*
+      mem_mb: 10000
       bowtie2db_v2: "/home/jiezhu/databases/ecogenomics/MetaPhlAn/mpa_v20/bowtie2_index"
       bowtie2db_v3: "/home/jiezhu/databases/ecogenomics/MetaPhlAn/mpa_v30/bowtie2_index"
       bowtie2db_v40: "/home/jiezhu/databases/ecogenomics/MetaPhlAn/mpa_vOct22/bowtie2_index"
@@ -228,6 +243,7 @@ params:
       do_v3: False                                                # metaphlan v3*
       do_v40: False                                               # metaphlan v4.0.*
       do_v41: False                                               # metaphlan v4.1.*
+      mem_mb: 2000
       reference_genome:
         use: False
         clades_tsv_v3: "/path/to/clades_v3.tsv"                   # extrct clade markes from specific clades, two column, [clade\tfna_path]
@@ -249,6 +265,7 @@ params:
       do_v35: False  # reply on metaphlan  v3*
       do_v38: True   # reply on metaphlan  v4.0.*
       do_v39: True   # reply on metaphlan  v4.1.*
+      mem_mb: 10000
       # humann v3.5, v3.6, v3.7, v3.8, v3.9 used same database v31
       database_nucleotide_v2: "/home/jiezhu/databases/funcgenomics/HUMAnN/v2/chocophlan"
       database_nucleotide_v31: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.1/chocophlan"
@@ -278,6 +295,7 @@ params:
     # alignment method
     genomecov:
       do: False
+      mem_mb: 5000
       bowtie2_db_prefix: "/home/jiezhu/databases/ecogenomics/virome/virome.fasta"
       bowtie2_db_fasta: "/home/jiezhu/databases/ecogenomics/virome/virome.fasta"
       gen_contig_cov_script: /home/jiezhu/toolkit/metassemble/scripts/validate/map/gen_contig_cov_per_bam_table.py
@@ -285,6 +303,7 @@ params:
     # alignment method
     coverm:
       do: False
+      mem_mb: 5000
       genome_dir: "/home/jiezhu/databases/ecogenomics/virome/genomes"
       genome_fasta_extension: "fna"
       methods: ["relative_abundance", "mean", "trimmed_mean", "covered_fraction", "covered_bases", "variance", "rpkm", "tpm"]
@@ -296,6 +315,7 @@ params:
     # custom method
     bgi_soap: # for learning and test
       do: False
+      mem_mb: 5000
       taxonomy: "/path/to/mag_taxonomy"
       index_prefix: "/path/to/mag_soap_index"
       minimal_insert_size: 0
@@ -308,11 +328,13 @@ params:
 
     bowtie2: # for learning and test
       do: False
+      mem_mb: 5000
       taxonomy: "/path/to/mag_taxonomy"
       index_prefix: "/path/to/mag_bowtie2_index"
 
     jgi: # for learning and test
       do: false
+      mem_mb: 2000
       metadata: "/path/to/mag_metadata"
       taxonomy: "/path/to/mag_taxonomy"
       index_prefix: "/path/to/mag_bowtie2_index"
