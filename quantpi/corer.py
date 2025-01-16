@@ -108,7 +108,7 @@ def run_snakemake(args, unknown, snakefile, workflow):
             profile_path = os.path.join("./profiles", args.cluster_engine)
             cmd += [
                     "--executor", args.cluster_engine,
-                    "--profile", profile_path,
+                    "--workflow-profile", profile_path,
                     "--local-cores", str(args.local_cores),
                     "--jobs", str(args.jobs)]
         elif args.debug:

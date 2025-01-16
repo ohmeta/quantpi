@@ -1,5 +1,29 @@
-executor: slurm
-jobs: 30
+# https://github.com/snakemake/snakemake-executor-plugin-slurm/blob/main/docs/further.md#using-profiles
 
-default-resources:
-    mem_mb: max(1.5 * input.size_mb, 100)
+# snakemake --executor slurm \
+#   --default-resources slurm_account=<your SLURM account> slurm_partition=<your SLURM partition> \
+#   --set-resources <somerule>:slurm_partition=<some other partition>
+
+executor: slurm
+latency-wait: 60
+runtime: 10080
+#remote-job-local-storage-prefix: "<your node local storage prefix>"
+#local-storage-prefix: "<your local storage prefix, e.g. on login nodes>"
+#slurm-logdir: "/home/<username>/.snakemake/slurm_logs"
+
+#default-resources:
+#    slurm_partition: "<your default partition>"
+#    slurm_account:   "<your account>"
+#    mem_mb: max(1.5 * input.size_mb, 100)
+#    mem_mb_per_cpu: 1800
+#    cpus_per_task: 8
+
+
+#set-resources:
+#    <rulename>:
+#        slurm_partition: "<other partition>" # deviating partition for this rule
+#        runtime: 60 # 1 hour
+#        #slurm_extra: "'--nice=150'"
+#        slurm_extra: "'--qos=long --mail-type=ALL --mail-user=<your email>'"
+#        mem_mb_per_cpu: 1800
+#        cpus_per_task: 40
