@@ -1,3 +1,4 @@
+# https://snakemake.readthedocs.io/en/latest/executing/cli.html#profiles
 # https://github.com/snakemake/snakemake-executor-plugin-slurm/blob/main/docs/further.md#using-profiles
 
 # snakemake --executor slurm \
@@ -5,19 +6,26 @@
 #   --set-resources <somerule>:slurm_partition=<some other partition>
 
 executor: slurm
-latency-wait: 60
-runtime: 10080
+
+#jobs: 30
+
+latency-wait: 120
+
 #remote-job-local-storage-prefix: "<your node local storage prefix>"
 #local-storage-prefix: "<your local storage prefix, e.g. on login nodes>"
+
 #slurm-logdir: "/home/<username>/.snakemake/slurm_logs"
 
-#default-resources:
+default-resources:
+    runtime: 10080
 #    slurm_partition: "<your default partition>"
 #    slurm_account:   "<your account>"
 #    mem_mb: max(1.5 * input.size_mb, 100)
 #    mem_mb_per_cpu: 1800
 #    cpus_per_task: 8
 
+#set-threads:
+#    <rulename>: max(input.size_mb / 5, 2)
 
 #set-resources:
 #    <rulename>:
