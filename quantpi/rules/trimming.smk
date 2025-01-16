@@ -3,28 +3,25 @@ if config["params"]["trimming"]["sickle"]["do"]:
         input:
             reads = lambda wildcards: get_reads(wildcards, "raw", False)
         output:
-            done = touch(os.path.join(config["output"]["trimming"],
-                                      "short_reads/{sample}/{sample}.sickle.done")),
+            done = touch(os.path.join(config["output"]["trimming"], "short_reads/{sample}/{sample}.sickle.done")),
             reads = expand(
                 os.path.join(
                     config["output"]["trimming"],
                     "short_reads/{{sample}}/{{sample}}.trimming{read}.fq.gz"),
                 read=[".1", ".2", ".single"] if IS_PE else "") \
                 if config["params"]["trimming"]["save_reads"] else \
-                   temp(expand(os.path.join(
-                       config["output"]["trimming"],
-                       "short_reads/{{sample}}/{{sample}}.trimming{read}.fq.gz"),
-                               read=[".1", ".2", ".single"] if IS_PE else ""))
+                temp(expand(os.path.join(
+                    config["output"]["trimming"],
+                    "short_reads/{{sample}}/{{sample}}.trimming{read}.fq.gz"),
+                    read=[".1", ".2", ".single"] if IS_PE else ""))
         log:
             os.path.join(config["output"]["trimming"], "logs/{sample}.sickle.log")
         benchmark:
-            os.path.join(config["output"]["trimming"],
-                         "benchmark/sickle/{sample}.sickle.benchmark.txt")
+            os.path.join(config["output"]["trimming"], "benchmark/sickle/{sample}.sickle.benchmark.txt")
         conda:
             config["envs"]["trimming"]
         params:
-            output_prefix = os.path.join(config["output"]["trimming"],
-                                         "short_reads/{sample}/{sample}"),
+            output_prefix = os.path.join(config["output"]["trimming"], "short_reads/{sample}/{sample}"),
             quality_type = config["params"]["trimming"]["sickle"]["quality_type"],
             quality_cutoff = config["params"]["trimming"]["sickle"]["quality_cutoff"],
             length_cutoff = config["params"]["trimming"]["sickle"]["length_cutoff"],
@@ -64,8 +61,7 @@ if config["params"]["trimming"]["sickle"]["do"]:
     rule trimming_sickle_all:
         input:
             expand(
-                os.path.join(config["output"]["trimming"],
-                             "short_reads/{sample}/{sample}.sickle.done"),
+                os.path.join(config["output"]["trimming"], "short_reads/{sample}/{sample}.sickle.done"),
                 sample=SAMPLES_ID_LIST)
 
 else:
@@ -107,10 +103,10 @@ if config["params"]["trimming"]["fastp"]["do"]:
                     "short_reads/{{sample}}/{{sample}}.trimming{read}.fq.gz"),
                 read=[".1", ".2"] if IS_PE else "") \
                 if config["params"]["trimming"]["save_reads"] else \
-                   temp(expand(os.path.join(
-                       config["output"]["trimming"],
-                       "short_reads/{{sample}}/{{sample}}.trimming{read}.fq.gz"),
-                               read=[".1", ".2"] if IS_PE else ""))
+                temp(expand(os.path.join(
+                    config["output"]["trimming"],
+                    "short_reads/{{sample}}/{{sample}}.trimming{read}.fq.gz"),
+                    read=[".1", ".2"] if IS_PE else ""))
         params:
             output_prefix = os.path.join(config["output"]["trimming"], "short_reads/{sample}/{sample}"),
             compression = config["params"]["trimming"]["fastp"]["compression"],
@@ -230,14 +226,12 @@ if config["params"]["trimming"]["fastp"]["do"]:
     rule trimming_fastp_multiqc:
         input:
             expand(
-                os.path.join(config["output"]["trimming"],
-                             "short_reads/{sample}/{sample}.fastp.json"),
+                os.path.join(config["output"]["trimming"], "short_reads/{sample}/{sample}.fastp.json"),
                 sample=SAMPLES_ID_LIST)
         output:
-            html = os.path.join(config["output"]["trimming"],
-                                "report/fastp_multiqc_report.html")#,
-            #data_dir = directory(os.path.join(config["output"]["trimming"],
-            #                                  "report/fastp_multiqc_report_data"))
+            html = os.path.join(
+                config["output"]["trimming"],
+                "report/fastp_multiqc_report.html")
         log:
             os.path.join(config["output"]["trimming"], "logs/multiqc.fastp.log")
         params:
@@ -264,16 +258,10 @@ if config["params"]["trimming"]["fastp"]["do"]:
     rule trimming_fastp_all:
         input:
             expand([
-                os.path.join(config["output"]["trimming"],
-                             "short_reads/{sample}/{sample}.fastp.html"),
-                os.path.join(config["output"]["trimming"],
-                             "short_reads/{sample}/{sample}.fastp.json"),
-                os.path.join(config["output"]["trimming"],
-                             "report/fastp_multiqc_report.html"),
-                #os.path.join(config["output"]["trimming"],
-                #             "report/fastp_multiqc_report_data")
-                ],
-                   sample=SAMPLES_ID_LIST)
+                os.path.join(config["output"]["trimming"], "short_reads/{sample}/{sample}.fastp.html"),
+                os.path.join(config["output"]["trimming"], "short_reads/{sample}/{sample}.fastp.json"),
+                os.path.join(config["output"]["trimming"], "report/fastp_multiqc_report.html")
+            ], sample=SAMPLES_ID_LIST)
 
 else:
     rule trimming_fastp_all:
@@ -293,10 +281,10 @@ if config["params"]["trimming"]["trimmomatic"]["do"]:
                     "short_reads/{{sample}}/{{sample}}.trimming{read}.fq.gz"),
                 read=[".1", ".2"] if IS_PE else "") \
                 if config["params"]["trimming"]["save_reads"] else \
-                   temp(expand(os.path.join(
-                       config["output"]["trimming"],
-                       "short_reads/{{sample}}/{{sample}}.trimming{read}.fq.gz"),
-                               read=[".1", ".2"] if IS_PE else ""))
+                temp(expand(os.path.join(
+                    config["output"]["trimming"],
+                    "short_reads/{{sample}}/{{sample}}.trimming{read}.fq.gz"),
+                    read=[".1", ".2"] if IS_PE else ""))
         params:
             trimmomatic_options = config["params"]["trimming"]["trimmomatic"]["trimmomatic_options"],
             phred = config["params"]["trimming"]["trimmomatic"]["phred"],
@@ -305,8 +293,9 @@ if config["params"]["trimming"]["trimmomatic"]["do"]:
         log:
             os.path.join(config["output"]["trimming"], "logs/{sample}.trimmomatic.log")
         benchmark:
-            os.path.join(config["output"]["trimming"],
-                         "benchmark/trimmomatic/{sample}.trimmomatic.benchmark.txt")
+            os.path.join(
+                config["output"]["trimming"],
+                "benchmark/trimmomatic/{sample}.trimmomatic.benchmark.txt")
         conda:
             config["envs"]["trimming"]
         threads:
@@ -355,9 +344,10 @@ if config["params"]["trimming"]["trimmomatic"]["do"]:
     rule trimming_trimmomatic_multiqc:
         input:
             expand(
-                os.path.join(config["output"]["trimming"],
-                             "short_reads/{sample}/{sample}.trimmomatic.log"),
-                sample=SAMPLES_ID_LIST)
+                os.path.join(
+                    config["output"]["trimming"],
+                    "short_reads/{sample}/{sample}.trimmomatic.log"),
+                    sample=SAMPLES_ID_LIST)
         output:
             html = os.path.join(config["output"]["trimming"], "report/trimmomatic_multiqc_report.html")
         log:
@@ -386,12 +376,15 @@ if config["params"]["trimming"]["trimmomatic"]["do"]:
     rule trimming_trimmomatic_all:
         input:
             expand([
-                os.path.join(config["output"]["trimming"],
-                             "short_reads/{sample}/{sample}.trimmomatic.summary.txt"),
-                os.path.join(config["output"]["trimming"],
-                             "short_reads/{sample}/{sample}.trimmomatic.log"),
-                os.path.join(config["output"]["trimming"],
-                             "report/trimmomatic_multiqc_report.html")
+                os.path.join(
+                    config["output"]["trimming"],
+                    "short_reads/{sample}/{sample}.trimmomatic.summary.txt"),
+                os.path.join(
+                    config["output"]["trimming"],
+                    "short_reads/{sample}/{sample}.trimmomatic.log"),
+                os.path.join(
+                    config["output"]["trimming"],
+                    "report/trimmomatic_multiqc_report.html")
                 ],
                 sample=SAMPLES_ID_LIST)
 
@@ -405,11 +398,13 @@ if TRIMMING_DO and config["params"]["qcreport"]["do"]:
         input:
             lambda wildcards: get_reads(wildcards, "trimming")
         output:
-            temp(os.path.join(config["output"]["trimming"],
-                              "report/stats/{sample}_trimming_stats.tsv.raw"))
+            temp(os.path.join(
+                config["output"]["trimming"],
+                "report/stats/{sample}_trimming_stats.tsv.raw"))
         log:
-            os.path.join(config["output"]["trimming"],
-                         "logs/{sample}.seqkit.log")
+            os.path.join(
+                config["output"]["trimming"],
+                "logs/{sample}.seqkit.log")
         params:
             fq_encoding = config["params"]["fq_encoding"]
         conda:
@@ -435,11 +430,13 @@ if TRIMMING_DO and config["params"]["qcreport"]["do"]:
 
     rule trimming_report_refine:
         input:
-            os.path.join(config["output"]["trimming"],
-                              "report/stats/{sample}_trimming_stats.tsv.raw")
+            os.path.join(
+                config["output"]["trimming"],
+                "report/stats/{sample}_trimming_stats.tsv.raw")
         output:
-            os.path.join(config["output"]["trimming"],
-                              "report/stats/{sample}_trimming_stats.tsv")
+            os.path.join(
+                config["output"]["trimming"],
+                "report/stats/{sample}_trimming_stats.tsv")
         params:
             sample_id = "{sample}"
         threads:
@@ -450,19 +447,22 @@ if TRIMMING_DO and config["params"]["qcreport"]["do"]:
             10
         run:
             if IS_PE:
-                quantpi.change(str(input), str(output), params.sample_id, "trimming",
-                              "pe", ["fq1", "fq2"])
+                quantpi.change(
+                    str(input), str(output), params.sample_id, "trimming",
+                    "pe", ["fq1", "fq2"])
             else:
-                quantpi.change(str(input), str(output), params.sample_id, "trimming",
-                              "se", ["fq1"])
+                quantpi.change(
+                    str(input), str(output), params.sample_id, "trimming",
+                    "se", ["fq1"])
 
 
     rule trimming_report_merge:
         input:
             expand(
-                os.path.join(config["output"]["trimming"],
-                             "report/stats/{sample}_trimming_stats.tsv"),
-                sample=SAMPLES_ID_LIST)
+                os.path.join(
+                    config["output"]["trimming"],
+                    "report/stats/{sample}_trimming_stats.tsv"),
+                    sample=SAMPLES_ID_LIST)
         output:
             os.path.join(config["output"]["qcreport"], "trimming_stats.tsv")
         threads:

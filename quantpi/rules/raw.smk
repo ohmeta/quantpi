@@ -69,7 +69,7 @@ if config["params"]["raw"]["do"]:
         threads:
             config["params"]["raw"]["threads"]
         resources:
-            mem_mb=config["params"]["raw"]["fastqc"]["mem_mb"]
+            mem_mb=config["params"]["raw"]["mem_mb"]
         log:
             os.path.join(config["output"]["raw"], "logs/{sample}_prepare.log")
         conda:
@@ -155,19 +155,21 @@ def get_reads(wildcards, step, have_single=False, have_long=False):
     if IS_PE and have_single:
         read += [".single"]
 
-    short_reads = expand(os.path.join(
-        config["output"][step],
-        "short_reads/{sample}/{sample}.{step}{read}.fq.gz"),
+    short_reads = expand(
+        os.path.join(
+            config["output"][step],
+            "short_reads/{sample}/{sample}.{step}{read}.fq.gz"),
         step=step,
         read=read,
         sample=wildcards.sample)
 
-    long_reads = expand(os.path.join(
-        config["output"]["raw"],
-        "long_reads/{sample}/{sample}.{step}{read}.fq"),
-                        step="raw",
-                        read=long_reads_suffix(),
-                        sample=wildcards.sample)
+    long_reads = expand(
+        os.path.join(
+            config["output"]["raw"],
+            "long_reads/{sample}/{sample}.{step}{read}.fq"),
+        step="raw",
+        read=long_reads_suffix(),
+        sample=wildcards.sample)
 
     if have_long:
         return short_reads + long_reads
@@ -229,7 +231,7 @@ if config["params"]["raw"]["fastqc"]["do"]:
         threads:
             config["params"]["raw"]["threads"]
         resources:
-            mem_mb=config["params"]["raw"]["fastqc"]["mem_mb"]
+            mem_mb=config["params"]["raw"]["mem_mb"]
         log:
             os.path.join(config["output"]["raw"], "logs/{sample}.fastqc.log")
         shell:

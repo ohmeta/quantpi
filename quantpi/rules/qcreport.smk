@@ -45,8 +45,6 @@ if config["params"]["qcreport"]["do"]:
             os.path.join(config["output"]["qcreport"], "qc_stats_w.tsv"),
             os.path.join(config["output"]["qcreport"], "qc_reads_num_barplot.pdf")#,
 
-            #rules.rmhost_all.input
-
 else:
     rule qcreport_summary:
         input:

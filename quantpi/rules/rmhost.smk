@@ -7,9 +7,10 @@ def rmhost_input(wildcards, have_single=False):
 
 def trimming_stats_input(wildcards, have_single=False):
     if TRIMMING_DO and config["params"]["qcreport"]["do"]:
-        return expand(os.path.join(config["output"]["trimming"],
-                                   "report/stats/{sample}_trimming_stats.tsv"),
-                      sample=wildcards.sample)
+        return expand(os.path.join(
+            config["output"]["trimming"],
+            "report/stats/{sample}_trimming_stats.tsv"),
+            sample=wildcards.sample)
     else:
         return []
 
@@ -22,17 +23,20 @@ if config["params"]["rmhost"]["bwa"]["do"]:
         input:
             config["params"]["rmhost"]["host_fasta"]
         output:
-            expand("{prefix}.{suffix}",
-                   prefix=config["params"]["rmhost"]["bwa"]["index_prefix"],
-                   suffix=BWA_INDEX_SUFFIX)
+            expand(
+                "{prefix}.{suffix}",
+                prefix=config["params"]["rmhost"]["bwa"]["index_prefix"],
+                suffix=BWA_INDEX_SUFFIX)
         conda:
             config["envs"]["align"]
         benchmark:
-            os.path.join(config["output"]["rmhost"],
-                         "benchmark/bwa.index.benchmark.txt")
+            os.path.join(
+                config["output"]["rmhost"],
+                "benchmark/bwa.index.benchmark.txt")
         log:
-            os.path.join(config["output"]["rmhost"],
-                         "logs/build_host_index_for_bwa.log")
+            os.path.join(
+                config["output"]["rmhost"],
+                "logs/build_host_index_for_bwa.log")
         params:
             index_prefix = config["params"]["rmhost"]["bwa"]["index_prefix"],
             bwa = "bwa-mem2" if config["params"]["rmhost"]["bwa"]["algorithms"] == "mem2" else "bwa"
@@ -52,21 +56,22 @@ if config["params"]["rmhost"]["bwa"]["do"]:
         input:
             stats = lambda wildcards: trimming_stats_input(wildcards),
             reads = lambda wildcards: rmhost_input(wildcards),
-            index = expand("{prefix}.{suffix}",
-                           prefix=config["params"]["rmhost"]["bwa"]["index_prefix"],
-                           suffix=BWA_INDEX_SUFFIX)
+            index = expand(
+                "{prefix}.{suffix}",
+                prefix=config["params"]["rmhost"]["bwa"]["index_prefix"],
+                suffix=BWA_INDEX_SUFFIX)
         output:
             flagstat = os.path.join(config["output"]["rmhost"],
                                     "report/flagstat/{sample}.align2host.flagstat"),
             reads = expand(os.path.join(
                 config["output"]["rmhost"],
                 "short_reads/{{sample}}/{{sample}}.rmhost{read}.fq.gz"),
-                           read=[".1", ".2"] if IS_PE else "") \
-                           if config["params"]["rmhost"]["save_reads"] else \
-                              temp(expand(os.path.join(
-                                  config["output"]["rmhost"],
-                                  "short_reads/{{sample}}/{{sample}}.rmhost{read}.fq.gz"),
-                                          read=[".1", ".2"] if IS_PE else ""))
+                read=[".1", ".2"] if IS_PE else "") \
+                if config["params"]["rmhost"]["save_reads"] else \
+                temp(expand(os.path.join(
+                    config["output"]["rmhost"],
+                    "short_reads/{{sample}}/{{sample}}.rmhost{read}.fq.gz"),
+                    read=[".1", ".2"] if IS_PE else ""))
         conda:
             config["envs"]["align"]
         log:
@@ -103,14 +108,14 @@ if config["params"]["rmhost"]["bwa"]["do"]:
                     {params.index_prefix} \
                     ${{READSIN[0]}} ${{READSIN[1]}} | \
                     tee >(samtools flagstat \
-                          -@{threads} - \
-                          > {output.flagstat}) | \
+                            -@{threads} - \
+                            > {output.flagstat}) | \
                     tee >(samtools fastq \
-                          -@{threads} \
-                          -c {params.compression} \
-                          -N -f 12 -F 256 \
-                          -1 ${{READSOUT[0]}} \
-                          -2 ${{READSOUT[1]}} -) | \
+                            -@{threads} \
+                            -c {params.compression} \
+                            -N -f 12 -F 256 \
+                            -1 ${{READSOUT[0]}} \
+                            -2 ${{READSOUT[1]}} -) | \
                     samtools sort \
                     -m 3G \
                     -@{threads} \
@@ -124,8 +129,8 @@ if config["params"]["rmhost"]["bwa"]["do"]:
                     {params.index_prefix} \
                     ${{READSIN[0]}} ${{READSIN[1]}} | \
                     tee >(samtools flagstat \
-                          -@{threads} - \
-                          > {output.flagstat}) | \
+                            -@{threads} - \
+                            > {output.flagstat}) | \
                     samtools fastq \
                     -@{threads} \
                     -c {params.compression} \
@@ -144,14 +149,14 @@ if config["params"]["rmhost"]["bwa"]["do"]:
                     {params.index_prefix} \
                     ${{READSIN[0]}} | \
                     tee >(samtools flagstat \
-                          -@{threads} - \
-                          > {output.flagstat}) | \
+                            -@{threads} - \
+                            > {output.flagstat}) | \
                     tee >(samtools fastq \
-                          -@{threads} \
-                          -c {params.compression} \
-                          -N -f 4 -F 256 - | \
-                          pigz -c -p {threads} \
-                          > ${{READSOUT[0]}}) | \
+                            -@{threads} \
+                            -c {params.compression} \
+                            -N -f 4 -F 256 - | \
+                            pigz -c -p {threads} \
+                            > ${{READSOUT[0]}}) | \
                     samtools sort \
                     -m 3G \
                     -@{threads} \
@@ -165,8 +170,8 @@ if config["params"]["rmhost"]["bwa"]["do"]:
                     {params.index_prefix} \
                     ${{READSIN[0]}} | \
                     tee >(samtools flagstat \
-                          -@{threads} - \
-                          > {output.flagstat}) | \
+                            -@{threads} - \
+                            > {output.flagstat}) | \
                     samtools fastq \
                     -@{threads} \
                     -c {params.compression} \
@@ -184,8 +189,8 @@ if config["params"]["rmhost"]["bwa"]["do"]:
             expand(os.path.join(
                 config["output"]["rmhost"],
                 "short_reads/{sample}/{sample}.rmhost{read}.fq.gz"),
-                   sample=SAMPLES_ID_LIST,
-                   read=[".1", ".2"] if IS_PE else "")
+                sample=SAMPLES_ID_LIST,
+                read=[".1", ".2"] if IS_PE else "")
 
 else:
     rule rmhost_bwa_all:
@@ -197,9 +202,10 @@ if config["params"]["rmhost"]["bowtie2"]["do"]:
         input:
             config["params"]["rmhost"]["host_fasta"]
         output:
-            expand("{prefix}.{suffix}",
-                   prefix=config["params"]["rmhost"]["bowtie2"]["index_prefix"],
-                   suffix=["1.bt2", "2.bt2", "3.bt2", "4.bt2", "rev.1.bt2", "rev.2.bt2"])
+            expand(
+                "{prefix}.{suffix}",
+                prefix=config["params"]["rmhost"]["bowtie2"]["index_prefix"],
+                suffix=["1.bt2", "2.bt2", "3.bt2", "4.bt2", "rev.1.bt2", "rev.2.bt2"])
         conda:
             config["envs"]["align"]
         log:
@@ -222,21 +228,22 @@ if config["params"]["rmhost"]["bowtie2"]["do"]:
         input:
             stats = lambda wildcards: trimming_stats_input(wildcards),
             reads = lambda wildcards: rmhost_input(wildcards),
-            index = expand("{prefix}.{suffix}",
-                           prefix=config["params"]["rmhost"]["bowtie2"]["index_prefix"],
-                           suffix=["1.bt2", "2.bt2", "3.bt2", "4.bt2", "rev.1.bt2", "rev.2.bt2"])
+            index = expand(
+                "{prefix}.{suffix}",
+                prefix=config["params"]["rmhost"]["bowtie2"]["index_prefix"],
+                suffix=["1.bt2", "2.bt2", "3.bt2", "4.bt2", "rev.1.bt2", "rev.2.bt2"])
         output:
             flagstat = os.path.join(config["output"]["rmhost"],
                                     "report/flagstat/{sample}.align2host.flagstat"),
             reads = expand(os.path.join(
                 config["output"]["rmhost"],
                 "short_reads/{{sample}}/{{sample}}.rmhost{read}.fq.gz"),
-                           read=[".1", ".2"] if IS_PE else "") \
-                           if config["params"]["rmhost"]["save_reads"] else \
-                              temp(expand(os.path.join(
-                                  config["output"]["rmhost"],
-                                  "short_reads/{{sample}}/{{sample}}.rmhost{read}.fq.gz"),
-                                          read=[".1", ".2"] if IS_PE else ""))
+                read=[".1", ".2"] if IS_PE else "") \
+                if config["params"]["rmhost"]["save_reads"] else \
+                temp(expand(os.path.join(
+                    config["output"]["rmhost"],
+                    "short_reads/{{sample}}/{{sample}}.rmhost{read}.fq.gz"),
+                    read=[".1", ".2"] if IS_PE else ""))
         conda:
             config["envs"]["align"]
         log:
@@ -274,14 +281,14 @@ if config["params"]["rmhost"]["bowtie2"]["do"]:
                     {params.presets} \
                     2> {log} | \
                     tee >(samtools flagstat \
-                          -@{threads} - \
-                          > {output.flagstat}) | \
+                            -@{threads} - \
+                            > {output.flagstat}) | \
                     tee >(samtools fastq \
-                          -@{threads} \
-                          -c {params.compression} \
-                          -N -f 12 -F 256 \
-                          -1 ${{READSOUT[0]}} \
-                          -2 ${{READSOUT[1]}} -) | \
+                            -@{threads} \
+                            -c {params.compression} \
+                            -N -f 12 -F 256 \
+                            -1 ${{READSOUT[0]}} \
+                            -2 ${{READSOUT[1]}} -) | \
                     samtools sort \
                     -m 3G \
                     -@{threads} \
@@ -296,8 +303,8 @@ if config["params"]["rmhost"]["bowtie2"]["do"]:
                     {params.presets} \
                     2> {log} | \
                     tee >(samtools flagstat \
-                          -@{threads} - \
-                          > {output.flagstat}) | \
+                            -@{threads} - \
+                            > {output.flagstat}) | \
                     samtools fastq \
                     -@{threads} \
                     -c {params.compression} \
@@ -316,14 +323,14 @@ if config["params"]["rmhost"]["bowtie2"]["do"]:
                     -U ${{READSIN[0]}} \
                     2> {log} | \
                     tee >(samtools flagstat \
-                          -@{threads} - \
-                          > {output.flagstat}) | \
+                            -@{threads} - \
+                            > {output.flagstat}) | \
                     tee >(samtools fastq \
-                          -@{threads} \
-                          -c {params.compression} \
-                          -N -f 4 -F 256 - | \
-                          pigz -c -p {threads} \
-                          > ${{READSOUT[0]}}) | \
+                            -@{threads} \
+                            -c {params.compression} \
+                            -N -f 4 -F 256 - | \
+                            pigz -c -p {threads} \
+                            > ${{READSOUT[0]}}) | \
                     samtools sort \
                     -m 3G \
                     -@{threads} \
@@ -337,8 +344,8 @@ if config["params"]["rmhost"]["bowtie2"]["do"]:
                     -U ${{READSIN[0]}} \
                     2> {log} | \
                     tee >(samtools flagstat \
-                          -@{threads} - \
-                          > {output.flagstat}) | \
+                            -@{threads} - \
+                            > {output.flagstat}) | \
                     samtools fastq \
                     -@{threads} \
                     -c {params.compression} \
@@ -355,8 +362,8 @@ if config["params"]["rmhost"]["bowtie2"]["do"]:
             expand(os.path.join(
                 config["output"]["rmhost"],
                 "short_reads/{sample}/{sample}.rmhost{read}.fq.gz"),
-                   sample=SAMPLES_ID_LIST,
-                   read=[".1", ".2"] if IS_PE else "")
+                sample=SAMPLES_ID_LIST,
+                read=[".1", ".2"] if IS_PE else "")
 
 else:
     rule rmhost_bowtie2_all:
@@ -396,19 +403,18 @@ if config["params"]["rmhost"]["minimap2"]["do"]:
             reads = expand(os.path.join(
                 config["output"]["rmhost"],
                 "short_reads/{{sample}}/{{sample}}.rmhost{read}.fq.gz"),
-                           read=[".1", ".2"] if IS_PE else "") \
-                           if config["params"]["rmhost"]["save_reads"] else \
-                              temp(expand(os.path.join(
-                                  config["output"]["rmhost"],
-                                  "short_reads/{{sample}}/{{sample}}.rmhost{read}.fq.gz"),
-                                          read=[".1", ".2"] if IS_PE else ""))
+                read=[".1", ".2"] if IS_PE else "") \
+                if config["params"]["rmhost"]["save_reads"] else \
+                temp(expand(os.path.join(
+                    config["output"]["rmhost"],
+                    "short_reads/{{sample}}/{{sample}}.rmhost{read}.fq.gz"),
+                    read=[".1", ".2"] if IS_PE else ""))
         conda:
             config["envs"]["align"]
         log:
             os.path.join(config["output"]["rmhost"], "logs/{sample}.minimap2.log")
         benchmark:
-            os.path.join(config["output"]["rmhost"],
-                         "benchmark/minimap2/{sample}.minimap2.txt")
+            os.path.join(config["output"]["rmhost"], "benchmark/minimap2/{sample}.minimap2.txt")
         priority:
             20
         params:
@@ -437,14 +443,14 @@ if config["params"]["rmhost"]["minimap2"]["do"]:
                     {input.index} \
                     ${{READSIN[0]}} ${{READSIN[1]}} | \
                     tee >(samtools flagstat \
-                          -@{threads} - \
-                          > {output.flagstat}) | \
+                            -@{threads} - \
+                            > {output.flagstat}) | \
                     tee >(samtools fastq \
-                          -@{threads} \
-                          -c {params.compression} \
-                          -N -f 12 -F 256 \
-                          -1 ${{READSOUT[0]}} \
-                          -2 ${{READSOUT[1]}} -) | \
+                            -@{threads} \
+                            -c {params.compression} \
+                            -N -f 12 -F 256 \
+                            -1 ${{READSOUT[0]}} \
+                            -2 ${{READSOUT[1]}} -) | \
                     samtools sort \
                     -m 3G \
                     -@{threads} \
@@ -458,8 +464,8 @@ if config["params"]["rmhost"]["minimap2"]["do"]:
                     {input.index} \
                     ${{READSIN[0]}} ${{READSIN[1]}} | \
                     tee >(samtools flagstat \
-                          -@{threads} - \
-                          > {output.flagstat}) | \
+                            -@{threads} - \
+                            > {output.flagstat}) | \
                     samtools fastq \
                     -@{threads} \
                     -c {params.compression} \
@@ -477,14 +483,14 @@ if config["params"]["rmhost"]["minimap2"]["do"]:
                     {input.index} \
                     ${{READSIN[0]}} | \
                     tee >(samtools flagstat \
-                          -@{threads} - \
-                          > {output.flagstat}) | \
+                            -@{threads} - \
+                            > {output.flagstat}) | \
                     tee >(samtools fastq \
-                          -@{threads} \
-                          -c {params.compression} \
-                          -N -f 4 -F 256 - | \
-                          pigz -c -p {threads} \
-                          > ${{READSOUT[0]}}) | \
+                            -@{threads} \
+                            -c {params.compression} \
+                            -N -f 4 -F 256 - | \
+                            pigz -c -p {threads} \
+                            > ${{READSOUT[0]}}) | \
                     samtools sort \
                     -m 3G \
                     -@{threads} \
@@ -497,8 +503,8 @@ if config["params"]["rmhost"]["minimap2"]["do"]:
                     {input.index} \
                     ${{READSIN[0]}} | \
                     tee >(samtools flagstat \
-                          -@{threads} - \
-                          > {output.flagstat}) | \
+                            -@{threads} - \
+                            > {output.flagstat}) | \
                     samtools fastq \
                     -@{threads} \
                     -c {params.compression} \
@@ -516,8 +522,8 @@ if config["params"]["rmhost"]["minimap2"]["do"]:
             expand(os.path.join(
                 config["output"]["rmhost"],
                 "short_reads/{sample}/{sample}.rmhost{read}.fq.gz"),
-                   sample=SAMPLES_ID_LIST,
-                   read=[".1", ".2"] if IS_PE else "")
+                sample=SAMPLES_ID_LIST,
+                read=[".1", ".2"] if IS_PE else "")
 
 else:
     rule rmhost_minimap2_all:
@@ -531,29 +537,29 @@ if config["params"]["rmhost"]["kraken2"]["do"]:
             reads = lambda wildcards: rmhost_input(wildcards),
             database = config["params"]["rmhost"]["kraken2"]["database"]
         output:
-            table = temp(os.path.join(config["output"]["rmhost"],
-                                      "short_reads/{sample}/{sample}.kraken2.table")),
-            report = os.path.join(config["output"]["rmhost"],
-                                  "short_reads/{sample}/{sample}.kraken2.report.gz"),
+            table = temp(os.path.join(
+                config["output"]["rmhost"],
+                "short_reads/{sample}/{sample}.kraken2.table")),
+            report = os.path.join(
+                config["output"]["rmhost"],
+                "short_reads/{sample}/{sample}.kraken2.report.gz"),
             reads = expand(os.path.join(
                 config["output"]["rmhost"],
                 "short_reads/{{sample}}/{{sample}}.rmhost{read}.fq.gz"),
-                           read=[".1", ".2"] if IS_PE else "") \
-                           if config["params"]["rmhost"]["save_reads"] else \
-                              temp(expand(os.path.join(
-                                  config["output"]["rmhost"],
-                                  "short_reads/{{sample}}/{{sample}}.rmhost{read}.fq.gz"),
-                                          read=[".1", ".2"] if IS_PE else ""))
+                read=[".1", ".2"] if IS_PE else "") \
+                if config["params"]["rmhost"]["save_reads"] else \
+                temp(expand(os.path.join(
+                    config["output"]["rmhost"],
+                    "short_reads/{{sample}}/{{sample}}.rmhost{read}.fq.gz"),
+                    read=[".1", ".2"] if IS_PE else ""))
         conda:
             config["envs"]["kraken"]
         log:
             os.path.join(config["output"]["rmhost"], "logs/{sample}.kraken2.log")
         benchmark:
-            os.path.join(config["output"]["rmhost"],
-                         "benchmark/kraken2/{sample}.kraken2.txt")
+            os.path.join(config["output"]["rmhost"], "benchmark/kraken2/{sample}.kraken2.txt")
         params:
-            report = os.path.join(config["output"]["rmhost"],
-                                  "short_reads/{sample}/{sample}.kraken2.report"),
+            report = os.path.join(config["output"]["rmhost"], "short_reads/{sample}/{sample}.kraken2.report"),
             confidence = config["params"]["rmhost"]["kraken2"]["confidence"],
             min_base_quality = config["params"]["rmhost"]["kraken2"]["min_base_quality"],
             min_hit_groups = config["params"]["rmhost"]["kraken2"]["min_hit_groups"],
@@ -634,8 +640,8 @@ if config["params"]["rmhost"]["kraken2"]["do"]:
             expand(os.path.join(
                 config["output"]["rmhost"],
                 "short_reads/{sample}/{sample}.rmhost{read}.fq.gz"),
-                   sample=SAMPLES_ID_LIST,
-                   read=[".1", ".2"] if IS_PE else "")
+                sample=SAMPLES_ID_LIST,
+                read=[".1", ".2"] if IS_PE else "")
 
 else:
     rule rmhost_kraken2_all:
@@ -651,19 +657,18 @@ if config["params"]["rmhost"]["kneaddata"]["do"]:
             reads = expand(os.path.join(
                 config["output"]["rmhost"],
                 "short_reads/{{sample}}/{{sample}}.rmhost{read}.fq.gz"),
-                           read=[".1", ".2"] if IS_PE else "") \
-                           if config["params"]["rmhost"]["save_reads"] else \
-                              temp(expand(os.path.join(
-                                  config["output"]["rmhost"],
-                                  "short_reads/{{sample}}/{{sample}}.rmhost{read}.fq.gz"),
-                                          read=[".1", ".2"] if IS_PE else ""))
+                read=[".1", ".2"] if IS_PE else "") \
+                if config["params"]["rmhost"]["save_reads"] else \
+                temp(expand(os.path.join(
+                    config["output"]["rmhost"],
+                    "short_reads/{{sample}}/{{sample}}.rmhost{read}.fq.gz"),
+                    read=[".1", ".2"] if IS_PE else ""))
         conda:
             config["envs"]["kneaddata"]
         log:
             os.path.join(config["output"]["rmhost"], "logs/{sample}.kneaddata.log")
         benchmark:
-            os.path.join(config["output"]["rmhost"],
-                         "benchmark/kneaddata/{sample}.kneaddata.txt")
+            os.path.join(config["output"]["rmhost"], "benchmark/kneaddata/{sample}.kneaddata.txt")
         params:
             trf_options = "--run-trf" if config["params"]["rmhost"]["kneaddata"]["do_trf"] else "--bypass-trf",
             do_trimmomatic = "yes" if config["params"]["rmhost"]["kneaddata"]["do_trimmomatic"] else "no",
@@ -788,8 +793,8 @@ if config["params"]["rmhost"]["kneaddata"]["do"]:
             expand(os.path.join(
                 config["output"]["rmhost"],
                 "short_reads/{sample}/{sample}.rmhost{read}.fq.gz"),
-                   sample=SAMPLES_ID_LIST,
-                   read=[".1", ".2"] if IS_PE else "")
+                sample=SAMPLES_ID_LIST,
+                read=[".1", ".2"] if IS_PE else "")
 
 else:
     rule rmhost_kneaddata_all:
@@ -802,9 +807,10 @@ and (not config["params"]["rmhost"]["kneaddata"]["do"]):
     rule rmhost_alignment_report:
         input:
             expand(
-                os.path.join(config["output"]["rmhost"],
-                             "report/flagstat/{sample}.align2host.flagstat"),
-                sample=SAMPLES_ID_LIST)
+                os.path.join(
+                    config["output"]["rmhost"],
+                    "report/flagstat/{sample}.align2host.flagstat"),
+                    sample=SAMPLES_ID_LIST)
         output:
             flagstat = os.path.join(config["output"]["rmhost"],
                                     "report/rmhost_align2host_stats.tsv")
@@ -828,13 +834,13 @@ if RMHOST_DO and config["params"]["qcreport"]["do"]:
         input:
             lambda wildcards: get_reads(wildcards, "rmhost")
         output:
-            temp(os.path.join(config["output"]["rmhost"],
-                              "report/stats/{sample}_rmhost_stats.tsv.raw"))
+            temp(os.path.join(
+                config["output"]["rmhost"],
+                "report/stats/{sample}_rmhost_stats.tsv.raw"))
         conda:
             config["envs"]["report"]
         log:
-            os.path.join(config["output"]["rmhost"],
-                         "logs/{sample}.seqkit.log")
+            os.path.join(config["output"]["rmhost"], "logs/{sample}.seqkit.log")
         priority:
             25
         params:
@@ -858,11 +864,13 @@ if RMHOST_DO and config["params"]["qcreport"]["do"]:
 
     rule rmhost_report_refine:
         input:
-            os.path.join(config["output"]["rmhost"],
-                         "report/stats/{sample}_rmhost_stats.tsv.raw")
+            os.path.join(
+                config["output"]["rmhost"],
+                "report/stats/{sample}_rmhost_stats.tsv.raw")
         output:
-            os.path.join(config["output"]["rmhost"],
-                         "report/stats/{sample}_rmhost_stats.tsv")
+            os.path.join(
+                config["output"]["rmhost"],
+                "report/stats/{sample}_rmhost_stats.tsv")
         params:
             sample_id = "{sample}"
         threads:
@@ -871,19 +879,22 @@ if RMHOST_DO and config["params"]["qcreport"]["do"]:
             mem_mb=config["params"]["qcreport"]["mem_mb"]
         run:
             if IS_PE:
-                quantpi.change(str(input), str(output), params.sample_id, "rmhost",
-                              "pe", ["fq1", "fq2"])
+                quantpi.change(
+                    str(input), str(output), params.sample_id, "rmhost",
+                    "pe", ["fq1", "fq2"])
             else:
-                quantpi.change(str(input), str(output), params.sample_id, "rmhost",
-                              "se", ["fq1"])
+                quantpi.change(
+                    str(input), str(output), params.sample_id, "rmhost",
+                    "se", ["fq1"])
 
 
     rule rmhost_report_merge:
         input:
             expand(
-                os.path.join(config["output"]["rmhost"],
-                             "report/stats/{sample}_rmhost_stats.tsv"),
-                sample=SAMPLES_ID_LIST)
+                os.path.join(
+                    config["output"]["rmhost"],
+                    "report/stats/{sample}_rmhost_stats.tsv"),
+                    sample=SAMPLES_ID_LIST)
         output:
             os.path.join(config["output"]["qcreport"], "rmhost_stats.tsv")
         threads:

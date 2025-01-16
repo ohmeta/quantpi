@@ -179,8 +179,7 @@ rule profiling_metaphlan3_merge:
         profiles = expand(os.path.join(
             config["output"]["profiling"],
             "report/metaphlan3/metaphlan3.merged.abundance.profile.{level}.tsv"),
-            level=["all", "strain", "species", "genus", "family",
-                    "order", "class", "phylum", "superkingdom"])
+            level=["all", "strain", "species", "genus", "family", "order", "class", "phylum", "superkingdom"])
     threads:
         config["params"]["profiling"]["threads"]
     resources:
@@ -224,8 +223,7 @@ rule profiling_metaphlan40:
     log:
         os.path.join(config["output"]["profiling"], "logs/metaphlan40/{sample}.metaphlan40.log")
     benchmark:
-        os.path.join(config["output"]["profiling"],
-                        "benchmark/metaphlan40/{sample}.metaphlan40.benchmark.txt")
+        os.path.join(config["output"]["profiling"], "benchmark/metaphlan40/{sample}.metaphlan40.benchmark.txt")
     params:
         sample_id = "{sample}",
         bowtie2db = config["params"]["profiling"]["metaphlan"]["bowtie2db_v40"],

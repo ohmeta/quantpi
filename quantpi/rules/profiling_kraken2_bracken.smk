@@ -135,8 +135,7 @@ if config["params"]["profiling"]["kraken2"]["do"]:
         conda:
             config["envs"]["kraken2"]
         log:
-            os.path.join(config["output"]["profiling"],
-                            "logs/krakentools/combine_kreports.log")
+            os.path.join(config["output"]["profiling"], "logs/krakentools/combine_kreports.log")
         threads:
             1
         resources:
@@ -212,8 +211,7 @@ if config["params"]["profiling"]["kraken2"]["do"]:
             conda:
                 config["envs"]["kraken2"]
             log:
-                os.path.join(config["output"]["profiling"],
-                            "logs/krona/krona_report.log")
+                os.path.join(config["output"]["profiling"], "logs/krona/krona_report.log")
             threads:
                 1
             resources:
@@ -263,8 +261,7 @@ if config["params"]["profiling"]["kraken2"]["do"]:
 
                         suffix=["", ".mpa.reads_count", ".mpa.percentages"],
                         report=["all", "mpa.reads_count", "mpa.percentages"],
-                        sample=SAMPLES_ID_LIST),
-                rules.qcreport_all.input
+                        sample=SAMPLES_ID_LIST)
 
     else:
         rule profiling_kraken2_all:
@@ -278,8 +275,7 @@ if config["params"]["profiling"]["kraken2"]["do"]:
                         "report/kraken2/kraken2_report.{report}.tsv")],
                         suffix=["", ".mpa.reads_count", ".mpa.percentages"],
                         report=["all", "mpa.reads_count", "mpa.percentages"],
-                        sample=SAMPLES_ID_LIST),
-                rules.qcreport_all.input
+                        sample=SAMPLES_ID_LIST)
 
 
 else:

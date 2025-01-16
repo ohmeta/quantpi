@@ -13,13 +13,12 @@ params:
 
   raw:
     do: True
+    mem_mb: 1000
     threads: 8
     check_paired: True
     save_reads: True
-
     fastqc:
       do: False
-      mem_mb: 1000
 
   trimming:
     save_reads: False
@@ -117,9 +116,9 @@ params:
 
   qcreport:
     do: True
+    mem_mb: 500
     seqkit:
       threads: 4
-      mem_mb: 500
 
 
   profiling:

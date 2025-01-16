@@ -7,15 +7,17 @@ if KMCP_DB_NUMBER > 0:
                 reads = profiling_input_with_short_reads,
                 db_dir = lambda wildcards: config["params"]["profiling"]["kmcp"]["database"][wildcards.kmcp_db]
             output:
-                os.path.join(config["output"]["profiling"],
-                    "search/kmcp/{sample}/{sample}.kmcp_search@{kmcp_db}.tsv.gz")
+                os.path.join(
+                    config["output"]["profiling"], "search/kmcp/{sample}/{sample}.kmcp_search@{kmcp_db}.tsv.gz")
             conda:
                 config["envs"]["kmcp"]
             log:
-                os.path.join(config["output"]["profiling"],
+                os.path.join(
+                    config["output"]["profiling"],
                     "logs/kmcp/search/{sample}.kmcp_search@{kmcp_db}.log")
             benchmark:
-                os.path.join(config["output"]["profiling"],
+                os.path.join(
+                    config["output"]["profiling"],
                     "benchmark/kmcp/search/{sample}.kmcp_search@{kmcp_db}.benchmark.txt")
             params:
                 reads_mode = config["params"]["profiling"]["kmcp"]["search"]["reads_mode"],
@@ -65,11 +67,9 @@ if KMCP_DB_NUMBER > 0:
             conda:
                 config["envs"]["kmcp"]
             log:
-                os.path.join(config["output"]["profiling"],
-                    "logs/kmcp/search/{sample}.kmcp_search@{kmcp_db}.log")
+                os.path.join(config["output"]["profiling"], "logs/kmcp/search/{sample}.kmcp_search@{kmcp_db}.log")
             benchmark:
-                os.path.join(config["output"]["profiling"],
-                    "benchmark/kmcp/search/{sample}.kmcp_search@{kmcp_db}.benchmark.txt")
+                os.path.join(config["output"]["profiling"], "benchmark/kmcp/search/{sample}.kmcp_search@{kmcp_db}.benchmark.txt")
             params:
                 reads_mode = config["params"]["profiling"]["kmcp"]["search"]["reads_mode"],
                 min_query_len = config["params"]["profiling"]["kmcp"]["search"]["min_query_len"],
@@ -101,8 +101,7 @@ if KMCP_DB_NUMBER > 0:
                 "search/kmcp/{{sample}}/{{sample}}.kmcp_search@{kmcp_db}.tsv.gz"),
                 kmcp_db=KMCP_DBS)
         output:
-            os.path.join(config["output"]["profiling"],
-                "search/kmcp/{sample}/{sample}.kmcp_search@all.tsv.gz")
+            os.path.join(config["output"]["profiling"], "search/kmcp/{sample}/{sample}.kmcp_search@all.tsv.gz")
         conda:
             config["envs"]["kmcp"]
         log:
@@ -111,8 +110,7 @@ if KMCP_DB_NUMBER > 0:
         priority:
             21
         benchmark:
-            os.path.join(config["output"]["profiling"],
-                "benchmark/kmcp/search_merge/{sample}.kmcp_search_merge.benchmark.txt")
+            os.path.join(config["output"]["profiling"], "benchmark/kmcp/search_merge/{sample}.kmcp_search_merge.benchmark.txt")
         params:
             kmcp_db_number = KMCP_DB_NUMBER,
             outdir = os.path.join(config["output"]["profiling"], "search/kmcp/{sample}")

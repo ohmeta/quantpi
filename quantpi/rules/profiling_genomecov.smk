@@ -154,7 +154,7 @@ if config["params"]["profiling"]["genomecov"]["do"]:
                 "profile/genomecov/{sample}/{sample}.coverage.tsv.gz"),
                 sample=SAMPLES_ID_LIST)
         output:
-            report_cov = os.path.join(config["output"]["profiling"], "report/genomecov/contigs_coverage.cov.tsv.gz"), 
+            report_cov = os.path.join(config["output"]["profiling"], "report/genomecov/contigs_coverage.cov.tsv.gz"),
             report_per = os.path.join(config["output"]["profiling"], "report/genomecov/contigs_coverage.per.tsv.gz")
         threads:
             config["params"]["profiling"]["threads"]

@@ -167,7 +167,7 @@ rule profiling_humann2_postprocess:
         expand(os.path.join(
             config["output"]["profiling"],
             "profile/humann2/{{sample}}/{{sample}}_{target}.tsv"),
-                target=["genefamilies", "pathabundance", "pathcoverage"])
+            target=["genefamilies", "pathabundance", "pathcoverage"])
     output:
         targets = expand(os.path.join(
             config["output"]["profiling"],

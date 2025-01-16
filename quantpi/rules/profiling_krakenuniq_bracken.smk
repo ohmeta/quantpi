@@ -5,11 +5,9 @@ if config["params"]["profiling"]["krakenuniq"]["do"]:
         output:
             done = os.path.join(config["output"]["profiling"], "config/krakenuniq/db_preload_done")
         log:
-            os.path.join(
-                config["output"]["profiling"], "logs/krakenuniq/krakenuniq_preload_database.log")
+            os.path.join(config["output"]["profiling"], "logs/krakenuniq/krakenuniq_preload_database.log")
         benchmark:
-            os.path.join(
-                config["output"]["profiling"], "benchmark/krakenuniq/krakenuniq_preload_database.benchmark.txt")
+            os.path.join(config["output"]["profiling"], "benchmark/krakenuniq/krakenuniq_preload_database.benchmark.txt")
         conda:
             config["envs"]["krakenuniq"]
         threads:
@@ -169,8 +167,7 @@ if config["params"]["profiling"]["krakenuniq"]["do"]:
         conda:
             config["envs"]["krakenuniq"]
         log:
-            os.path.join(
-                config["output"]["profiling"], "logs/krakentools/combine_kreports_mpa.log")
+            os.path.join(config["output"]["profiling"], "logs/krakentools/combine_kreports_mpa.log")
         threads:
             1
         resources:
@@ -207,8 +204,7 @@ if config["params"]["profiling"]["krakenuniq"]["do"]:
             conda:
                 config["envs"]["krakenuniq"]
             log:
-                os.path.join(config["output"]["profiling"],
-                            "logs/krona/krona_report.log")
+                os.path.join(config["output"]["profiling"], "logs/krona/krona_report.log")
             threads:
                 1
             resources:
@@ -258,8 +254,7 @@ if config["params"]["profiling"]["krakenuniq"]["do"]:
 
                         suffix=["", ".mpa.reads_count", ".mpa.percentages"],
                         report=["all", "mpa.reads_count", "mpa.percentages"],
-                        sample=SAMPLES_ID_LIST),
-                rules.qcreport_all.input
+                        sample=SAMPLES_ID_LIST)
 
     else:
         rule profiling_krakenuniq_all:
@@ -273,8 +268,7 @@ if config["params"]["profiling"]["krakenuniq"]["do"]:
                         "report/krakenuniq/krakenuniq_report.{report}.tsv")],
                         suffix=["", ".mpa.reads_count", ".mpa.percentages"],
                         report=["all", "mpa.reads_count", "mpa.percentages"],
-                        sample=SAMPLES_ID_LIST),
-                rules.qcreport_all.input
+                        sample=SAMPLES_ID_LIST)
 
 
 else:
