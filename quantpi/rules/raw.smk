@@ -39,7 +39,7 @@ def short_reads_suffix():
     else:
         return [""]
 
-   
+
 def long_reads_suffix():
     return [".long"]
 
@@ -61,14 +61,15 @@ if config["params"]["raw"]["do"]:
                         "short_reads/{{sample}}/{{sample}}.raw{read}.fq.gz"),
                     read=short_reads_suffix()))
         params:
-            output_dir = os.path.join(config["output"]["raw"],
-                                   "short_reads/{sample}"),
+            output_dir = os.path.join(config["output"]["raw"], "short_reads/{sample}"),
             is_pe = IS_PE,
             is_interleaved = IS_INTERLEAVED,
             reads_format = READS_FORMAT,
             check_paired = config["params"]["raw"]["check_paired"]
         threads:
             config["params"]["raw"]["threads"]
+        resources:
+            mem_mb=config["params"]["raw"]["fastqc"]["mem_mb"]
         log:
             os.path.join(config["output"]["raw"], "logs/{sample}_prepare.log")
         conda:
@@ -107,6 +108,8 @@ if config["params"]["raw"]["do"]:
                             config["output"]["raw"],
                             "long_reads/{{sample}}/{{sample}}.raw{read}.fq"),
                         read=long_reads_suffix()))
+            threads:
+                1
             run:
                 reads_num = len(input)
 
@@ -155,9 +158,9 @@ def get_reads(wildcards, step, have_single=False, have_long=False):
     short_reads = expand(os.path.join(
         config["output"][step],
         "short_reads/{sample}/{sample}.{step}{read}.fq.gz"),
-                         step=step,
-                         read=read,
-                         sample=wildcards.sample)
+        step=step,
+        read=read,
+        sample=wildcards.sample)
 
     long_reads = expand(os.path.join(
         config["output"]["raw"],
@@ -225,6 +228,8 @@ if config["params"]["raw"]["fastqc"]["do"]:
             config["envs"]["fastqc"]
         threads:
             config["params"]["raw"]["threads"]
+        resources:
+            mem_mb=config["params"]["raw"]["fastqc"]["mem_mb"]
         log:
             os.path.join(config["output"]["raw"], "logs/{sample}.fastqc.log")
         shell:
@@ -243,8 +248,7 @@ if config["params"]["raw"]["fastqc"]["do"]:
         input:
             expand(os.path.join(
                 config["output"]["raw"],
-                "fastqc/{sample}.fastqc.out"),
-                   sample=SAMPLES_ID_LIST)
+                "fastqc/{sample}.fastqc.out"), sample=SAMPLES_ID_LIST)
         output:
             html = os.path.join(
                 config["output"]["raw"],
@@ -255,12 +259,14 @@ if config["params"]["raw"]["fastqc"]["do"]:
         conda:
             config["envs"]["multiqc"]
         params:
-            output_dir = os.path.join(config["output"]["raw"],
-                                      "report")
+            output_dir = os.path.join(
+                config["output"]["raw"], "report")
         log:
             os.path.join(config["output"]["raw"], "logs/multiqc_fastqc.log")
-        threads: 
+        threads:
             1
+        resources:
+            mem_mb=config["params"]["qcreport"]["mem_mb"]
         shell:
             '''
             multiqc \
@@ -283,7 +289,7 @@ if config["params"]["raw"]["fastqc"]["do"]:
                 os.path.join(
                     config["output"]["raw"],
                     "report/fastqc_multiqc_report_data")],
-                   sample=SAMPLES_ID_LIST)
+                    sample=SAMPLES_ID_LIST)
 
 else:
     rule raw_fastqc_all:
@@ -295,17 +301,17 @@ if config["params"]["qcreport"]["do"]:
         input:
             lambda wildcards: get_reads(wildcards, "raw")
         output:
-            temp(os.path.join(config["output"]["raw"],
-                         "report/stats/{sample}_raw_stats.tsv.raw"))
+            temp(os.path.join(config["output"]["raw"], "report/stats/{sample}_raw_stats.tsv.raw"))
         conda:
             config["envs"]["report"]
         params:
             fq_encoding = config["params"]["fq_encoding"]
         log:
-            os.path.join(config["output"]["raw"],
-                         "logs/{sample}.seqkit.log")
+            os.path.join(config["output"]["raw"], "logs/{sample}.seqkit.log")
         threads:
             config["params"]["qcreport"]["seqkit"]["threads"]
+        resources:
+            mem_mb=config["params"]["qcreport"]["mem_mb"]
         shell:
             '''
             seqkit stats \
@@ -321,34 +327,38 @@ if config["params"]["qcreport"]["do"]:
 
     rule raw_report_refine:
         input:
-            os.path.join(config["output"]["raw"],
-                         "report/stats/{sample}_raw_stats.tsv.raw")
+            os.path.join(config["output"]["raw"], "report/stats/{sample}_raw_stats.tsv.raw")
         output:
-            os.path.join(config["output"]["raw"],
-                         "report/stats/{sample}_raw_stats.tsv")
+            os.path.join(config["output"]["raw"], "report/stats/{sample}_raw_stats.tsv")
         params:
             sample_id = "{sample}"
         threads:
             1
+        resources:
+            mem_mb=config["params"]["qcreport"]["mem_mb"]
         run:
             if IS_PE:
-                quantpi.change(str(input), str(output), params.sample_id, "raw",
-                              "pe", ["fq1", "fq2"])
+                quantpi.change(
+                    str(input), str(output), params.sample_id, "raw",
+                    "pe", ["fq1", "fq2"])
             else:
-                quantpi.change(str(input), str(output), params.sample_id, "raw",
-                              "se", ["fq1"])
+                quantpi.change(
+                    str(input), str(output), params.sample_id, "raw",
+                    "se", ["fq1"])
 
 
     rule raw_report_merge:
         input:
             expand(
                 os.path.join(config["output"]["raw"],
-                             "report/stats/{sample}_raw_stats.tsv"),
+                "report/stats/{sample}_raw_stats.tsv"),
                 sample=SAMPLES_ID_LIST)
         output:
             os.path.join(config["output"]["qcreport"], "raw_stats.tsv")
         threads:
             config["params"]["qcreport"]["seqkit"]["threads"]
+        resources:
+            mem_mb=config["params"]["qcreport"]["mem_mb"] * 5
         run:
             quantpi.merge(input, quantpi.parse, threads, output=output[0])
 

@@ -31,6 +31,8 @@ rule profiling_metaphlan2:
         20
     threads:
         config["params"]["profiling"]["threads"]
+    resources:
+        mem_mb=config["params"]["profiling"]["metaphlan"]["mem_mb"]
     conda:
         config["envs"]["biobakery2"]
     shell:
@@ -76,6 +78,8 @@ rule profiling_metaphlan2_merge:
                     "order", "class", "phylum", "superkingdom"])
     threads:
         config["params"]["profiling"]["threads"]
+    resources:
+        mem_mb=config["params"]["profiling"]["metaphlan"]["mem_mb"]
     priority:
         20
     run:
@@ -91,8 +95,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"]:
             expand(os.path.join(
                 config["output"]["profiling"],
                 "report/metaphlan2/metaphlan2.merged.abundance.profile.{level}.tsv"),
-                level=["all", "superkingdom", "phylum", "class",
-                       "order", "family", "genus", "species", "strain"])
+                level=["all", "superkingdom", "phylum", "class", "order", "family", "genus", "species", "strain"])
 else:
     rule profiling_metaphlan2_all:
         input:
@@ -133,6 +136,8 @@ rule profiling_metaphlan3:
         20
     threads:
         config["params"]["profiling"]["threads"]
+    resources:
+        mem_mb=config["params"]["profiling"]["metaphlan"]["mem_mb"]
     conda:
         config["envs"]["biobakery3"]
     shell:
@@ -178,6 +183,8 @@ rule profiling_metaphlan3_merge:
                     "order", "class", "phylum", "superkingdom"])
     threads:
         config["params"]["profiling"]["threads"]
+    resources:
+        mem_mb=config["params"]["profiling"]["metaphlan"]["mem_mb"]
     priority:
         20
     run:
@@ -193,8 +200,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v3"]:
             expand(os.path.join(
                 config["output"]["profiling"],
                 "report/metaphlan3/metaphlan3.merged.abundance.profile.{level}.tsv"),
-                level=["all", "superkingdom", "phylum", "class",
-                       "order", "family", "genus", "species", "strain"])
+                level=["all", "superkingdom", "phylum", "class", "order", "family", "genus", "species", "strain"])
 else:
     rule profiling_metaphlan3_all:
         input:
@@ -236,6 +242,8 @@ rule profiling_metaphlan40:
         20
     threads:
         config["params"]["profiling"]["threads"]
+    resources:
+        mem_mb=config["params"]["profiling"]["metaphlan"]["mem_mb"]
     conda:
         config["envs"]["biobakery40"]
     shell:
@@ -278,10 +286,11 @@ rule profiling_metaphlan40_merge:
         profiles = expand(os.path.join(
             config["output"]["profiling"],
             "report/metaphlan40/metaphlan40.merged.abundance.profile.{level}.tsv"),
-            level=["all", "strain", "species", "genus", "family",
-                   "order", "class", "phylum", "superkingdom"])
+            level=["all", "strain", "species", "genus", "family", "order", "class", "phylum", "superkingdom"])
     threads:
         config["params"]["profiling"]["threads"]
+    resources:
+        mem_mb=config["params"]["profiling"]["metaphlan"]["mem_mb"]
     priority:
         20
     run:
@@ -297,8 +306,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v40"]:
             expand(os.path.join(
                 config["output"]["profiling"],
                 "report/metaphlan40/metaphlan40.merged.abundance.profile.{level}.tsv"),
-                level=["all", "superkingdom", "phylum", "class",
-                       "order", "family", "genus", "species", "strain"])
+                level=["all", "superkingdom", "phylum", "class", "order", "family", "genus", "species", "strain"])
 else:
     rule profiling_metaphlan40_all:
         input:
@@ -341,6 +349,8 @@ rule profiling_metaphlan41:
         20
     threads:
         config["params"]["profiling"]["threads"]
+    resources:
+        mem_mb=config["params"]["profiling"]["metaphlan"]["mem_mb"]
     conda:
         config["envs"]["biobakery41"]
     shell:
@@ -385,10 +395,11 @@ rule profiling_metaphlan41_merge:
         profiles = expand(os.path.join(
             config["output"]["profiling"],
             "report/metaphlan41/metaphlan41.merged.abundance.profile.{level}.tsv"),
-            level=["all", "strain", "species", "genus", "family",
-                   "order", "class", "phylum", "superkingdom"])
+            level=["all", "strain", "species", "genus", "family", "order", "class", "phylum", "superkingdom"])
     threads:
         config["params"]["profiling"]["threads"]
+    resources:
+        mem_mb=config["params"]["profiling"]["metaphlan"]["mem_mb"]
     priority:
         20
     run:
@@ -404,8 +415,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v41"]:
             expand(os.path.join(
                 config["output"]["profiling"],
                 "report/metaphlan41/metaphlan41.merged.abundance.profile.{level}.tsv"),
-                level=["all", "superkingdom", "phylum", "class",
-                       "order", "family", "genus", "species", "strain"])
+                level=["all", "superkingdom", "phylum", "class", "order", "family", "genus", "species", "strain"])
 else:
     rule profiling_metaphlan41_all:
         input:

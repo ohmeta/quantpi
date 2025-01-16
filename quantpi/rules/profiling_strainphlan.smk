@@ -22,6 +22,8 @@ rule profiling_strainphlan3_sample2markers:
         20
     threads:
         config["params"]["profiling"]["threads"]
+    resources:
+        mem_mb=config["params"]["profiling"]["strainphlan"]["mem_mb"]
     shell:
         '''
         sample2markers.py \
@@ -82,6 +84,8 @@ else:
             config["envs"]["biobakery3"]
         threads:
             config["params"]["profiling"]["threads"]
+        resources:
+            mem_mb=config["params"]["profiling"]["strainphlan"]["mem_mb"]
         shell:
             '''
             strainphlan \
@@ -153,6 +157,8 @@ rule profiling_strainphlan3_extract_markers:
         20
     threads:
         1
+    resources:
+        mem_mb=config["params"]["profiling"]["strainphlan"]["mem_mb"]
     shell:
         '''
         mkdir -p {params.outdir}
@@ -204,6 +210,8 @@ rule profiling_strainphlan3:
         20
     threads:
         config["params"]["profiling"]["threads"]
+    resources:
+        mem_mb=config["params"]["profiling"]["strainphlan"]["mem_mb"]
     shell:
         '''
         rm -rf {params.outdir}
@@ -277,6 +285,8 @@ rule profiling_strainphlan40_sample2markers:
         20
     threads:
         config["params"]["profiling"]["threads"]
+    resources:
+        mem_mb=config["params"]["profiling"]["strainphlan"]["mem_mb"]
     shell:
         '''
         sample2markers.py \
@@ -340,6 +350,8 @@ else:
             config["envs"]["biobakery40"]
         threads:
             config["params"]["profiling"]["threads"]
+        resources:
+            mem_mb=config["params"]["profiling"]["strainphlan"]["mem_mb"]
         shell:
             '''
             OUTDIR=$(dirname {output.markers_txt})
@@ -415,6 +427,8 @@ rule profiling_strainphlan40_extract_markers:
         20
     threads:
         1
+    resources:
+        mem_mb=config["params"]["profiling"]["strainphlan"]["mem_mb"]
     shell:
         '''
         mkdir -p {params.outdir}
@@ -467,6 +481,8 @@ rule profiling_strainphlan40:
         20
     threads:
         config["params"]["profiling"]["threads"]
+    resources:
+        mem_mb=config["params"]["profiling"]["strainphlan"]["mem_mb"]
     shell:
         '''
         rm -rf {params.outdir}
@@ -541,6 +557,8 @@ rule profiling_strainphlan41_sample2markers:
         20
     threads:
         config["params"]["profiling"]["threads"]
+    resources:
+        mem_mb=config["params"]["profiling"]["strainphlan"]["mem_mb"]
     shell:
         '''
         sample2markers.py \
@@ -604,6 +622,8 @@ else:
             config["envs"]["biobakery41"]
         threads:
             config["params"]["profiling"]["threads"]
+        resources:
+            mem_mb=config["params"]["profiling"]["strainphlan"]["mem_mb"]
         shell:
             '''
             OUTDIR=$(dirname {output.markers_txt})
@@ -679,6 +699,8 @@ rule profiling_strainphlan41_extract_markers:
         20
     threads:
         1
+    resources:
+        mem_mb=config["params"]["profiling"]["strainphlan"]["mem_mb"]
     shell:
         '''
         mkdir -p {params.outdir}
@@ -731,6 +753,8 @@ rule profiling_strainphlan41:
         20
     threads:
         config["params"]["profiling"]["threads"]
+    resources:
+        mem_mb=config["params"]["profiling"]["strainphlan"]["mem_mb"]
     shell:
         '''
         rm -rf {params.outdir}

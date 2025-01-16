@@ -7,9 +7,7 @@ if RMHOST_DO:
 if config["params"]["qcreport"]["do"]:
     rule qcreport_summary:
         input:
-            expand(os.path.join(config["output"]["qcreport"],
-                                "{step}_stats.tsv"),
-                   step=STEPS)
+            expand(os.path.join(config["output"]["qcreport"], "{step}_stats.tsv"), step=STEPS)
         output:
             summary_l = os.path.join(config["output"]["qcreport"], "qc_stats_l.tsv"),
             summary_w = os.path.join(config["output"]["qcreport"], "qc_stats_w.tsv"),
@@ -17,6 +15,8 @@ if config["params"]["qcreport"]["do"]:
             30
         threads:
             config["params"]["qcreport"]["seqkit"]["threads"]
+        resources:
+            mem_mb=config["params"]["qcreport"]["mem_mb"]
         run:
             df = quantpi.merge(input, quantpi.parse, threads)
             df = quantpi.compute_host_rate(df, STEPS, SAMPLES_ID_LIST, allow_miss_samples=True, output=output.summary_l)
@@ -30,6 +30,10 @@ if config["params"]["qcreport"]["do"]:
             os.path.join(config["output"]["qcreport"], "qc_reads_num_barplot.pdf")
         priority:
             30
+        threads:
+            1
+        resources:
+            mem_mb=config["params"]["qcreport"]["mem_mb"]
         run:
             df = quantpi.parse(input[0])
             quantpi.qc_bar_plot(df, "seaborn", output=output[0])

@@ -36,6 +36,10 @@ if config["params"]["rmhost"]["bwa"]["do"]:
         params:
             index_prefix = config["params"]["rmhost"]["bwa"]["index_prefix"],
             bwa = "bwa-mem2" if config["params"]["rmhost"]["bwa"]["algorithms"] == "mem2" else "bwa"
+        threads:
+            1
+        resources:
+            mem_mb=config["params"]["rmhost"]["bwa"]["mem_mb"]
         priority:
             20
         shell:
@@ -82,6 +86,8 @@ if config["params"]["rmhost"]["bwa"]["do"]:
             save_bam = "yes" if config["params"]["rmhost"]["save_bam"] else "no"
         threads:
             config["params"]["rmhost"]["threads"]
+        resources:
+            mem_mb=config["params"]["rmhost"]["bwa"]["mem_mb"]
         shell:
             '''
             READSIN=({input.reads})
@@ -200,6 +206,10 @@ if config["params"]["rmhost"]["bowtie2"]["do"]:
             os.path.join(config["output"]["rmhost"], "logs/build_host_index_for_bowtie2.log")
         params:
             index_prefix = config["params"]["rmhost"]["bowtie2"]["index_prefix"]
+        threads:
+            1
+        resources:
+            mem_mb=config["params"]["rmhost"]["bowtie2"]["mem_mb"]
         priority:
             20
         shell:
@@ -245,6 +255,8 @@ if config["params"]["rmhost"]["bowtie2"]["do"]:
             save_bam = "yes" if config["params"]["rmhost"]["save_bam"] else "no"
         threads:
             config["params"]["rmhost"]["threads"]
+        resources:
+            mem_mb=config["params"]["rmhost"]["bowtie2"]["mem_mb"]
         shell:
             '''
             READSIN=({input.reads})
@@ -363,6 +375,10 @@ if config["params"]["rmhost"]["minimap2"]["do"]:
             config["envs"]["align"]
         priority:
             20
+        threads:
+            1
+        resources:
+            mem_mb=config["params"]["rmhost"]["minimap2"]["mem_mb"]
         shell:
             '''
             minimap2 -I {params.split_size} -d {output} {input}
@@ -404,6 +420,8 @@ if config["params"]["rmhost"]["minimap2"]["do"]:
             save_bam = "yes" if config["params"]["rmhost"]["save_bam"] else "no"
         threads:
             config["params"]["rmhost"]["threads"]
+        resources:
+            mem_mb=config["params"]["rmhost"]["minimap2"]["mem_mb"]
         shell:
             '''
             READSIN=({input.reads})
@@ -545,6 +563,8 @@ if config["params"]["rmhost"]["kraken2"]["do"]:
             20
         threads:
             config["params"]["rmhost"]["threads"]
+        resources:
+            mem_mb=config["params"]["rmhost"]["kraken2"]["mem_mb"]
         shell:
             '''
             READSIN=({input.reads})
@@ -661,6 +681,8 @@ if config["params"]["rmhost"]["kneaddata"]["do"]:
             20
         threads:
             config["params"]["rmhost"]["threads"]
+        resources:
+            mem_mb=config["params"]["rmhost"]["kneaddata"]["mem_mb"]
         shell:
             '''
             rm -rf {params.output_dir}
@@ -788,6 +810,10 @@ and (not config["params"]["rmhost"]["kneaddata"]["do"]):
                                     "report/rmhost_align2host_stats.tsv")
         priority:
             25
+        threads:
+            1
+        resources:
+            mem_mb=config["params"]["qcreport"]["mem_mb"]
         run:
             input_list = [str(i) for i in input]
             quantpi.flagstats_summary(input_list, 2, output=output.flagstat)
@@ -815,6 +841,8 @@ if RMHOST_DO and config["params"]["qcreport"]["do"]:
             fq_encoding = config["params"]["fq_encoding"]
         threads:
             config["params"]["qcreport"]["seqkit"]["threads"]
+        resources:
+            mem_mb=config["params"]["qcreport"]["mem_mb"]
         shell:
             '''
             seqkit stats \
@@ -839,6 +867,8 @@ if RMHOST_DO and config["params"]["qcreport"]["do"]:
             sample_id = "{sample}"
         threads:
             1
+        resources:
+            mem_mb=config["params"]["qcreport"]["mem_mb"]
         run:
             if IS_PE:
                 quantpi.change(str(input), str(output), params.sample_id, "rmhost",
@@ -858,6 +888,8 @@ if RMHOST_DO and config["params"]["qcreport"]["do"]:
             os.path.join(config["output"]["qcreport"], "rmhost_stats.tsv")
         threads:
             config["params"]["qcreport"]["seqkit"]["threads"]
+        resources:
+            mem_mb=config["params"]["qcreport"]["mem_mb"] * 5
         priority:
             30
         run:

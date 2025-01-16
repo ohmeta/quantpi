@@ -26,10 +26,12 @@ if KMCP_DB_NUMBER > 0:
                 20
             threads:
                 config["params"]["profiling"]["kmcp"]["search"]["threads"]
+            resources:
+                mem_mb=config["params"]["profiling"]["kmcp"]["mem_mb"]
             shell:
                 '''
                 if [ "{params.reads_mode}" == "Paired-end" ]
-                then 
+                then
                     kmcp search \
                     --threads {threads} \
                     --load-whole-db \
@@ -59,8 +61,7 @@ if KMCP_DB_NUMBER > 0:
                 reads = profiling_input_with_short_reads,
                 db_dir = lambda wildcards: config["params"]["profiling"]["kmcp"]["database"][wildcards.kmcp_db]
             output:
-                temp(os.path.join(config["output"]["profiling"],
-                     "search/kmcp/{sample}/{sample}.kmcp_search@{kmcp_db}.tsv.gz"))
+                temp(os.path.join(config["output"]["profiling"], "search/kmcp/{sample}/{sample}.kmcp_search@{kmcp_db}.tsv.gz"))
             conda:
                 config["envs"]["kmcp"]
             log:
@@ -78,6 +79,8 @@ if KMCP_DB_NUMBER > 0:
                 20
             threads:
                 config["params"]["profiling"]["kmcp"]["search"]["threads"]
+            resources:
+                mem_mb=config["params"]["profiling"]["kmcp"]["mem_mb"]
             shell:
                 '''
                 kmcp search \
@@ -115,6 +118,8 @@ if KMCP_DB_NUMBER > 0:
             outdir = os.path.join(config["output"]["profiling"], "search/kmcp/{sample}")
         threads:
             config["params"]["profiling"]["kmcp"]["profile"]["threads"]
+        resources:
+            mem_mb=config["params"]["profiling"]["kmcp"]["mem_mb"]
         shell:
             '''
             rm -rf {output}
@@ -191,6 +196,8 @@ if KMCP_DB_NUMBER > 0:
             external_opts = config["params"]["profiling"]["kmcp"]["profile"]["external_opts"]
         threads:
             config["params"]["profiling"]["kmcp"]["profile"]["threads"]
+        resources:
+            mem_mb=config["params"]["profiling"]["kmcp"]["mem_mb"]
         shell:
             '''
             taxidmap=$(python -c "import sys; print(','.join(sys.argv[1:]))" {input.taxidmap})
@@ -219,7 +226,7 @@ if KMCP_DB_NUMBER > 0:
             profile = expand(os.path.join(
                 config["output"]["profiling"],
                 "profile/kmcp/{sample}/{sample}.kmcp.default_format.{{profiling_mode}}.profile"),
-                          sample=SAMPLES_ID_LIST)
+                sample=SAMPLES_ID_LIST)
         output:
             percentage = expand(
                 os.path.join(
@@ -254,6 +261,8 @@ if KMCP_DB_NUMBER > 0:
                 "benchmark/kmcp/profile_merge/kmcp_profile_merge_kmcp_{profiling_mode}.benchmark.txt")
         threads:
             config["params"]["profiling"]["threads"]
+        resources:
+            mem_mb=config["params"]["profiling"]["kmcp"]["mem_mb"]
         priority:
             24
         run:
@@ -281,17 +290,16 @@ if KMCP_DB_NUMBER > 0:
 
     rule profiling_kmcp_profile_merge:
         input:
-           profile = expand(os.path.join(
+            profile = expand(os.path.join(
                 config["output"]["profiling"],
                 "profile/kmcp/{sample}/{sample}.kmcp.metaphlan_format.{{profiling_mode}}.profile"),
-                          sample=SAMPLES_ID_LIST)
+                sample=SAMPLES_ID_LIST)
         output:
             profiles = expand(
                 os.path.join(
                     config["output"]["profiling"],
                     "report/kmcp/metaphlan_format/{{profiling_mode}}/merged.abundance.profile.{level}.tsv"),
-                level=["all", "strain", "species", "genus", "family",
-                       "order", "class", "phylum", "superkingdom"])
+                level=["all", "strain", "species", "genus", "family", "order", "class", "phylum", "superkingdom"])
         log:
             os.path.join(config["output"]["profiling"],
                 "logs/kmcp/profile_merge/kmcp_profile_merge_{profiling_mode}.log")
@@ -300,6 +308,8 @@ if KMCP_DB_NUMBER > 0:
                 "benchmark/kmcp/profile_merge/kmcp_profile_merge_{profiling_mode}.benchmark.txt")
         threads:
             config["params"]["profiling"]["threads"]
+        resources:
+            mem_mb=config["params"]["profiling"]["kmcp"]["mem_mb"]
         priority:
             24
         params:
@@ -317,8 +327,7 @@ if KMCP_DB_NUMBER > 0:
                 os.path.join(
                     config["output"]["profiling"],
                     "report/kmcp/metaphlan_format/{profiling_mode}/merged.abundance.profile.{level}.tsv"),
-                level=["all", "strain", "species", "genus", "family",
-                       "order", "class", "phylum", "superkingdom"],
+                level=["all", "strain", "species", "genus", "family", "order", "class", "phylum", "superkingdom"],
                 profiling_mode=list(KMCP_PROFILING_MODE_DO.keys())),
             expand(
                 os.path.join(
@@ -328,7 +337,7 @@ if KMCP_DB_NUMBER > 0:
                 #level=["strain", "species"],
                 level=["species"],
                 profiling_mode=list(KMCP_PROFILING_MODE_DO.keys()))
- 
+
 else:
     rule profiling_kmcp_all:
         input:

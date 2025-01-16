@@ -44,6 +44,8 @@ rule profiling_humann2_config:
         threads = config["params"]["profiling"]["threads"]
     priority:
         20
+    threads:
+        1
     shell:
         '''
         humann2_config > {log}
@@ -83,6 +85,10 @@ rule profiling_humann2_build_chocophlan_pangenome_db:
         prescreen_threshold = config["params"]["profiling"]["humann"]["prescreen_threshold"]
     priority:
         20
+    threads:
+        1
+    resources:
+        mem_mb=config["params"]["profiling"]["humann"]["mem_mb"]
     shell:
         '''
         python {params.wrapper_dir}/humann2_db_wrapper.py \
@@ -131,6 +137,8 @@ rule profiling_humann2:
         20
     threads:
         config["params"]["profiling"]["threads"]
+    resources:
+        mem_mb=config["params"]["profiling"]["humann"]["mem_mb"]
     shell:
         '''
         zcat {input.reads} | \
@@ -181,6 +189,10 @@ rule profiling_humann2_postprocess:
         map_database =  config["params"]["profiling"]["humann"]["map_database"]
     priority:
         20
+    threads:
+        1
+    resources:
+        mem_mb=config["params"]["profiling"]["humann"]["mem_mb"]
     shell:
         '''
         humann2_renorm_table \
@@ -258,6 +270,10 @@ rule profiling_humann2_join:
         map_database = config["params"]["profiling"]["humann"]["map_database"]
     priority:
         20
+    threads:
+        1
+    resources:
+        mem_mb=config["params"]["profiling"]["humann"]["mem_mb"]
     shell:
         '''
         python {params.wrapper_dir}/humann2_postprocess_wrapper.py \
@@ -330,6 +346,10 @@ rule profiling_humann2_split_stratified:
         map_database = config["params"]["profiling"]["humann"]["map_database"]
     priority:
         20
+    threads:
+        1
+    resources:
+        mem_mb=config["params"]["profiling"]["humann"]["mem_mb"]
     shell:
         '''
         python {params.wrapper_dir}/humann2_postprocess_wrapper.py \
@@ -353,7 +373,7 @@ rule profiling_humann2_split_stratified:
 
 
 if config["params"]["profiling"]["metaphlan"]["do_v2"] and \
-   config["params"]["profiling"]["humann"]["do_v2"]:
+config["params"]["profiling"]["humann"]["do_v2"]:
     rule profiling_humann2_all:
         input:
             expand([
@@ -363,7 +383,7 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"] and \
                 os.path.join(
                     config["output"]["profiling"],
                     "report/humann2/humann2_{target}_joined_{suffix}.tsv"),
-               os.path.join(
+                os.path.join(
                     config["output"]["profiling"],
                     "report/humann2/humann2_{target}_{norm}_joined.tsv"),
                 os.path.join(
@@ -375,10 +395,10 @@ if config["params"]["profiling"]["metaphlan"]["do_v2"] and \
                 os.path.join(
                     config["output"]["profiling"],
                     "report/humann2/humann2.{group}.joined_{suffix}.tsv")],
-                   target=["genefamilies", "pathabundance", "pathcoverage"],
-                   norm = config["params"]["profiling"]["humann"]["normalize_method"],
-                   group=config["params"]["profiling"]["humann"]["map_database"],
-                   suffix=["stratified", "unstratified"])
+                    target=["genefamilies", "pathabundance", "pathcoverage"],
+                    norm = config["params"]["profiling"]["humann"]["normalize_method"],
+                    group=config["params"]["profiling"]["humann"]["map_database"],
+                    suffix=["stratified", "unstratified"])
 
 else:
     rule profiling_humann2_all:
@@ -399,6 +419,8 @@ rule profiling_humann35_config:
         threads = config["params"]["profiling"]["threads"]
     priority:
         20
+    threads:
+        1
     shell:
         '''
         humann_config > {log}
@@ -454,6 +476,8 @@ rule profiling_humann35:
         external_opts = config["params"]["profiling"]["humann"]["external_opts_v35"]
     threads:
         config["params"]["profiling"]["threads"]
+    resources:
+        mem_mb=config["params"]["profiling"]["humann"]["mem_mb"]
     shell:
         '''
         rm -rf {params.output_dir}
@@ -513,6 +537,10 @@ rule profiling_humann35_postprocess:
         map_database =  config["params"]["profiling"]["humann"]["map_database"]
     priority:
         20
+    threads:
+        1
+    resources:
+        mem_mb=config["params"]["profiling"]["humann"]["mem_mb"]
     shell:
         '''
         humann_renorm_table \
@@ -587,6 +615,10 @@ rule profiling_humann35_join:
         map_database = config["params"]["profiling"]["humann"]["map_database"]
     priority:
         20
+    threads:
+        1
+    resources:
+        mem_mb=config["params"]["profiling"]["humann"]["mem_mb"]
     shell:
         '''
         python {params.wrapper_dir}/humann3_postprocess_wrapper.py \
@@ -649,6 +681,10 @@ rule profiling_humann35_split_stratified:
         map_database = config["params"]["profiling"]["humann"]["map_database"]
     priority:
         20
+    threads:
+        1
+    resources:
+        mem_mb=config["params"]["profiling"]["humann"]["mem_mb"]
     shell:
         '''
         python {params.wrapper_dir}/humann3_postprocess_wrapper.py \
@@ -672,7 +708,7 @@ rule profiling_humann35_split_stratified:
 
 
 if config["params"]["profiling"]["metaphlan"]["do_v3"] and \
-   config["params"]["profiling"]["humann"]["do_v35"]:
+config["params"]["profiling"]["humann"]["do_v35"]:
     rule profiling_humann35_all:
         input:
             expand([
@@ -694,10 +730,10 @@ if config["params"]["profiling"]["metaphlan"]["do_v3"] and \
                 os.path.join(
                     config["output"]["profiling"],
                     "report/humann35/humann35.{group}.joined_{suffix}.tsv")],
-                   target=["genefamilies", "pathabundance", "pathcoverage"],
-                   norm = config["params"]["profiling"]["humann"]["normalize_method"],
-                   group=config["params"]["profiling"]["humann"]["map_database"],
-                   suffix=["stratified", "unstratified"])
+                    target=["genefamilies", "pathabundance", "pathcoverage"],
+                    norm = config["params"]["profiling"]["humann"]["normalize_method"],
+                    group=config["params"]["profiling"]["humann"]["map_database"],
+                    suffix=["stratified", "unstratified"])
 
 else:
     rule profiling_humann35_all:
@@ -718,6 +754,8 @@ rule profiling_humann38_config:
         threads = config["params"]["profiling"]["threads"]
     priority:
         20
+    threads:
+        1
     shell:
         '''
         humann_config > {log}
@@ -773,6 +811,8 @@ rule profiling_humann38:
         external_opts = config["params"]["profiling"]["humann"]["external_opts_v38"]
     threads:
         config["params"]["profiling"]["threads"]
+    resources:
+        mem_mb=config["params"]["profiling"]["humann"]["mem_mb"]
     shell:
         '''
         rm -rf {params.output_dir}
@@ -832,6 +872,10 @@ rule profiling_humann38_postprocess:
         map_database =  config["params"]["profiling"]["humann"]["map_database"]
     priority:
         20
+    threads:
+        1
+    resources:
+        mem_mb=config["params"]["profiling"]["humann"]["mem_mb"]
     shell:
         '''
         humann_renorm_table \
@@ -906,6 +950,10 @@ rule profiling_humann38_join:
         map_database = config["params"]["profiling"]["humann"]["map_database"]
     priority:
         20
+    threads:
+        1
+    resources:
+        mem_mb=config["params"]["profiling"]["humann"]["mem_mb"]
     shell:
         '''
         python {params.wrapper_dir}/humann3_postprocess_wrapper.py \
@@ -974,6 +1022,10 @@ rule profiling_humann38_split_stratified:
         map_database = config["params"]["profiling"]["humann"]["map_database"]
     priority:
         20
+    threads:
+        1
+    resources:
+        mem_mb=config["params"]["profiling"]["humann"]["mem_mb"]
     shell:
         '''
         python {params.wrapper_dir}/humann3_postprocess_wrapper.py \
@@ -997,7 +1049,7 @@ rule profiling_humann38_split_stratified:
 
 
 if config["params"]["profiling"]["metaphlan"]["do_v40"] and \
-   config["params"]["profiling"]["humann"]["do_v38"]:
+config["params"]["profiling"]["humann"]["do_v38"]:
         rule profiling_humann38_all:
             input:
                 expand([
@@ -1043,6 +1095,8 @@ rule profiling_humann39_config:
         threads = config["params"]["profiling"]["threads"]
     priority:
         20
+    threads:
+        1
     shell:
         '''
         humann_config > {log}
@@ -1098,6 +1152,8 @@ rule profiling_humann39:
         external_opts = config["params"]["profiling"]["humann"]["external_opts_v39"]
     threads:
         config["params"]["profiling"]["threads"]
+    resources:
+        mem_mb=config["params"]["profiling"]["humann"]["mem_mb"]
     shell:
         '''
         rm -rf {params.output_dir}
@@ -1157,6 +1213,10 @@ rule profiling_humann39_postprocess:
         map_database =  config["params"]["profiling"]["humann"]["map_database"]
     priority:
         20
+    threads:
+        1
+    resources:
+        mem_mb=config["params"]["profiling"]["humann"]["mem_mb"]
     shell:
         '''
         humann_renorm_table \
@@ -1231,6 +1291,10 @@ rule profiling_humann39_join:
         map_database = config["params"]["profiling"]["humann"]["map_database"]
     priority:
         20
+    threads:
+        1
+    resources:
+        mem_mb=config["params"]["profiling"]["humann"]["mem_mb"]
     shell:
         '''
         python {params.wrapper_dir}/humann3_postprocess_wrapper.py \
@@ -1299,6 +1363,10 @@ rule profiling_humann39_split_stratified:
         map_database = config["params"]["profiling"]["humann"]["map_database"]
     priority:
         20
+    threads:
+        1
+    resources:
+        mem_mb=config["params"]["profiling"]["humann"]["mem_mb"]
     shell:
         '''
         python {params.wrapper_dir}/humann3_postprocess_wrapper.py \
@@ -1322,7 +1390,7 @@ rule profiling_humann39_split_stratified:
 
 
 if config["params"]["profiling"]["metaphlan"]["do_v41"] and \
-   config["params"]["profiling"]["humann"]["do_v39"]:
+config["params"]["profiling"]["humann"]["do_v39"]:
         rule profiling_humann39_all:
             input:
                 expand([

@@ -23,7 +23,9 @@ if config["params"]["simulate"]["do"]:
             abundance = lambda wildcards: quantpi.get_simulate_info(SAMPLES, wildcards, "abundance")
         threads:
             config["params"]["simulate"]["threads"]
-        script: 
+        resources:
+            mem_mb=config["params"]["simulate"]["mem_mb"]
+        script:
             "../wrappers/simulate_reads.py"
 
 

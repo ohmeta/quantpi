@@ -14,6 +14,8 @@ if config["params"]["profiling"]["krakenuniq"]["do"]:
             config["envs"]["krakenuniq"]
         threads:
             config["params"]["profiling"]["threads"]
+        resources:
+            mem_mb=config["params"]["profiling"]["krakenuniq"]["mem_mb"]
         shell:
             '''
             krakenuniq --db {input.database} --preload --threads {threads} >{log} 2>&1
@@ -73,6 +75,8 @@ if config["params"]["profiling"]["krakenuniq"]["do"]:
                     else "--output /dev/null"
         threads:
             config["params"]["profiling"]["threads"]
+        resources:
+            mem_mb=config["params"]["profiling"]["krakenuniq"]["mem_mb"]
         conda:
             config["envs"]["krakenuniq"]
         shell:
@@ -129,8 +133,11 @@ if config["params"]["profiling"]["krakenuniq"]["do"]:
         conda:
             config["envs"]["krakenuniq"]
         log:
-            os.path.join(config["output"]["profiling"],
-                            "logs/krakentools/combine_kreports.log")
+            os.path.join(config["output"]["profiling"], "logs/krakentools/combine_kreports.log")
+        threads:
+            1
+        resources:
+            mem_mb=config["params"]["profiling"]["krakenuniq"]["mem_mb"]
         shell:
             '''
             combine_kreports.py \
@@ -164,6 +171,10 @@ if config["params"]["profiling"]["krakenuniq"]["do"]:
         log:
             os.path.join(
                 config["output"]["profiling"], "logs/krakentools/combine_kreports_mpa.log")
+        threads:
+            1
+        resources:
+            mem_mb=config["params"]["profiling"]["krakenuniq"]["mem_mb"]
         shell:
             '''
             echo "process 1:" > {log} 2>&1
@@ -198,6 +209,10 @@ if config["params"]["profiling"]["krakenuniq"]["do"]:
             log:
                 os.path.join(config["output"]["profiling"],
                             "logs/krona/krona_report.log")
+            threads:
+                1
+            resources:
+                mem_mb=config["params"]["profiling"]["krakenuniq"]["mem_mb"]
             shell:
                 '''
                 taxtab={input.taxonomy}/taxonomy.tab
@@ -294,6 +309,8 @@ if config["params"]["profiling"]["krakenuniq"]["do"] and config["params"]["profi
             20
         threads:
             config["params"]["profiling"]["threads"]
+        resources:
+            mem_mb=config["params"]["profiling"]["krakenuniq"]["mem_mb"]
         conda:
             config["envs"]["krakenuniq"]
         shell:
@@ -354,6 +371,10 @@ if config["params"]["profiling"]["krakenuniq"]["do"] and config["params"]["profi
             samples_id_list = ",".join(SAMPLES_ID_LIST)
         conda:
             config["envs"]["krakenuniq"]
+        threads:
+            1
+        resources:
+            mem_mb=config["params"]["profiling"]["krakenuniq"]["mem_mb"]
         shell:
             '''
             combine_bracken_outputs.py \
