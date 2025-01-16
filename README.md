@@ -356,7 +356,7 @@ params:
 
 
   rmhost:
-    host_fasta: /home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa
+    host_fasta: /lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa
     threads: 8
     save_reads: true
     save_bam: false
@@ -365,23 +365,23 @@ params:
     bwa:
       do: false
       algorithms: mem   # "mem2"
-      index_prefix: /home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/bwa_index/chm13v2.0.fa
+      index_prefix: /lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/bwa_index/chm13v2.0.fa
       minimum_seed_length: 23
 
     bowtie2: # recommand
       do: true
-      index_prefix: /home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa
+      index_prefix: /lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa
       presets: --very-sensitive
 
     minimap2:
       do: false
       split_size: 4G
       preset: sr
-      index: /home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/minimap_index/chm13v2.0.fa
+      index: /lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/minimap_index/chm13v2.0.fa
 
     kraken2:
       do: false
-      database: /home/jiezhu/databases/kraken/minikraken2_v2_8GB_201904_UPDATE
+      database: /lustre/store/dbs/kraken/minikraken2_v2_8GB_201904_UPDATE
       host_taxid: 9606
       # must include human reference genome
       confidence: 0
@@ -398,7 +398,7 @@ params:
       do_bowtie2: true
       decontaminate_pairs: strict   # ["strict", "lenient", "unpaired"]
       bowtie2_options: --very-sensitive --dovetail
-      bowtie2_database: /home/jiezhu/databases/genomics/human/CHM13/chm13v2.0_plusY/   # directory, not bowtie2 index prefix
+      bowtie2_database: /lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/   # directory, not bowtie2 index prefix
 
 
   qcreport:
@@ -413,8 +413,8 @@ params:
     # DNA-to-DNA
     kraken2:
       do: false
-      database: /home/jiezhu/databases/ecogenomics/Struo2/GTDB_release202/kraken2
-      taxonomy: /home/jiezhu/databases/ecogenomics/Struo2/GTDB_release202/kraken2/taxonomy
+      database: /lustre/store/dbs/ecogenomics/Struo2/GTDB_release202/kraken2
+      taxonomy: /lustre/store/dbs/ecogenomics/Struo2/GTDB_release202/kraken2/taxonomy
       quick: false
       memory_mapping: false
       use_names: true
@@ -439,9 +439,9 @@ params:
         mycobiome: false
         virome: false
       database:
-        bacteriome: /home/jiezhu/databases/ecogenomics/KMCP/bacteriome/GTDB_r202/gtdb.kmcp
-        mycobiome: /home/jiezhu/databases/ecogenomics/KMCP/mycobiome/RefSeq_r208/refseq-fungi.kmcp
-        virome: /home/jiezhu/databases/ecogenomics/KMCP/virome/GenBank_246/genbank-viral.kmcp
+        bacteriome: /lustre/store/dbs/ecogenomics/KMCP/bacteriome/GTDB_r202/gtdb.kmcp
+        mycobiome: /lustre/store/dbs/ecogenomics/KMCP/mycobiome/RefSeq_r208/refseq-fungi.kmcp
+        virome: /lustre/store/dbs/ecogenomics/KMCP/virome/GenBank_246/genbank-viral.kmcp
         taxdump: /home/jiezhu/.taxonkit
       search:
         threads: 24
@@ -483,10 +483,10 @@ params:
       do_v3: False   # metaphlan3
       do_v40: True   # metaphlan v4.0.*
       do_v41: True   # metaphlan v4.1.*
-      bowtie2db_v2: "/home/jiezhu/databases/ecogenomics/MetaPhlAn/mpa_v20/bowtie2_index"
-      bowtie2db_v3: "/home/jiezhu/databases/ecogenomics/MetaPhlAn/mpa_v30/bowtie2_index"
-      bowtie2db_v40: "/home/jiezhu/databases/ecogenomics/MetaPhlAn/mpa_vOct22/bowtie2_index"
-      bowtie2db_v41: "/home/jiezhu/databases/ecogenomics/MetaPhlAn/mpa_vJun23/bowtie2_index"
+      bowtie2db_v2: "/lustre/store/dbs/ecogenomics/MetaPhlAn/mpa_v20/bowtie2_index"
+      bowtie2db_v3: "/lustre/store/dbs/ecogenomics/MetaPhlAn/mpa_v30/bowtie2_index"
+      bowtie2db_v40: "/lustre/store/dbs/ecogenomics/MetaPhlAn/mpa_vOct22/bowtie2_index"
+      bowtie2db_v41: "/lustre/store/dbs/ecogenomics/MetaPhlAn/mpa_vJun23/bowtie2_index"
       index_prefix_v2: "v20_m200"
       index_prefix_v3: "mpa_v30_CHOCOPhlAn_201901"
       index_prefix_v40: "mpa_vOct22_CHOCOPhlAnSGB_202212"
@@ -527,12 +527,12 @@ params:
       do_v38: True   # reply on metaphlan  v4.0.*
       do_v39: True   # reply on metaphlan  v4.1.*
       # humann v3.5, v3.6, v3.7, v3.8, v3.9 used same database v31
-      database_nucleotide_v2: "/home/jiezhu/databases/funcgenomics/HUMAnN/v2/chocophlan"
-      database_nucleotide_v31: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.1/chocophlan"
-      database_protein_v2: "/home/jiezhu/databases/funcgenomics/HUMAnN/v2/uniref"
-      database_protein_v31: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.1/uniref"
-      database_utility_mapping_v2: "/home/jiezhu/databases/funcgenomics/HUMAnN/v2/utility_mapping"
-      database_utility_mapping_v31: "/home/jiezhu/databases/funcgenomics/HUMAnN/v3.1/utility_mapping"
+      database_nucleotide_v2: "/lustre/store/dbs/funcgenomics/HUMAnN/v2/chocophlan"
+      database_nucleotide_v31: "/lustre/store/dbs/funcgenomics/HUMAnN/v3.1/chocophlan"
+      database_protein_v2: "/lustre/store/dbs/funcgenomics/HUMAnN/v2/uniref"
+      database_protein_v31: "/lustre/store/dbs/funcgenomics/HUMAnN/v3.1/uniref"
+      database_utility_mapping_v2: "/lustre/store/dbs/funcgenomics/HUMAnN/v2/utility_mapping"
+      database_utility_mapping_v31: "/lustre/store/dbs/funcgenomics/HUMAnN/v3.1/utility_mapping"
       prescreen_threshold: 0.005 # minimum percentage of reads matching a species, default: 0.01
       identity_threshold: 50.0
       nucleotide_identity_threshold: 0.0 # nucleotide: 0
@@ -555,14 +555,14 @@ params:
     # alignment method
     genomecov:
       do: false
-      bowtie2_db_prefix: /home/jiezhu/databases/ecogenomics/virome/virome.fasta
-      bowtie2_db_fasta: /home/jiezhu/databases/ecogenomics/virome/virome.fasta
+      bowtie2_db_prefix: /lustre/store/dbs/ecogenomics/virome/virome.fasta
+      bowtie2_db_fasta: /lustre/store/dbs/ecogenomics/virome/virome.fasta
       gen_contig_cov_script: /home/jiezhu/toolkit/metassemble/scripts/validate/map/gen_contig_cov_per_bam_table.py
 
     # alignment method
     coverm:
       do: false
-      genome_dir: /home/jiezhu/databases/ecogenomics/virome/genomes
+      genome_dir: /lustre/store/dbs/ecogenomics/virome/genomes
       genome_fasta_extension: fna
       methods: [relative_abundance, mean, trimmed_mean, covered_fraction, covered_bases,
         variance, rpkm, tpm]
