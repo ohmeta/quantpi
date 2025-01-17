@@ -18,11 +18,14 @@ latency-wait: 120
 
 default-resources:
     runtime: 10080
-#    slurm_partition: "<your default partition>"
-#    slurm_account:   "<your account>"
-#    mem_mb: max(1.5 * input.size_mb, 100)
-#    mem_mb_per_cpu: 1800
-#    cpus_per_task: 8
+    # please update below
+    slurm_partition: "workernode"
+    # please update below
+    slurm_account:   "$USER"
+    slurm_extra: "'--jobname \"{rule}.{wildcards}.{jobid}\"'"
+    #mem_mb: max(1.5 * input.size_mb, 100)
+    #mem_mb_per_cpu: 1800
+    #cpus_per_task: 8
 
 #set-threads:
 #    <rulename>: max(input.size_mb / 5, 2)
