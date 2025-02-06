@@ -64,6 +64,8 @@ params:
 
 
   rmhost:
+    ## human: "/lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
+    ## mouse: "/lustre/store/dbs/ecogenomics/KneadData/mouse_C57BL/mouse_C57BL_6NJ.fa"
     host_fasta: "/lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
     threads: 8
     save_reads: True
@@ -80,6 +82,8 @@ params:
     bowtie2: # recommand
       do: True
       mem_mb: 3000
+      ## human: "/lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
+      ## mouse: "/lustre/store/dbs/ecogenomics/KneadData/mouse_C57BL/mouse_C57BL_6NJ"
       index_prefix: "/lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
       presets: "--very-sensitive"
 
