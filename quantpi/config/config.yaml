@@ -216,8 +216,8 @@ params:
     metaphlan:
       do_v2: False    # metaphlan2 v2*
       do_v3: False    # metaphlan  v3*
-      do_v40: False   # metaphlan  v4.0.*
-      do_v41: True    # metaphlan  v4.1.*
+      do_v40: True  # metaphlan  v4.0.*
+      do_v41: False    # metaphlan  v4.1.*
       mem_mb: 10000
       bowtie2db_v2: "/lustre/store/dbs/ecogenomics/MetaPhlAn/mpa_v20/bowtie2_index"
       bowtie2db_v3: "/lustre/store/dbs/ecogenomics/MetaPhlAn/mpa_v30/bowtie2_index"
@@ -263,7 +263,7 @@ params:
       do_v2: False   # reply on metaphlan2 v2*
       do_v35: False  # reply on metaphlan  v3*
       do_v38: True   # reply on metaphlan  v4.0.*
-      do_v39: True   # reply on metaphlan  v4.1.*
+      do_v39: False   # reply on metaphlan  v4.1.*
       mem_mb: 10000
       # humann v3.5, v3.6, v3.7, v3.8, v3.9 used same database v31
       database_nucleotide_v2: "/lustre/store/dbs/funcgenomics/HUMAnN/v2/chocophlan"
