@@ -164,7 +164,7 @@ params:
       bracken:
         do: False
         reads_len: 100
-        level: ["D", "P", "C", "O", "F", "G", "S", "S1"]
+        level: ["D", "P", "C", "O", "F", "G", "S"] # "S1"
 
     # DNA-to-DNA
     kmcp:

@@ -97,15 +97,14 @@ if config["params"]["profiling"]["kraken2"]["do"]:
             {input.reads} \
             2> {log}
 
-
-            /home/jiezhu/toolkit/KrakenTools/kreport2mpa.py \
+            kreport2mpa.py \
             --report-file {output.report} \
             --display-header \
             --no-intermediate-ranks \
             --read_count \
             --output {output.report_mpa_reads_count}
 
-            /home/jiezhu/toolkit/KrakenTools/kreport2mpa.py \
+            kreport2mpa.py \
             --report {output.report} \
             --no-intermediate-ranks \
             --percentages \
@@ -142,7 +141,7 @@ if config["params"]["profiling"]["kraken2"]["do"]:
             mem_mb=config["params"]["profiling"]["kraken2"]["mem_mb"]
         shell:
             '''
-            /home/jiezhu/toolkit/KrakenTools/combine_kreports.py \
+            combine_kreports.py \
             --report-file {input} \
             --sample-names {params.samples_name} \
             --display-headers \
@@ -181,14 +180,14 @@ if config["params"]["profiling"]["kraken2"]["do"]:
             '''
             echo "process 1:" > {log} 2>&1
 
-            /home/jiezhu/toolkit/KrakenTools/combine_mpa.py \
+            combine_mpa.py \
             --input {input.report_mpa_reads_count} \
             --output {output.report_mpa_reads_count} \
             >> {log} 2>&1
 
             echo "process 1:" >> {log} 2>&1
 
-            /home/jiezhu/toolkit/KrakenTools/combine_mpa.py \
+            combine_mpa.py \
             --input {input.report_mpa_percentages} \
             --output {output.report_mpa_percentages} \
             >> {log} 2>&1
