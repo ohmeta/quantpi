@@ -72,7 +72,7 @@ if config["params"]["profiling"]["kraken2"]["do"]:
         threads:
             config["params"]["profiling"]["threads"]
         resources:
-            mem_mb=config["params"]["profiling"]["kraken"]["mem_mb"]
+            mem_mb=config["params"]["profiling"]["kraken2"]["mem_mb"]
         conda:
             config["envs"]["kraken2"]
         shell:
@@ -139,7 +139,7 @@ if config["params"]["profiling"]["kraken2"]["do"]:
         threads:
             1
         resources:
-            mem_mb=config["params"]["profiling"]["kraken"]["mem_mb"]
+            mem_mb=config["params"]["profiling"]["kraken2"]["mem_mb"]
         shell:
             '''
             /home/jiezhu/toolkit/KrakenTools/combine_kreports.py \
@@ -176,7 +176,7 @@ if config["params"]["profiling"]["kraken2"]["do"]:
         threads:
             1
         resources:
-            mem_mb=config["params"]["profiling"]["kraken"]["mem_mb"]
+            mem_mb=config["params"]["profiling"]["kraken2"]["mem_mb"]
         shell:
             '''
             echo "process 1:" > {log} 2>&1
@@ -215,7 +215,7 @@ if config["params"]["profiling"]["kraken2"]["do"]:
             threads:
                 1
             resources:
-                mem_mb=config["params"]["profiling"]["kraken"]["mem_mb"]
+                mem_mb=config["params"]["profiling"]["kraken2"]["mem_mb"]
             shell:
                 '''
                 taxtab={input.taxonomy}/taxonomy.tab
@@ -311,7 +311,7 @@ if config["params"]["profiling"]["kraken2"]["do"] and config["params"]["profilin
         threads:
             config["params"]["profiling"]["threads"]
         resources:
-            mem_mb=config["params"]["profiling"]["kraken"]["mem_mb"]
+            mem_mb=config["params"]["profiling"]["kraken2"]["mem_mb"]
         conda:
             config["envs"]["kraken2"]
         shell:
@@ -375,7 +375,7 @@ if config["params"]["profiling"]["kraken2"]["do"] and config["params"]["profilin
         threads:
             1
         resources:
-            mem_mb=config["params"]["profiling"]["kraken"]["mem_mb"]
+            mem_mb=config["params"]["profiling"]["kraken2"]["mem_mb"]
         shell:
             '''
             combine_bracken_outputs.py \

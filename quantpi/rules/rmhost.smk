@@ -553,7 +553,7 @@ if config["params"]["rmhost"]["kraken2"]["do"]:
                     "short_reads/{{sample}}/{{sample}}.rmhost{read}.fq.gz"),
                     read=[".1", ".2"] if IS_PE else ""))
         conda:
-            config["envs"]["kraken"]
+            config["envs"]["kraken2"]
         log:
             os.path.join(config["output"]["rmhost"], "logs/{sample}.kraken2.log")
         benchmark:
