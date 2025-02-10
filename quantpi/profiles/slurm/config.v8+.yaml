@@ -22,7 +22,7 @@ default-resources:
     slurm_partition: "workernode"
     # please update below
     slurm_account:   "$USER"
-    slurm_extra: "'--jobname \"{rule}.{wildcards}.{jobid}\"'"
+    #slurm_extra: "'--jobname \"{rule}.{wildcards}.{jobid}\"'"
     #mem_mb: max(1.5 * input.size_mb, 100)
     #mem_mb_per_cpu: 1800
     #cpus_per_task: 8
