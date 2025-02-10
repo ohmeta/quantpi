@@ -26,7 +26,11 @@
 ➤ conda activate quantpi-env
 
 # install snakemake
-➤ mamba install snakemake fd-find seqkit ruamel.yaml pandas numpy natsort openpyxl biopython seaborn matplotlib executor
+➤ mamba install \
+  snakemake snakemake-executor-plugin-slurm \
+  fd-find seqkit ruamel.yaml \
+  pandas numpy natsort openpyxl biopython \
+  seaborn matplotlib executor
 ```
 
 ## installation of quantpi itself
