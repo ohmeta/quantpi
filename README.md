@@ -3,12 +3,12 @@
 [![PyPI version](https://badge.fury.io/py/quantpi.svg)](https://badge.fury.io/py/quantpi)
 [![Anaconda-Server Badge](https://anaconda.org/bioconda/quantpi/badges/downloads.svg)](https://anaconda.org/bioconda/quantpi)
 
-# Microbiome profiling pipeline
+# microbiome profiling pipeline
 
-## Overview
+## overview
 <div align=center><img width="800" height="120" src="docs/workflow.svg"></div>
 
-## Basic environment
+## basic environment
 
 ```bash
 ➤ mkdir -p ~/.conda/envs
@@ -29,28 +29,28 @@
 ➤ mamba install snakemake fd-find seqkit ruamel.yaml pandas numpy natsort openpyxl biopython seaborn matplotlib executor
 ```
 
-## Installation
+## installation of quantpi itself
 
-### Latest version (**Recommended**)
+### latest version (**Recommended**)
 
 ```bash
 ➤ git clone https://github.com/ohmeta/quantpi
 ➤ echo "export PYTHONPATH=/path/to/quantpi:$PYTHONPATH" >> ~/.bashrc
 ```
 
-### From Bioconda
+### from Bioconda
 
 ```bash
 ➤ mamba install quantpi=1.0.0
 ```
 
-### From PYPI
+### from PYPI
 
 ```bash
 ➤ pip install quantpi=1.0.0
 ```
 
-## Help
+## quantpi help
 
 ```bash
 ➤ mamba activate quantpi-env
@@ -82,7 +82,7 @@ available subcommands:
     sync         quantpi sync project
 ```
 
-## Help init
+## quantpi init
 
 ```bash
 ➤ quantpi init --help
@@ -118,7 +118,7 @@ options:
 
 ```
 
-## Workflow list
+## quantpi workflow list
 
 ### profiling_kraken2_all
 <div align=center><img width="800" height="500" src="docs/workflow_kraken2.svg"></div>
@@ -141,9 +141,9 @@ options:
 ### profiling_humann3_all
 <div align=center><img width="800" height="500" src="docs/workflow_humann3.svg"></div>
 
-## Real world
+## run quantpi in a real world
 
-### Step 1: download [LMAS](https://github.com/B-UMMI/LMAS) data
+### step 1: download [LMAS](https://github.com/B-UMMI/LMAS) data
 
 A set of simulated samples were generated from the genomes in the ZymoBIOMICS standard though the [InSilicoSeq sequence simulator](https://github.com/HadrienG/InSilicoSeq) (version 1.5.2),
 including both even and logarithmic distribution, with and without Illumina error model. The number of read pairs generated matches the number of read pairs in the real data for each distribution.
@@ -176,7 +176,7 @@ The following samples are available in Zenodo:
 
 ```
 
-### Step 2: prepare samples sheet
+### step 2: prepare samples sheet
 
 ```bash
 ➤ fd -a fq.gz fastq/ | sort | uniq | paste - - | awk -F'[/_]' 'BEGIN{print "sample_id\tfq1\tfq2"};{print $(NF-1) "\t" $0}' > samples.tsv 
@@ -191,7 +191,7 @@ The following samples are available in Zenodo:
   |  LNN        | /full/path/to/LNN_1.fq.gz | /full/path/to/LNN_2.fq.gz |
   |  LHS        | /full/path/to/LHS_1.fq.gz | /full/path/to/LHS_2.fq.gz |
 
-### Step 3: Init
+### step 3: Init a profiling project
 
 ```bash
 ➤ quantpi init -d . -s samples.tsv
@@ -199,12 +199,13 @@ The following samples are available in Zenodo:
 ➤ python /path/to/quantpi/run_quantpi.py init -d . -s samples.tsv
 ```
 
-### Step 4: workflow list
+### step 4: see workflow list
 
 ```bash
 ➤ quantpi profiling_wf --list
 # or
 ➤ python /path/to/quantpi/run_quantpi.py profiling_wf --list
+
 Running quantpi profiling_wf:
 snakemake --snakefile /path/to/quantpi/quantpi/snakefiles/profiling_wf.smk --configfile ./config.yaml --cores 240 --keep-going --printshellcmds --reason --until all --list
 all
@@ -289,51 +290,54 @@ Real running cmd:
 snakemake --snakefile /path/to/quantpi/quantpi/snakefiles/profiling_wf.smk --configfile ./config.yaml --cores 240 --keep-going --printshellcmds --reason --until all --list
 ```
 
-### Step 4: update config.yaml
+### Step 4: update config.yaml based on your required
 
 ```bash
 ➤ cat config.yaml
 
 params:
-  reads_layout: pe
-  interleaved: false
-  have_long: false
-  fq_encoding: sanger
-  begin: trimming
-  samples: samples.tsv
+  reads_layout: "pe"
+  interleaved: False
+  have_long: False
+  fq_encoding: "sanger"
+  begin: "trimming"
+  samples: "samples.tsv"
 
   simulate:
-    do: false
+    do: False
     threads: 8
+    mem_mb: 1000
 
   raw:
-    do: true
+    do: True
+    mem_mb: 1000
     threads: 8
-    check_paired: true
-    save_reads: true
-
+    check_paired: True
+    save_reads: True
     fastqc:
-      do: false
+      do: False
 
   trimming:
-    save_reads: false
+    save_reads: False
     threads: 8
 
     sickle:
-      do: false
-      quality_type: sanger
-      sickle_pe: ''
+      do: False
+      mem_mb: 1000
+      quality_type: "sanger"
+      sickle_pe: ""
       length_cutoff: 51
       quality_cutoff: 20
 
     fastp: # recommand
-      do: true
-      use_slide_window: false # strict when using slide window
-      disable_adapter_trimming: false
-      detect_adapter_for_se: true # If activated, adapter_sequence will not used
-      detect_adapter_for_pe: true # If activated, adapter_sequence and adapter_sequence_r2 will not used
-      adapter_sequence: AAGTCGGAGGCCAAGCGGTCTTAGGAAGACAA   # MGI adapter 3
-      adapter_sequence_r2: AAGTCGGATCGTAGCCATGTCGTTCTGTGAGCCAAGGAGTTG   # MGI adapter 5
+      do: True
+      mem_mb: 2000
+      use_slide_window: False # strict when using slide window
+      disable_adapter_trimming: False
+      detect_adapter_for_se: True # If activated, adapter_sequence will not used
+      detect_adapter_for_pe: True # If activated, adapter_sequence and adapter_sequence_r2 will not used
+      adapter_sequence: "AAGTCGGAGGCCAAGCGGTCTTAGGAAGACAA" # MGI adapter 3
+      adapter_sequence_r2: "AAGTCGGATCGTAGCCATGTCGTTCTGTGAGCCAAGGAGTTG" # MGI adapter 5
       # "AGATCGGAAGAGCACACGTCTGAACTCCAGTCA"         # eg: Illumina TruSeq adapter 3
       # "AGATCGGAAGAGCGTCGTGTAGGGAAAGAGTGT"         # eg: Illumina TruSeq adapter 5
       compression: 6
@@ -345,43 +349,52 @@ params:
       cut_right_mean_quality: 20
       length_required: 51
       n_base_limit: 5
-      dedup: false
+      dedup: False
       dup_calc_accuracy: 3 # [1, 2, 3, 4, 5, 6] # only used when dedup: True
 
     trimmomatic:
-      do: false
-      phred: -phred33
-      save_unpaired: false
-      trimmomatic_options: MINLEN:50 ILLUMINACLIP:/path/to/adapters.fa:2:40:15 SLIDINGWINDOW:4:20   # eg: adapters: /path/to/TruSeq3-PE-2.fa
+      do: False
+      mem_mb: 2000
+      phred: "-phred33"
+      save_unpaired: False
+      trimmomatic_options: 'MINLEN:50 ILLUMINACLIP:/path/to/adapters.fa:2:40:15 SLIDINGWINDOW:4:20' # eg: adapters: /path/to/TruSeq3-PE-2.fa
 
 
   rmhost:
-    host_fasta: /lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa
+    ## human: "/lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
+    ## mouse: "/lustre/store/dbs/ecogenomics/KneadData/mouse_C57BL/mouse_C57BL_6NJ.fa"
+    host_fasta: "/lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
     threads: 8
-    save_reads: true
-    save_bam: false
+    save_reads: True
+    save_bam: False
     compression: 6
 
     bwa:
-      do: false
-      algorithms: mem   # "mem2"
-      index_prefix: /lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/bwa_index/chm13v2.0.fa
+      do: False
+      mem_mb: 3000
+      algorithms: "mem" # "mem2"
+      index_prefix: "/lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/bwa_index/chm13v2.0.fa"
       minimum_seed_length: 23
 
     bowtie2: # recommand
-      do: true
-      index_prefix: /lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa
-      presets: --very-sensitive
+      do: True
+      mem_mb: 3000
+      ## human: "/lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
+      ## mouse: "/lustre/store/dbs/ecogenomics/KneadData/mouse_C57BL/mouse_C57BL_6NJ"
+      index_prefix: "/lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
+      presets: "--very-sensitive"
 
     minimap2:
-      do: false
-      split_size: 4G
-      preset: sr
-      index: /lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/minimap_index/chm13v2.0.fa
+      do: False
+      mem_mb: 4000
+      split_size: "4G"
+      preset: "sr"
+      index: "/lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/minimap_index/chm13v2.0.fa"
 
     kraken2:
-      do: false
-      database: /lustre/store/dbs/kraken/minikraken2_v2_8GB_201904_UPDATE
+      do: False
+      mem_mb: 10000
+      database: "/lustre/store/dbs/kraken/minikraken2_v2_8GB_201904_UPDATE"
       host_taxid: 9606
       # must include human reference genome
       confidence: 0
@@ -389,20 +402,22 @@ params:
       min_hit_groups: 2
 
     kneaddata:
-      do: false
-      do_trf: false
-      do_trimmomatic: false
-      trimmomatic_options: MINLEN:50 ILLUMINACLIP:/path/to/adapters.fa:2:40:15 SLIDINGWINDOW:4:20   # eg: adapters: /path/to/TruSeq3-PE-2.fa
-      sequencer_source: TruSeq3   # ["NexteraPE", "TruSeq2", "TruSeq3", "none"]
-      do_bmtagger: false
-      do_bowtie2: true
-      decontaminate_pairs: strict   # ["strict", "lenient", "unpaired"]
-      bowtie2_options: --very-sensitive --dovetail
-      bowtie2_database: /lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/   # directory, not bowtie2 index prefix
+      do: False
+      do_trf: False
+      do_trimmomatic: False
+      mem_mb: 3000
+      trimmomatic_options: 'MINLEN:50 ILLUMINACLIP:/path/to/adapters.fa:2:40:15 SLIDINGWINDOW:4:20' # eg: adapters: /path/to/TruSeq3-PE-2.fa
+      sequencer_source: "TruSeq3" # ["NexteraPE", "TruSeq2", "TruSeq3", "none"]
+      do_bmtagger: False
+      do_bowtie2: True
+      decontaminate_pairs: "strict" # ["strict", "lenient", "unpaired"]
+      bowtie2_options: "--very-sensitive --dovetail"
+      bowtie2_database: "/lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/" # directory, not bowtie2 index prefix
 
 
   qcreport:
-    do: true
+    do: True
+    mem_mb: 500
     seqkit:
       threads: 4
 
@@ -412,32 +427,53 @@ params:
 
     # DNA-to-DNA
     kraken2:
-      do: false
-      database: /lustre/store/dbs/ecogenomics/Struo2/GTDB_release202/kraken2
-      taxonomy: /lustre/store/dbs/ecogenomics/Struo2/GTDB_release202/kraken2/taxonomy
-      quick: false
-      memory_mapping: false
-      use_names: true
-      use_mpa_style: false
-      report_zero_counts: false
+      do: False
+      mem_mb: 10000
+      database: "/lustre/store/dbs/ecogenomics/Kraken2/refseq_indexes/k2_pluspf_20220908"
+      taxonomy: "/lustre/store/dbs/ecogenomics/Kraken2/taxonomy/"
+      quick: False
+      memory_mapping: False
+      use_names: True
+      use_mpa_style: False
+      report_zero_counts: False
       confidence: 0
       min_base_quality: 0
       min_hit_groups: 2
-      unclassified_out: false
-      classified_out: false
-      save_table: false
+      unclassified_out: False
+      classified_out: False
+      save_table: False
+      krona:
+        do: False
+      bracken:
+        do: False
+        reads_len: 100
+        level: ["D", "P", "C", "O", "F", "G", "S", "S1"]
 
-    bracken:
-      do: false
-      reads_len: 100
-      level: [D, P, C, O, F, G, S, S1]
+    krakenuniq:
+      do: False
+      mem_mb: 10000
+      database: "/lustre/store/dbs/ecogenomics/KrakenUniq/refseq_indexes/ku_pluspf_20220908"
+      taxonomy: "/lustre/store/dbs/ecogenomics/KrakenUniq/taxonomy"
+      quick: False
+      hll_precision: 12
+      exact: True
+      unclassified_out: False
+      classified_out: False
+      save_table: False
+      krona:
+        do: False
+      bracken:
+        do: False
+        reads_len: 100
+        level: ["D", "P", "C", "O", "F", "G", "S"] # "S1"
 
     # DNA-to-DNA
     kmcp:
       do:
-        bacteriome: false
-        mycobiome: false
-        virome: false
+        bacteriome: False
+        mycobiome: False
+        virome: False
+      mem_mb: 10000
       database:
         bacteriome: /lustre/store/dbs/ecogenomics/KMCP/bacteriome/GTDB_r202/gtdb.kmcp
         mycobiome: /lustre/store/dbs/ecogenomics/KMCP/mycobiome/RefSeq_r208/refseq-fungi.kmcp
@@ -445,14 +481,14 @@ params:
         taxdump: /home/jiezhu/.taxonkit
       search:
         threads: 24
-        reads_mode: Single-end   # "Paired-end" # Recommended Single-end
+        reads_mode: "Single-end" # "Paired-end" # Recommended Single-end
         min_query_len: 30
         min_query_cov: 0.55
-        external_opts: ''
+        external_opts: ""
       profile:
         threads: 4 # recommand
         mode: [0, 1, 2, 3, 4, 5]
-        level: strain   # ["species", "strain", "assembly"]
+        level: "strain" # ["species", "strain", "assembly"]
         # reference: https://bioinf.shenwei.me/kmcp/tutorial/profiling/
         # kmcp profile mode details
         # 0: for pathogen detection
@@ -474,15 +510,16 @@ params:
         # --max-qcov-gap                0.4
         # If you want to overide some parameter setted by preset mode, just add it to external_opts below.
         metaphlan_report_version: 3
-        disable_two_stage_taxonomy_assignment: true # --no-amb-corr
-        external_opts: ''
+        disable_two_stage_taxonomy_assignment: True # --no-amb-corr
+        external_opts: ""
 
     # DNA-to-marker
     metaphlan:
-      do_v2: False   # metaphlan2
-      do_v3: False   # metaphlan3
-      do_v40: True   # metaphlan v4.0.*
-      do_v41: True   # metaphlan v4.1.*
+      do_v2: False    # metaphlan2 v2*
+      do_v3: False    # metaphlan  v3*
+      do_v40: True  # metaphlan  v4.0.*
+      do_v41: False    # metaphlan  v4.1.*
+      mem_mb: 10000
       bowtie2db_v2: "/lustre/store/dbs/ecogenomics/MetaPhlAn/mpa_v20/bowtie2_index"
       bowtie2db_v3: "/lustre/store/dbs/ecogenomics/MetaPhlAn/mpa_v30/bowtie2_index"
       bowtie2db_v40: "/lustre/store/dbs/ecogenomics/MetaPhlAn/mpa_vOct22/bowtie2_index"
@@ -503,9 +540,10 @@ params:
       external_opts_v41: "--unclassified_estimation"
 
     strainphlan:
-      do_v3: False                                                # metaphlan3
-      do_v40: False                                               # metaphlan4
-      do_v41: False                                               # metaphlan4
+      do_v3: False                                                # metaphlan v3*
+      do_v40: False                                               # metaphlan v4.0.*
+      do_v41: False                                               # metaphlan v4.1.*
+      mem_mb: 2000
       reference_genome:
         use: False
         clades_tsv_v3: "/path/to/clades_v3.tsv"                   # extrct clade markes from specific clades, two column, [clade\tfna_path]
@@ -518,6 +556,7 @@ params:
       external_opts_v3: ""
       external_opts_v40: ""
       external_opts_v41: ""
+      clade_detected_in_min_samples_num: "50" # how many samples one clade should appear in, filter some clades before running strainphaln
 
 
     # Functional profiling
@@ -525,7 +564,8 @@ params:
       do_v2: False   # reply on metaphlan2 v2*
       do_v35: False  # reply on metaphlan  v3*
       do_v38: True   # reply on metaphlan  v4.0.*
-      do_v39: True   # reply on metaphlan  v4.1.*
+      do_v39: False   # reply on metaphlan  v4.1.*
+      mem_mb: 10000
       # humann v3.5, v3.6, v3.7, v3.8, v3.9 used same database v31
       database_nucleotide_v2: "/lustre/store/dbs/funcgenomics/HUMAnN/v2/chocophlan"
       database_nucleotide_v31: "/lustre/store/dbs/funcgenomics/HUMAnN/v3.1/chocophlan"
@@ -554,73 +594,50 @@ params:
 
     # alignment method
     genomecov:
-      do: false
-      bowtie2_db_prefix: /lustre/store/dbs/ecogenomics/virome/virome.fasta
-      bowtie2_db_fasta: /lustre/store/dbs/ecogenomics/virome/virome.fasta
+      do: False
+      mem_mb: 5000
+      bowtie2_db_prefix: "/lustre/store/dbs/ecogenomics/virome/virome.fasta"
+      bowtie2_db_fasta: "/lustre/store/dbs/ecogenomics/virome/virome.fasta"
       gen_contig_cov_script: /home/jiezhu/toolkit/metassemble/scripts/validate/map/gen_contig_cov_per_bam_table.py
 
     # alignment method
     coverm:
-      do: false
-      genome_dir: /lustre/store/dbs/ecogenomics/virome/genomes
-      genome_fasta_extension: fna
-      methods: [relative_abundance, mean, trimmed_mean, covered_fraction, covered_bases,
-        variance, rpkm, tpm]
+      do: False
+      mem_mb: 5000
+      genome_dir: "/lustre/store/dbs/ecogenomics/virome/genomes"
+      genome_fasta_extension: "fna"
+      methods: ["relative_abundance", "mean", "trimmed_mean", "covered_fraction", "covered_bases", "variance", "rpkm", "tpm"]
       min_covered_fraction: 10
       contig_end_exclusion: 75
       trim_min: 5
       trim_max: 95
 
-    # custom method
-    bgi_soap: # for learning and test
-      do: false
-      taxonomy: /path/to/mag_taxonomy
-      index_prefix: /path/to/mag_soap_index
-      minimal_insert_size: 0
-      maximal_insert_size: 1000
-      report_repeat_hits: 1
-      match_model: 4
-      align_seed: 30
-      max_mismatch_num: 5
-      identity: 0.95
-
-    bowtie2: # for learning and test
-      do: false
-      taxonomy: /path/to/mag_taxonomy
-      index_prefix: /path/to/mag_bowtie2_index
-
-    jgi: # for learning and test
-      do: false
-      metadata: /path/to/mag_metadata
-      taxonomy: /path/to/mag_taxonomy
-      index_prefix: /path/to/mag_bowtie2_index
-      fragment: 1200
-      memory_limit: 8G
-      compression_level: 6
 
 output:
-  simulate: results/00.simulate
-  raw: results/00.raw
-  trimming: results/01.trimming
-  rmhost: results/02.rmhost
-  qcreport: results/03.qcreport
-  profiling: results/04.profiling
+  simulate: "results/00.simulate"
+  raw: "results/00.raw"
+  trimming: "results/01.trimming"
+  rmhost: "results/02.rmhost"
+  qcreport: "results/03.qcreport"
+  profiling: "results/04.profiling"
+
 
 envs:
-  simulate: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/simulate.yaml
-  prepare: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/prepare.yaml
-  fastqc: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/fastqc.yaml
-  trimming: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/trimming.yaml
-  multiqc: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/multiqc.yaml
-  report: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/report.yaml
-  align: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/align.yaml
-  kraken2: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/kraken2.yaml
-  kneaddata: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/kneaddata.yaml
-  kmcp: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/kmcp.yaml
-  biobakery2: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/biobakery2.yaml
-  biobakery3: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/biobakery3.yaml
-  biobakery40: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/biobakery40.yaml
-  biobakery41: /home/jiezhu/toolkit/quantpi/test/test_dev/envs/biobakery41.yaml
+  simulate: "envs/simulate.yaml"
+  prepare: "envs/prepare.yaml"
+  fastqc: "envs/fastqc.yaml"
+  trimming: "envs/trimming.yaml"
+  kneaddata: "envs/kneaddata.yaml"
+  multiqc: "envs/multiqc.yaml"
+  report: "envs/report.yaml"
+  align: "envs/align.yaml"
+  kraken2: "envs/kraken2.yaml"
+  krakenuniq: "envs/krakenuniq.yaml"
+  kmcp: "envs/kmcp.yaml"
+  biobakery2: "envs/biobakery2.yaml"
+  biobakery3: "envs/biobakery3.yaml"
+  biobakery40: "envs/biobakery40.yaml"
+  biobakery41: "envs/biobakery41.yaml"
 ```
 
 ### Step 5: Dry run profiling_wf
@@ -660,16 +677,37 @@ trimming_fastp_multiqc                    1              1              1
 trimming_report                           4              4              4
 trimming_report_merge                     1              4              4
 trimming_report_refine                    4              1              1
-
 ```
 
-### Step 6: Wet run profiling_wf
+### Step 6: Wet run profiling_wf on local/remote mode
 
 ```bash
+# local mode
 ➤ quantpi profiling_wf all --use-conda --cores 80 --jobs 10 --run-local
 # or
 ➤ python /path/to/quantpi/run_quantpi.py profiling_wf all --use-conda --cores 80 --jobs 10 --run-local
+
+# remote mode
+➤ quantpi profiling_wf all --use-conda --cores 80 --jobs 10 --run-remote
+# or
+➤ python /path/to/quantpi/run_quantpi.py profiling_wf all --use-conda --cores 80 --jobs 10 --run-remote
 ```
+
+**note on remote mode**:
+
+```bash
+➤ cat /your/project/profiles/slurm/config.v8+.yaml
+
+executor: slurm
+latency-wait: 120
+default-resources:
+    runtime: 10080
+    slurm_partition: "workernode"
+    slurm_account:   "$USER"
+```
+
+please change `$USER` to your real username on slurm login node.
+
 
 ### Step 7: check and understand results (WIP)
 
