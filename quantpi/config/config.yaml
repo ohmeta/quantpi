@@ -62,7 +62,6 @@ params:
       save_unpaired: False
       trimmomatic_options: 'MINLEN:50 ILLUMINACLIP:/path/to/adapters.fa:2:40:15 SLIDINGWINDOW:4:20' # eg: adapters: /path/to/TruSeq3-PE-2.fa
 
-
   rmhost:
     ## human: "/lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
     ## mouse: "/lustre/store/dbs/ecogenomics/KneadData/mouse_C57BL/mouse_C57BL_6NJ.fa"
@@ -74,14 +73,14 @@ params:
 
     bwa:
       do: False
-      mem_mb: 3000
+      mem_mb: 5000
       algorithms: "mem" # "mem2"
       index_prefix: "/lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/bwa_index/chm13v2.0.fa"
       minimum_seed_length: 23
 
     bowtie2: # recommand
       do: True
-      mem_mb: 3000
+      mem_mb: 5000
       ## human: "/lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
       ## mouse: "/lustre/store/dbs/ecogenomics/KneadData/mouse_C57BL/mouse_C57BL_6NJ"
       index_prefix: "/lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/chm13v2.0.fa"
@@ -89,7 +88,7 @@ params:
 
     minimap2:
       do: False
-      mem_mb: 4000
+      mem_mb: 5000
       split_size: "4G"
       preset: "sr"
       index: "/lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/minimap_index/chm13v2.0.fa"
@@ -108,7 +107,7 @@ params:
       do: False
       do_trf: False
       do_trimmomatic: False
-      mem_mb: 3000
+      mem_mb: 5000
       trimmomatic_options: 'MINLEN:50 ILLUMINACLIP:/path/to/adapters.fa:2:40:15 SLIDINGWINDOW:4:20' # eg: adapters: /path/to/TruSeq3-PE-2.fa
       sequencer_source: "TruSeq3" # ["NexteraPE", "TruSeq2", "TruSeq3", "none"]
       do_bmtagger: False
@@ -117,13 +116,11 @@ params:
       bowtie2_options: "--very-sensitive --dovetail"
       bowtie2_database: "/lustre/store/dbs/genomics/human/CHM13/chm13v2.0_plusY/" # directory, not bowtie2 index prefix
 
-
   qcreport:
     do: True
     mem_mb: 500
     seqkit:
       threads: 4
-
 
   profiling:
     threads: 8
@@ -131,7 +128,7 @@ params:
     # DNA-to-DNA
     kraken2:
       do: False
-      mem_mb: 10000
+      mem_mb: 20000
       database: "/lustre/store/dbs/ecogenomics/Kraken2/refseq_indexes/k2_pluspf_20220908"
       taxonomy: "/lustre/store/dbs/ecogenomics/Kraken2/taxonomy/"
       quick: False
@@ -154,7 +151,7 @@ params:
 
     krakenuniq:
       do: False
-      mem_mb: 10000
+      mem_mb: 20000
       database: "/lustre/store/dbs/ecogenomics/KrakenUniq/refseq_indexes/ku_pluspf_20220908"
       taxonomy: "/lustre/store/dbs/ecogenomics/KrakenUniq/taxonomy"
       quick: False
@@ -176,7 +173,7 @@ params:
         bacteriome: False
         mycobiome: False
         virome: False
-      mem_mb: 10000
+      mem_mb: 20000
       database:
         bacteriome: /lustre/store/dbs/ecogenomics/KMCP/bacteriome/GTDB_r202/gtdb.kmcp
         mycobiome: /lustre/store/dbs/ecogenomics/KMCP/mycobiome/RefSeq_r208/refseq-fungi.kmcp
@@ -222,7 +219,7 @@ params:
       do_v3: False    # metaphlan  v3*
       do_v40: True  # metaphlan  v4.0.*
       do_v41: False    # metaphlan  v4.1.*
-      mem_mb: 10000
+      mem_mb: 22000
       bowtie2db_v2: "/lustre/store/dbs/ecogenomics/MetaPhlAn/mpa_v20/bowtie2_index"
       bowtie2db_v3: "/lustre/store/dbs/ecogenomics/MetaPhlAn/mpa_v30/bowtie2_index"
       bowtie2db_v40: "/lustre/store/dbs/ecogenomics/MetaPhlAn/mpa_vOct22/bowtie2_index"
@@ -246,7 +243,7 @@ params:
       do_v3: False                                                # metaphlan v3*
       do_v40: False                                               # metaphlan v4.0.*
       do_v41: False                                               # metaphlan v4.1.*
-      mem_mb: 2000
+      mem_mb: 22000
       reference_genome:
         use: False
         clades_tsv_v3: "/path/to/clades_v3.tsv"                   # extrct clade markes from specific clades, two column, [clade\tfna_path]
@@ -261,14 +258,13 @@ params:
       external_opts_v41: ""
       clade_detected_in_min_samples_num: "50" # how many samples one clade should appear in, filter some clades before running strainphaln
 
-
     # Functional profiling
     humann:
-      do_v2: False   # reply on metaphlan2 v2*
-      do_v35: False  # reply on metaphlan  v3*
-      do_v38: True   # reply on metaphlan  v4.0.*
+      do_v2: False    # reply on metaphlan2 v2*
+      do_v35: False   # reply on metaphlan  v3*
+      do_v38: True    # reply on metaphlan  v4.0.*
       do_v39: False   # reply on metaphlan  v4.1.*
-      mem_mb: 10000
+      mem_mb: 25000
       # humann v3.5, v3.6, v3.7, v3.8, v3.9 used same database v31
       database_nucleotide_v2: "/lustre/store/dbs/funcgenomics/HUMAnN/v2/chocophlan"
       database_nucleotide_v31: "/lustre/store/dbs/funcgenomics/HUMAnN/v3.1/chocophlan"
@@ -294,7 +290,6 @@ params:
       external_opts_v38: ""
       external_opts_v39: ""
 
-
     # alignment method
     genomecov:
       do: False
@@ -315,7 +310,6 @@ params:
       trim_min: 5
       trim_max: 95
 
-
 output:
   simulate: "results/00.simulate"
   raw: "results/00.raw"
@@ -323,7 +317,6 @@ output:
   rmhost: "results/02.rmhost"
   qcreport: "results/03.qcreport"
   profiling: "results/04.profiling"
-
 
 envs:
   simulate: "envs/simulate.yaml"
