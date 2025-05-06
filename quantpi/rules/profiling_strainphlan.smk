@@ -100,7 +100,7 @@ else:
             cat {output.markers_txt} | \
             grep "s__" | \
             awk -F'[\t]' '{{print $2}}' | \
-            awk -F'[: ]' '{{print $1  "\t" $4}}' \
+            awk -F'[: ]' '{{print $1  "\t" $4}}' | \
             awk -v samnum={params.clade_detected_in_min_samples_num} '$2>=samnum{{print $1}}' \
             > {output.markers_txt_gt}
 
@@ -370,7 +370,7 @@ else:
             cat {output.markers_txt} | \
             grep "t__" | \
             awk -F'[\t]' '{{print $2}}' | \
-            awk -F'[: ]' '{{print $1  "\t" $4}}' \
+            awk -F'[: ]' '{{print $1  "\t" $4}}' | \
             awk -v samnum={params.clade_detected_in_min_samples_num} '$2>=samnum{{print $1}}' \
             > {output.markers_txt_gt}
 
@@ -642,7 +642,7 @@ else:
             cat {output.markers_txt} | \
             grep "t__" | \
             awk -F'[\t]' '{{print $2}}' | \
-            awk -F'[: ]' '{{print $1  "\t" $4}}' \
+            awk -F'[: ]' '{{print $1  "\t" $4}}' | \
             awk -v samnum={params.clade_detected_in_min_samples_num} '$2>=samnum{{print $1}}' \
             > {output.markers_txt_gt}
 
