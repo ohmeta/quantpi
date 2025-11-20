@@ -215,19 +215,22 @@ params:
 
     # DNA-to-marker
     metaphlan:
-      do_v2: False    # metaphlan2 v2*
-      do_v3: False    # metaphlan  v3*
-      do_v40: True  # metaphlan  v4.0.*
+      do_v2: False     # metaphlan2 v2*
+      do_v3: False     # metaphlan  v3*
+      do_v40: True     # metaphlan  v4.0.*
       do_v41: False    # metaphlan  v4.1.*
+      do_v42: False    # metaphlan  v4.2.*
       mem_mb: 22000
       bowtie2db_v2: "/lustre/store/dbs/ecogenomics/MetaPhlAn/mpa_v20/bowtie2_index"
       bowtie2db_v3: "/lustre/store/dbs/ecogenomics/MetaPhlAn/mpa_v30/bowtie2_index"
       bowtie2db_v40: "/lustre/store/dbs/ecogenomics/MetaPhlAn/mpa_vOct22/bowtie2_index"
       bowtie2db_v41: "/lustre/store/dbs/ecogenomics/MetaPhlAn/mpa_vJun23/bowtie2_index"
+      bowtie2db_v42: "/lustre/store/dbs/ecogenomics/MetaPhlAn/mpa_vJan25/bowtie2_index"
       index_prefix_v2: "v20_m200"
       index_prefix_v3: "mpa_v30_CHOCOPhlAn_201901"
       index_prefix_v40: "mpa_vOct22_CHOCOPhlAnSGB_202212"
       index_prefix_v41: "mpa_vJun23_CHOCOPhlAnSGB_202403"
+      index_prefix_v42: "mpa_vJan25_CHOCOPhlAnSGB_202503"
       bowtie2_presets: "very-sensitive"
       taxonomic_level: "a"
       min_cu_len: 2000
@@ -238,17 +241,20 @@ params:
       external_opts_v3: "--unknown_estimation"
       external_opts_v40: "--unclassified_estimation"
       external_opts_v41: "--unclassified_estimation"
+      external_opts_v42: "--unclassified_estimation"
 
     strainphlan:
       do_v3: False                                                # metaphlan v3*
       do_v40: False                                               # metaphlan v4.0.*
       do_v41: False                                               # metaphlan v4.1.*
+      do_v42: False                                               # metaphlan v4.2.*
       mem_mb: 22000
       reference_genome:
         use: False
         clades_tsv_v3: "/path/to/clades_v3.tsv"                   # extrct clade markes from specific clades, two column, [clade\tfna_path]
         clades_tsv_v40: "/path/to/clades_v40.tsv"                 # extrct clade markes from specific clades, two column, [clade\tfna_path]
         clades_tsv_v41: "/path/to/clades_v41.tsv"                 # extrct clade markes from specific clades, two column, [clade\tfna_path]
+        clades_tsv_v42: "/path/to/clades_v42.tsv"                 # extrct clade markes from specific clades, two column, [clade\tfna_path]
       marker_in_n_samples: "1"                                    # reduce it if meet: Phylogeny can not be inferred. Too many markers were discarded
       sample_with_n_markers: "10"
       phylophlan_mode: "accurate"
@@ -256,6 +262,7 @@ params:
       external_opts_v3: ""
       external_opts_v40: ""
       external_opts_v41: ""
+      external_opts_v42: ""
       clade_detected_in_min_samples_num: "50" # how many samples one clade should appear in, filter some clades before running strainphaln
 
     # Functional profiling

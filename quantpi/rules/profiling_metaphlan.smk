@@ -417,3 +417,110 @@ if config["params"]["profiling"]["metaphlan"]["do_v41"]:
 else:
     rule profiling_metaphlan41_all:
         input:
+
+
+rule profiling_metaphlan42:
+    input:
+        reads = profiling_input_with_short_reads,
+        index = expand(os.path.join(
+            config["params"]["profiling"]["metaphlan"]["bowtie2db_v42"], "{index}.{suffix}"),
+            index = config["params"]["profiling"]["metaphlan"]["index_prefix_v42"],
+            suffix = ["1.bt2l", "2.bt2l", "3.bt2l", "4.bt2l", "rev.1.bt2l", "rev.2.bt2l", "pkl"])
+    output:
+        profile = os.path.join(
+            config["output"]["profiling"],
+            "profile/metaphlan42/{sample}/{sample}.metaphlan42.abundance.profile.tsv"),
+        vsc = os.path.join(
+            config["output"]["profiling"],
+            "profile/metaphlan42/{sample}/{sample}.metaphlan42.vsc.tsv"),
+        samout = os.path.join(config["output"]["profiling"], "profile/metaphlan42/{sample}/{sample}.sam.bz2"),
+        mapout = os.path.join(config["output"]["profiling"], "profile/metaphlan42/{sample}/{sample}.bowtie2.bz2")
+    log:
+        os.path.join(config["output"]["profiling"], "logs/metaphlan42/{sample}.metaphlan42.log")
+    benchmark:
+        os.path.join(config["output"]["profiling"], "benchmark/metaphlan42/{sample}.metaphlan42.benchmark.txt")
+    params:
+        sample_id = "{sample}",
+        bowtie2db = config["params"]["profiling"]["metaphlan"]["bowtie2db_v42"],
+        index = config["params"]["profiling"]["metaphlan"]["index_prefix_v42"],
+        bowtie2_presets = config["params"]["profiling"]["metaphlan"]["bowtie2_presets"],
+        outdir = os.path.join(config["output"]["profiling"], "profile/metaphlan42/{sample}"),
+        read_min_len = config["params"]["profiling"]["metaphlan"]["read_min_len"],
+        min_cu_len = config["params"]["profiling"]["metaphlan"]["min_cu_len"],
+        stat = config["params"]["profiling"]["metaphlan"]["stat"],
+        taxonomic_level = config["params"]["profiling"]["metaphlan"]["taxonomic_level"],
+        analysis_type = config["params"]["profiling"]["metaphlan"]["analysis_type"],
+        external_opts = config["params"]["profiling"]["metaphlan"]["external_opts_v42"]
+    priority:
+        20
+    threads:
+        config["params"]["profiling"]["threads"]
+    resources:
+        mem_mb=config["params"]["profiling"]["metaphlan"]["mem_mb"]
+    conda:
+        config["envs"]["biobakery42"]
+    shell:
+        '''
+        rm -rf {params.outdir}
+        mkdir -p {params.outdir}
+
+        reads=$(python -c "import sys; print(','.join(sys.argv[1:]))" {input.reads})
+
+        metaphlan \
+        $reads \
+        --nproc {threads} \
+        --input_type fastq \
+        --db_dir {params.bowtie2db} \
+        --index {params.index} \
+        --read_min_len {params.read_min_len} \
+        --min_cu_len {params.min_cu_len} \
+        --stat {params.stat} \
+        --tax_lev {params.taxonomic_level} \
+        -t {params.analysis_type} \
+        --sample_id {params.sample_id} \
+        --sample_id_key {params.sample_id} \
+        {params.external_opts} \
+        --profile_vsc \
+        --vsc_out {output.vsc} \
+        --mapout {output.mapout} \
+        --samout {output.samout} \
+        --output_file {output.profile} \
+        --offline \
+        >{log} 2>&1
+        '''
+
+
+rule profiling_metaphlan42_merge:
+    input:
+        abuns = expand(os.path.join(
+            config["output"]["profiling"],
+            "profile/metaphlan42/{sample}/{sample}.metaphlan42.abundance.profile.tsv"),
+            sample=SAMPLES_ID_LIST)
+    output:
+        profiles = expand(os.path.join(
+            config["output"]["profiling"],
+            "report/metaphlan42/metaphlan42.merged.abundance.profile.{level}.tsv"),
+            level=["all", "strain", "species", "genus", "family", "order", "class", "phylum", "superkingdom"])
+    threads:
+        config["params"]["profiling"]["threads"]
+    resources:
+        mem_mb=config["params"]["profiling"]["metaphlan"]["mem_mb"]
+    priority:
+        20
+    run:
+        quantpi.metaphlan_init(4)
+        profile_list = quantpi.merge_metaphlan_tables(input.abuns, threads)
+        for i in range(0, len(profile_list)):
+            profile_list[i].to_csv(output.profiles[i], sep='\t', index=False)
+
+
+if config["params"]["profiling"]["metaphlan"]["do_v42"]:
+    rule profiling_metaphlan42_all:
+        input:
+            expand(os.path.join(
+                config["output"]["profiling"],
+                "report/metaphlan42/metaphlan42.merged.abundance.profile.{level}.tsv"),
+                level=["all", "superkingdom", "phylum", "class", "order", "family", "genus", "species", "strain"])
+else:
+    rule profiling_metaphlan42_all:
+        input:
