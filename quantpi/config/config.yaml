@@ -341,3 +341,4 @@ envs:
   biobakery3: "envs/biobakery3.yaml"
   biobakery40: "envs/biobakery40.yaml"
   biobakery41: "envs/biobakery41.yaml"
+  biobakery42: "envs/biobakery42.yaml"
