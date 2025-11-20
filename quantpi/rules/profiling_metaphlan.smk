@@ -317,7 +317,11 @@ rule profiling_metaphlan41:
         index = expand(os.path.join(
             config["params"]["profiling"]["metaphlan"]["bowtie2db_v41"], "{index}.{suffix}"),
             index = config["params"]["profiling"]["metaphlan"]["index_prefix_v41"],
-            suffix = ["1.bt2l", "2.bt2l", "3.bt2l", "4.bt2l", "rev.1.bt2l", "rev.2.bt2l", "pkl"])
+            suffix = ["1.bt2l", "2.bt2l", "3.bt2l", "4.bt2l", "rev.1.bt2l", "rev.2.bt2l", "pkl"]),
+        others = expand(os.path.join(
+            config["params"]["profiling"]["metaphlan"]["bowtie2db_v41"], "{index}.{suffix}"),
+            index = config["params"]["profiling"]["metaphlan"]["index_prefix_v41"],
+            suffix = [".pkl", "_VINFO.csv", "_VSG.fna"])
     output:
         profile = os.path.join(
             config["output"]["profiling"],
@@ -425,7 +429,11 @@ rule profiling_metaphlan42:
         index = expand(os.path.join(
             config["params"]["profiling"]["metaphlan"]["bowtie2db_v42"], "{index}.{suffix}"),
             index = config["params"]["profiling"]["metaphlan"]["index_prefix_v42"],
-            suffix = ["1.bt2l", "2.bt2l", "3.bt2l", "4.bt2l", "rev.1.bt2l", "rev.2.bt2l", "pkl"])
+            suffix = ["1.bt2l", "2.bt2l", "3.bt2l", "4.bt2l", "rev.1.bt2l", "rev.2.bt2l", "pkl"]),
+        others = expand(os.path.join(
+            config["params"]["profiling"]["metaphlan"]["bowtie2db_v42"], "{index}.{suffix}"),
+            index = config["params"]["profiling"]["metaphlan"]["index_prefix_v42"],
+            suffix = [".pkl", "_VINFO.csv", "_VSG.fna"])
     output:
         profile = os.path.join(
             config["output"]["profiling"],
@@ -473,7 +481,6 @@ rule profiling_metaphlan42:
         --db_dir {params.bowtie2db} \
         --index {params.index} \
         --read_min_len {params.read_min_len} \
-        --min_cu_len {params.min_cu_len} \
         --stat {params.stat} \
         --tax_lev {params.taxonomic_level} \
         -t {params.analysis_type} \

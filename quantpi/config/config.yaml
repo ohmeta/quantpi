@@ -241,7 +241,7 @@ params:
       external_opts_v3: "--unknown_estimation"
       external_opts_v40: "--unclassified_estimation"
       external_opts_v41: "--unclassified_estimation"
-      external_opts_v42: "--unclassified_estimation"
+      external_opts_v42: ""
 
     strainphlan:
       do_v3: False                                                # metaphlan v3*
